@@ -1,11 +1,371 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Screenshots live in src/assets so Astro optimizes them (AVIF/WebP + srcset).
+import orcaShot from '../assets/orca-endpoints-grid.png';
+import orcaMonitorShot from '../assets/orca-monitor.png';
+import orcaApiShot from '../assets/orca-api.png';
+import tetraMarkdownShot from '../assets/tetra-markdown-chat.png';
+import tetraImageShot from '../assets/tetra-image-chat.png';
+import igFeedShot from '../assets/ig-image-feed.png';
+import igBatchShot from '../assets/ig-image-batch.png';
+import esuiteArtifactShot from '../assets/e-suite-artifact-chat.png';
+import esuiteGenShot from '../assets/e-suite-generations.png';
+
+// Contact — single lane, header and footer share it.
+const contact = {
+	github: 'https://github.com/deankerr',
+	discord: 'ultra.doan',
+	email: 'dean.kerr@gmail.com',
+};
+
+// The anchor project gets its own dark panel; everything leads with OpenRouter.
+const orca = {
+	kicker: 'OpenRouter Capability Analysis',
+	name: 'ORCA',
+	blurb: 'Tracks every model, provider, and endpoint on OpenRouter, and how they change over time.',
+	tie: 'Built because I wanted to see the catalog move — pricing, context windows, endpoints — not just its current state.',
+	stack: 'TypeScript · Next.js · React · Convex · TanStack · Vercel',
+	live: 'https://orca.orb.town',
+	repo: 'https://github.com/deankerr/orca',
+	shot: {
+		src: orcaShot,
+		alt: 'ORCA endpoints grid showing OpenRouter models, providers, pricing, features, and context windows',
+	},
+	// Two portrait supporting shots below the hero grid — the monitor makes the
+	// "catalog in motion" pitch literal.
+	shots: [
+		{
+			src: orcaMonitorShot,
+			label: 'monitor',
+			alt: 'ORCA monitor timeline showing recent pricing, max-output, and endpoint changes across providers over time',
+		},
+		{
+			src: orcaApiShot,
+			label: 'api',
+			alt: 'ORCA API documentation page with a sample JSON response of OpenRouter models and endpoints',
+		},
+	],
+};
+
+// The proof trail: sticky copy on the left, screenshot in dark chrome on the right.
+const projects = [
+	{
+		kicker: 'inference client',
+		name: 'tetra',
+		blurb:
+			'Local-first LLM chat for power users. Streaming runtime decoupled from the UI, sessions as message trees, tool loops — OpenRouter as the inference layer.',
+		stack: 'TypeScript · Bun · React · TinyBase · AI SDK · Cloudflare Workers',
+		repo: 'https://github.com/deankerr/tetra',
+		shots: [
+			{
+				src: tetraMarkdownShot,
+				label: 'markdown',
+				alt: 'tetra answering a Node.js workers question with a code block and a comparison table',
+			},
+			{
+				src: tetraImageShot,
+				label: 'image',
+				alt: 'tetra chat session with an inline AI-generated image from a PSX-style prompt',
+			},
+		],
+	},
+	{
+		kicker: 'inference infrastructure',
+		name: 'ig',
+		blurb:
+			'Production inference and artifact backend on Cloudflare edge primitives: Workers, D1, R2, Queues, Durable Objects — async orchestration with provenance on every artifact.',
+		stack: 'TypeScript · Hono · oRPC · Drizzle · Workers · D1 · R2 · Queues · DOs',
+		repo: 'https://github.com/deankerr/ig',
+		shots: [
+			{
+				src: igFeedShot,
+				label: 'feed',
+				alt: 'ig artifact feed — a dense grid of AI-generated images',
+			},
+			{
+				src: igBatchShot,
+				label: 'detail',
+				alt: 'ig artifact detail view showing a generated image beside its prompt, model, seed, cost, and duration',
+			},
+		],
+	},
+	{
+		kicker: 'origin · 2024',
+		name: 'e-suite',
+		blurb:
+			'Multi-modal AI platform — the origin point. Includes an early self-hosted take on LLM artifacts: sandboxed HTML and SVG rendered live in the conversation.',
+		stack: 'TypeScript · Next.js · React · Convex · Radix UI · Jotai',
+		repo: 'https://github.com/deankerr/e-suite',
+		shots: [
+			{
+				src: esuiteArtifactShot,
+				label: 'artifact',
+				alt: 'e-suite conversation with a live-rendered HTML artifact — an intercepted-transmission interface — beside the chat',
+			},
+			{
+				src: esuiteGenShot,
+				label: 'generate',
+				alt: 'e-suite image generation view showing a batch of four portrait renders from a single prompt',
+			},
+		],
+	},
+];
+
+// Texture only — an index, not cards. Strongest concept first.
+const supporting = [
+	{
+		name: 'advekt',
+		blurb:
+			'Structured argumentation for adversarial human–AI design: typed claim trees, built on the premise that correction is cheaper than generation.',
+		date: 'Feb 2026',
+		repo: 'https://github.com/deankerr/advekt',
+	},
+	{
+		name: 'omux',
+		blurb:
+			'A tmux wrapper where the command is the session name — deterministic, project-scoped process management shared between a developer and an agent.',
+		date: 'Mar 2026',
+		repo: 'https://github.com/deankerr/omux',
+	},
+	{
+		name: 'durian',
+		blurb:
+			'Actor-based agent orchestration — agents and channels as independent RivetKit actors that hold state, stream, and call tools. Web UI + Discord bot.',
+		date: 'Feb 2026',
+		repo: 'https://github.com/deankerr/durian',
+	},
+	{
+		name: 'orbstack-sandbox',
+		blurb:
+			'Sandboxed OrbStack VMs for coding agents — a seatbelt that lets an agent run skip-permissions without reaching the host filesystem or credentials.',
+		date: 'Feb 2026',
+		repo: 'https://github.com/deankerr/orbstack-sandbox',
+	},
+	{
+		name: 'archi',
+		blurb:
+			"Points at a tsconfig and extracts a TypeScript project's structure via the compiler API, rendered as a self-contained interactive dependency graph.",
+		date: 'Apr 2026',
+		repo: 'https://github.com/deankerr/archi',
+	},
+];
+
+// Shared class lanes.
+const label = 'font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-ink-faint';
+const kicker = 'font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-accent';
+const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underline';
+const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 ---
 
 <Layout>
-	<Welcome />
+	<div class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)]">
+		<!-- Header — quiet; the work should be the loudest thing on the page. -->
+		<header class="flex items-center justify-between gap-6 py-5">
+			<a class="font-semibold lowercase no-underline" href="#top">dean kerr</a>
+			<nav class="flex items-center gap-5" aria-label="Contact links">
+				<a class={headerLink} href={contact.github}>github</a>
+				<a class={headerLink} href={contact.discord}>discord</a>
+				<a class={headerLink} href={`mailto:${contact.email}`}>email</a>
+				<button
+					data-theme-toggle
+					aria-label="Toggle color theme"
+					class="cursor-pointer font-mono text-[0.84rem] lowercase text-ink-faint transition-colors hover:text-ink"
+				>
+					<span class="[[data-theme=dark]_&]:hidden">dark ☾</span>
+					<span class="hidden [[data-theme=dark]_&]:inline">light ☀</span>
+				</button>
+			</nav>
+		</header>
+
+		<!-- Hero — one claim, one compact proof list. -->
+		<section
+			id="top"
+			class="grid items-end gap-9 border-t border-line pt-9 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.36fr)]"
+		>
+			<div>
+				<p class={label}>ai infra · tooling · typescript</p>
+				<h1
+					class="mt-5 max-w-[13ch] text-[clamp(3.25rem,7.5vw,7rem)] leading-[0.92] font-medium tracking-[-0.03em]"
+				>
+					I build tooling for people who work directly with LLMs and inference.
+				</h1>
+			</div>
+			<ul class="pb-1.5 font-mono text-[0.8rem] text-ink-soft" aria-label="Focus areas">
+				<li class="border-b border-line py-2.5">OpenRouter catalog analysis</li>
+				<li class="border-b border-line py-2.5">Inference runtime design</li>
+				<li class="border-b border-line py-2.5">Edge orchestration</li>
+			</ul>
+		</section>
+
+		<!-- ORCA — the anchor, in its own dark panel so the screenshot has a home. -->
+		<section class="border-t border-line pt-7 pb-14" aria-labelledby="orca-title">
+			<article class="rounded-lg bg-panel p-[clamp(1.5rem,3vw,2.75rem)] text-panel-ink">
+				<p class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-panel-ink/50">
+					{orca.kicker}
+				</p>
+				<h2
+					id="orca-title"
+					class="mt-4 text-[clamp(3.75rem,7vw,7rem)] leading-[0.85] font-medium tracking-[-0.02em]"
+				>
+					{orca.name}
+				</h2>
+				<p class="mt-6 max-w-[44ch] text-[clamp(1.05rem,1.8vw,1.35rem)] leading-[1.4] text-panel-ink/75">
+					{orca.blurb}
+				</p>
+				<p class="mt-3 max-w-[52ch] text-[0.95rem] leading-[1.55] text-panel-ink/55">{orca.tie}</p>
+				<div class="mt-6 flex flex-wrap items-baseline gap-x-7 gap-y-2 font-mono text-[0.85rem]">
+					<a href={orca.live}>orca.orb.town ↗</a>
+					<a href={orca.repo}>github ↗</a>
+					<span class="text-[0.72rem] tracking-[0.05em] text-panel-ink/40">{orca.stack}</span>
+				</div>
+				<figure class="mt-8 overflow-hidden rounded-md border border-panel-line">
+					<a href={orca.shot.src.src} class="glightbox block cursor-zoom-in" data-gallery="orca">
+						<Image
+							src={orca.shot.src}
+							alt={orca.shot.alt}
+							widths={[640, 960, 1280, 1500]}
+							sizes="(min-width: 1400px) 1320px, 92vw"
+							class="w-full"
+						/>
+					</a>
+				</figure>
+				{/* Supporting portraits — the catalog in motion, and the API behind it. */}
+				<div class="mt-4 grid items-start gap-4 sm:grid-cols-2">
+					{orca.shots.map((shot) => (
+						<figure class="relative overflow-hidden rounded-md border border-panel-line">
+							<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery="orca">
+								<Image
+									src={shot.src}
+									alt={shot.alt}
+									widths={[432, 648, 864]}
+									sizes="(min-width: 640px) 640px, 92vw"
+									loading="lazy"
+									class="w-full"
+								/>
+							</a>
+							<figcaption class="pointer-events-none absolute right-3 bottom-3 rounded-md border border-panel-line bg-panel/80 px-2 py-1 font-mono text-[0.7rem] lowercase text-panel-ink backdrop-blur-sm">
+								{shot.label}
+							</figcaption>
+						</figure>
+					))}
+				</div>
+			</article>
+		</section>
+
+		<!-- The proof trail — sticky claim on the left, evidence on the right. -->
+		<section aria-label="Selected work">
+			{
+				projects.map((p) => (
+					<article class="grid gap-9 border-t border-line py-9 lg:grid-cols-[minmax(240px,0.34fr)_minmax(0,1fr)]">
+						<div class="self-start lg:sticky lg:top-10">
+							<p class={kicker}>{p.kicker}</p>
+							<h3 class="mt-3.5 text-[clamp(2.6rem,4.5vw,4.5rem)] leading-[0.9] font-medium tracking-[-0.02em]">
+								{p.name}
+							</h3>
+							<p class="mt-5 max-w-[44ch] text-ink-soft">{p.blurb}</p>
+							<p class="mt-5 max-w-[44ch] font-mono text-[0.72rem] tracking-[0.05em] text-ink-faint">
+								{p.stack}
+							</p>
+							<a class="mt-4 inline-block font-mono text-[0.85rem]" href={p.repo}>
+								github ↗
+							</a>
+						</div>
+						{/* Same dark-chrome treatment as the ORCA panel, now a two-up: each
+						    shot gets its own padded panel so the pair fills the lane.
+						    self-start so the panels wrap their images and never stretch to
+						    match the taller text column beside them. */}
+						<div class="grid items-start gap-4 self-start sm:grid-cols-2">
+							{p.shots.map((shot) => (
+								<div class="rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
+									<figure class="relative overflow-hidden rounded-md border border-panel-line">
+										<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery={p.name}>
+											<Image
+												src={shot.src}
+												alt={shot.alt}
+												widths={[440, 660, 880]}
+												sizes="(min-width: 1024px) 440px, (min-width: 640px) 46vw, 92vw"
+												loading="lazy"
+												class="w-full"
+											/>
+										</a>
+										<figcaption class="pointer-events-none absolute right-3 bottom-3 rounded-md border border-panel-line bg-panel/80 px-2 py-1 font-mono text-[0.7rem] lowercase text-panel-ink backdrop-blur-sm">
+											{shot.label}
+										</figcaption>
+									</figure>
+								</div>
+							))}
+						</div>
+					</article>
+				))
+			}
+		</section>
+
+		<!-- Other work — an index, not a card grid. -->
+		<section class={`border-t border-line pt-7 pb-4 ${rail}`} aria-label="Other work">
+			<p class={`${label} mb-5 md:mb-0`}>other work</p>
+			<ul>
+				{
+					supporting.map((p) => (
+						<li class="grid items-baseline gap-x-8 gap-y-1.5 border-b border-line py-5 first:pt-1 md:grid-cols-[10rem_minmax(0,1fr)_auto_auto]">
+							<span class="font-mono text-[0.95rem] font-semibold">{p.name}</span>
+							<p class="max-w-[62ch] text-[0.95rem] leading-[1.55] text-ink-soft">{p.blurb}</p>
+							<span class="font-mono text-[0.72rem] text-ink-faint">{p.date}</span>
+							<a class="font-mono text-[0.8rem]" href={p.repo}>
+								github ↗
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<footer class="mt-16 flex flex-wrap items-baseline justify-between gap-4 border-t border-line py-7 font-mono text-[0.8rem] text-ink-faint">
+			<span>dean kerr</span>
+			<nav class="flex gap-5" aria-label="Contact links">
+				<a class="no-underline hover:underline" href={contact.github}>github</a>
+				<a class="no-underline hover:underline" href={contact.discord}>discord</a>
+				<a class="no-underline hover:underline" href={`mailto:${contact.email}`}>{contact.email}</a>
+			</nav>
+		</footer>
+	</div>
 </Layout>
+
+<script>
+	// Flip theme and persist; the inline script in Layout reads it back on load.
+	document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+		const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+		document.documentElement.dataset.theme = next;
+		localStorage.setItem('theme', next);
+	});
+</script>
+
+<script>
+	// Click any screenshot to open it full-size; each project's shots form one
+	// gallery so the lightbox pages between them (Vite bundles the lib + CSS).
+	import GLightbox from 'glightbox';
+	import 'glightbox/dist/css/glightbox.min.css';
+
+	GLightbox({
+		selector: '.glightbox',
+		loop: true,
+		// Snappy fade instead of the default slow zoom.
+		openEffect: 'fade',
+		closeEffect: 'fade',
+		slideEffect: 'fade',
+	});
+</script>
+
+<!-- GLightbox timing is CSS-driven; is:global so it reaches the un-scoped lib DOM. -->
+<style is:global>
+	.gfadeIn,
+	.gfadeOut,
+	.gzoomIn,
+	.gzoomOut {
+		animation-duration: 0.18s !important;
+	}
+	.goverlay {
+		transition-duration: 0.18s !important;
+	}
+</style>
