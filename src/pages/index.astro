@@ -13,12 +13,16 @@ import igBatchShot from '../assets/ig-image-batch.png';
 import esuiteArtifactShot from '../assets/e-suite-artifact-chat.png';
 import esuiteGenShot from '../assets/e-suite-generations.png';
 
-// Contact — single lane, header and footer share it.
+// Contact — single lane, header and footer share it. The discord handle isn't
+// a URL; those render as copy-to-clipboard buttons instead of links.
 const contact = {
 	github: 'https://github.com/deankerr',
 	discord: 'ultra.doan',
 	email: 'dean.kerr@gmail.com',
 };
+
+// External links open beside the page, not over it.
+const ext = { target: '_blank', rel: 'noopener' };
 
 // The anchor project gets its own dark panel; everything leads with OpenRouter.
 const orca = {
@@ -38,12 +42,10 @@ const orca = {
 	shots: [
 		{
 			src: orcaMonitorShot,
-			label: 'monitor',
 			alt: 'ORCA monitor timeline showing recent pricing, max-output, and endpoint changes across providers over time',
 		},
 		{
 			src: orcaApiShot,
-			label: 'api',
 			alt: 'ORCA API documentation page with a sample JSON response of OpenRouter models and endpoints',
 		},
 	],
@@ -61,12 +63,10 @@ const projects = [
 		shots: [
 			{
 				src: tetraMarkdownShot,
-				label: 'markdown',
 				alt: 'tetra answering a Node.js workers question with a code block and a comparison table',
 			},
 			{
 				src: tetraImageShot,
-				label: 'image',
 				alt: 'tetra chat session with an inline AI-generated image from a PSX-style prompt',
 			},
 		],
@@ -81,12 +81,10 @@ const projects = [
 		shots: [
 			{
 				src: igFeedShot,
-				label: 'feed',
 				alt: 'ig artifact feed — a dense grid of AI-generated images',
 			},
 			{
 				src: igBatchShot,
-				label: 'detail',
 				alt: 'ig artifact detail view showing a generated image beside its prompt, model, seed, cost, and duration',
 			},
 		],
@@ -101,12 +99,10 @@ const projects = [
 		shots: [
 			{
 				src: esuiteArtifactShot,
-				label: 'artifact',
 				alt: 'e-suite conversation with a live-rendered HTML artifact — an intercepted-transmission interface — beside the chat',
 			},
 			{
 				src: esuiteGenShot,
-				label: 'generate',
 				alt: 'e-suite image generation view showing a batch of four portrait renders from a single prompt',
 			},
 		],
@@ -165,8 +161,14 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 		<header class="flex items-center justify-between gap-6 py-5">
 			<a class="font-semibold lowercase no-underline" href="#top">dean kerr</a>
 			<nav class="flex items-center gap-5" aria-label="Contact links">
-				<a class={headerLink} href={contact.github}>github</a>
-				<a class={headerLink} href={contact.discord}>discord</a>
+				<a class={headerLink} href={contact.github} {...ext}>github</a>
+				<button
+					data-copy={contact.discord}
+					title={`copy discord handle: ${contact.discord}`}
+					class={`${headerLink} cursor-pointer hover:underline`}
+				>
+					discord
+				</button>
 				<a class={headerLink} href={`mailto:${contact.email}`}>email</a>
 				<button
 					data-theme-toggle
@@ -202,7 +204,9 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 		<!-- ORCA — the anchor, in its own dark panel so the screenshot has a home. -->
 		<section class="border-t border-line pt-7 pb-14" aria-labelledby="orca-title">
 			<article class="rounded-lg bg-panel p-[clamp(1.5rem,3vw,2.75rem)] text-panel-ink">
-				<p class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-panel-ink/50">
+				<p
+					class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-panel-ink/50"
+				>
 					{orca.kicker}
 				</p>
 				<h2
@@ -211,13 +215,15 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 				>
 					{orca.name}
 				</h2>
-				<p class="mt-6 max-w-[44ch] text-[clamp(1.05rem,1.8vw,1.35rem)] leading-[1.4] text-panel-ink/75">
+				<p
+					class="mt-6 max-w-[44ch] text-[clamp(1.05rem,1.8vw,1.35rem)] leading-[1.4] text-panel-ink/75"
+				>
 					{orca.blurb}
 				</p>
 				<p class="mt-3 max-w-[52ch] text-[0.95rem] leading-[1.55] text-panel-ink/55">{orca.tie}</p>
 				<div class="mt-6 flex flex-wrap items-baseline gap-x-7 gap-y-2 font-mono text-[0.85rem]">
-					<a href={orca.live}>orca.orb.town ↗</a>
-					<a href={orca.repo}>github ↗</a>
+					<a href={orca.live} {...ext}>orca.orb.town ↗</a>
+					<a href={orca.repo} {...ext}>github ↗</a>
 					<span class="text-[0.72rem] tracking-[0.05em] text-panel-ink/40">{orca.stack}</span>
 				</div>
 				<figure class="mt-8 overflow-hidden rounded-md border border-panel-line">
@@ -233,23 +239,22 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 				</figure>
 				{/* Supporting portraits — the catalog in motion, and the API behind it. */}
 				<div class="mt-4 grid items-start gap-4 sm:grid-cols-2">
-					{orca.shots.map((shot) => (
-						<figure class="relative overflow-hidden rounded-md border border-panel-line">
-							<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery="orca">
-								<Image
-									src={shot.src}
-									alt={shot.alt}
-									widths={[432, 648, 864]}
-									sizes="(min-width: 640px) 640px, 92vw"
-									loading="lazy"
-									class="w-full"
-								/>
-							</a>
-							<figcaption class="pointer-events-none absolute right-3 bottom-3 rounded-md border border-panel-line bg-panel/80 px-2 py-1 font-mono text-[0.7rem] lowercase text-panel-ink backdrop-blur-sm">
-								{shot.label}
-							</figcaption>
-						</figure>
-					))}
+					{
+						orca.shots.map((shot) => (
+							<figure class="overflow-hidden rounded-md border border-panel-line">
+								<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery="orca">
+									<Image
+										src={shot.src}
+										alt={shot.alt}
+										widths={[432, 648, 864]}
+										sizes="(min-width: 640px) 640px, 92vw"
+										loading="lazy"
+										class="w-full"
+									/>
+								</a>
+							</figure>
+						))
+					}
 				</div>
 			</article>
 		</section>
@@ -268,7 +273,7 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 							<p class="mt-5 max-w-[44ch] font-mono text-[0.72rem] tracking-[0.05em] text-ink-faint">
 								{p.stack}
 							</p>
-							<a class="mt-4 inline-block font-mono text-[0.85rem]" href={p.repo}>
+							<a class="mt-4 inline-block font-mono text-[0.85rem]" href={p.repo} {...ext}>
 								github ↗
 							</a>
 						</div>
@@ -279,8 +284,12 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 						<div class="grid items-start gap-4 self-start sm:grid-cols-2">
 							{p.shots.map((shot) => (
 								<div class="rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
-									<figure class="relative overflow-hidden rounded-md border border-panel-line">
-										<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery={p.name}>
+									<figure class="overflow-hidden rounded-md border border-panel-line">
+										<a
+											href={shot.src.src}
+											class="glightbox block cursor-zoom-in"
+											data-gallery={p.name}
+										>
 											<Image
 												src={shot.src}
 												alt={shot.alt}
@@ -290,9 +299,6 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 												class="w-full"
 											/>
 										</a>
-										<figcaption class="pointer-events-none absolute right-3 bottom-3 rounded-md border border-panel-line bg-panel/80 px-2 py-1 font-mono text-[0.7rem] lowercase text-panel-ink backdrop-blur-sm">
-											{shot.label}
-										</figcaption>
 									</figure>
 								</div>
 							))}
@@ -312,7 +318,7 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 							<span class="font-mono text-[0.95rem] font-semibold">{p.name}</span>
 							<p class="max-w-[62ch] text-[0.95rem] leading-[1.55] text-ink-soft">{p.blurb}</p>
 							<span class="font-mono text-[0.72rem] text-ink-faint">{p.date}</span>
-							<a class="font-mono text-[0.8rem]" href={p.repo}>
+							<a class="font-mono text-[0.8rem]" href={p.repo} {...ext}>
 								github ↗
 							</a>
 						</li>
@@ -321,11 +327,19 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 			</ul>
 		</section>
 
-		<footer class="mt-16 flex flex-wrap items-baseline justify-between gap-4 border-t border-line py-7 font-mono text-[0.8rem] text-ink-faint">
+		<footer
+			class="mt-16 flex flex-wrap items-baseline justify-between gap-4 border-t border-line py-7 font-mono text-[0.8rem] text-ink-faint"
+		>
 			<span>dean kerr</span>
 			<nav class="flex gap-5" aria-label="Contact links">
-				<a class="no-underline hover:underline" href={contact.github}>github</a>
-				<a class="no-underline hover:underline" href={contact.discord}>discord</a>
+				<a class="no-underline hover:underline" href={contact.github} {...ext}>github</a>
+				<button
+					data-copy={contact.discord}
+					title="copy discord handle"
+					class="cursor-pointer no-underline hover:underline"
+				>
+					discord · {contact.discord}
+				</button>
 				<a class="no-underline hover:underline" href={`mailto:${contact.email}`}>{contact.email}</a>
 			</nav>
 		</footer>
@@ -339,6 +353,18 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 		document.documentElement.dataset.theme = next;
 		localStorage.setItem('theme', next);
 	});
+
+	// Discord handles aren't URLs — clicking copies the handle, with brief feedback.
+	for (const el of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
+		el.addEventListener('click', async () => {
+			await navigator.clipboard.writeText(el.dataset.copy ?? '');
+			const original = el.textContent;
+			el.textContent = 'copied';
+			setTimeout(() => {
+				el.textContent = original;
+			}, 1200);
+		});
+	}
 </script>
 
 <script>
@@ -367,5 +393,11 @@ const rail = 'md:grid md:grid-cols-[180px_minmax(0,1fr)] md:gap-8';
 	}
 	.goverlay {
 		transition-duration: 0.18s !important;
+	}
+	/* Keep zoomed images off the viewport edges — the lib defaults to 100vh/100%,
+	   which reads as "stuck" when the browser and screenshot have similar dims. */
+	.gslide-image img {
+		max-width: 92vw !important;
+		max-height: 88vh !important;
 	}
 </style>
