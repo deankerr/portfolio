@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>advekt — claim tree</title>
+<script>p5.disableFriendlyErrors = true;</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; overflow: hidden; background: #16150f; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<script>
+// === CONFIG ===
+const CONFIG = {
+  seed: 42,
+  maxNodes: 28,
+  growthInterval: 850,
+};
+
+// === PALETTE (portfolio dark panel) ===
+const PAL = {
+  bg: '#16150f',
+  ink: '#f2f1e8',
+  inkSoft: 'rgba(242,241,232,0.5)',
+  inkFaint: 'rgba(242,241,232,0.18)',
+  accent: '#bf3b1b',
+  accentSoft: 'rgba(191,59,27,0.35)',
+  statement: '#e9e7df',
+  contradiction: '#a5a399',
+  assumption: '#8b897e',
+  question: '#f2f1e8',
+  challenge: '#bf3b1b',
+  edge: 'rgba(242,241,232,0.12)',
+  edgeChallenge: 'rgba(191,59,27,0.4)',
+};
+
+// === STATE ===
+let tree;
+let lastGrowth = 0;
+
+// === ENTRY ===
+new p5((p) => {
+  p.setup = () => {
+    p.createCanvas(p.windowWidth, p.windowHeight);
+    p.pixelDensity(1);
+    p.randomSeed(CONFIG.seed);
+    p.noiseSeed(CONFIG.seed);
+    tree = new ClaimTree(p);
+    tree.init();
+  };
+
+  p.draw = () => {
+    p.background(PAL.bg);
+    tree.update(p.millis());
+    tree.draw(p);
+  };
+
+  p.windowResized = () => {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
+  };
+});
+
+// === CLAIM TREE ===
+class ClaimTree {
+  constructor(p) {
+    this.nodes = [];
+    this.edges = [];
+    this.p = p;
+    this.lastGrowth = 0;
+  }
+
+  init() {
+    const p = this.p;
+    const cx = p.width / 2;
+    const cy = p.height * 0.82;
+    const root = this.addNode(cx, cy, 'statement', 'Design knowledge is fragile');
+    root.appearTime = 0;
+    this.root = root;
+    this.lastGrowth = 0;
+  }
+
+  addNode(x, y, kind, label) {
+    const n = {
+      x, y, targetX: x, targetY: y,
+      kind, label,
+      appearTime: this.p.millis(),
+      radius: 0,
+      targetRadius: this.kindRadius(kind),
+      pulsePhase: 0,
+      settled: false,
+      children: [],
+    };
+    this.nodes.push(n);
+    return n;
+  }
+
+  kindRadius(kind) {
+    return kind === 'statement' ? 12 : kind === 'challenge' ? 6 : 9;
+  }
+
+  update(millis) {
+    // Reset cycle — fade old tree and start fresh
+    if (this.nodes.length >= CONFIG.maxNodes) {
+      this.resetAge = (this.resetAge || 0) + 1;
+      if (this.resetAge > 240) {
+        // Fade out then rebuild
+        for (const n of this.nodes) {
+          n.targetRadius = 0;
+        }
+        if (this.resetAge > 360) {
+          this.nodes = [];
+          this.edges = [];
+          this.resetAge = 0;
+          this.lastGrowth = millis - CONFIG.growthInterval + 800;
+          this.init();
+        }
+      }
+    }
+
+    if (this.nodes.length < CONFIG.maxNodes && millis - this.lastGrowth > CONFIG.growthInterval) {
+      this.grow();
+      this.lastGrowth = millis;
+    }
+    for (const n of this.nodes) {
+      const age = millis - n.appearTime;
+      const grow = Math.min(1, age / 600);
+      const eased = 1 - Math.pow(1 - grow, 3);
+      n.radius = eased * n.targetRadius;
+
+      // Ambient drift for settled nodes — gentle breathing via noise
+      if (n.settled) {
+        const t = millis * 0.0003;
+        const driftX = (p5.prototype.noise(n.x * 0.01, t) - 0.5) * 0.4;
+        const driftY = (p5.prototype.noise(n.y * 0.01, t + 100) - 0.5) * 0.4;
+        n.targetX += driftX;
+        n.targetY += driftY;
+        // Stronger centering pull toward root x to prevent drift
+        const rootX = this.root ? this.root.x : p.width / 2;
+        n.targetX += (rootX - n.targetX) * 0.003;
+      }
+
+      n.x += (n.targetX - n.x) * 0.08;
+      n.y += (n.targetY - n.y) * 0.08;
+      if (n.kind === 'challenge') {
+        n.pulsePhase += 0.06;
+      }
+      if (grow >= 1) n.settled = true;
+    }
+  }
+
+  grow() {
+    const p = this.p;
+    const candidates = this.nodes.filter(n => n.settled && n.kind !== 'challenge');
+    if (candidates.length === 0) return;
+    const parent = candidates[Math.floor(p.random() * candidates.length)];
+    const kinds = ['statement', 'contradiction', 'assumption', 'question', 'challenge'];
+    const weights = [0.28, 0.18, 0.18, 0.14, 0.22];
+    const r = p.random();
+    let acc = 0, kind = kinds[0];
+    for (let i = 0; i < kinds.length; i++) {
+      acc += weights[i];
+      if (r < acc) { kind = kinds[i]; break; }
+    }
+    // Bias growth upward, tighter spread around vertical for symmetry
+    const angle = p.random(-Math.PI * 0.72, -Math.PI * 0.28);
+    const dist = kind === 'challenge' ? 36 : p.random(62, 88);
+    // Small horizontal jitter for organic feel
+    const jitter = p.random(-10, 10);
+    const nx = parent.x + Math.cos(angle) * dist + jitter;
+    const ny = parent.y + Math.sin(angle) * dist;
+    const child = this.addNode(nx, ny, kind, '');
+    parent.children.push(child);
+    this.edges.push({ from: parent, to: child, kind: kind === 'challenge' ? 'challenge' : 'tree' });
+  }
+
+  draw(p) {
+    // Radial gradient background — spotlight from center-bottom
+    // Small steps (8px) to avoid visible banding
+    const cx = p.width / 2;
+    const cy = p.height * 0.82;
+    const maxR = Math.max(p.width, p.height) * 0.9;
+    p.noStroke();
+    for (let r = maxR; r > 0; r -= 8) {
+      const t = r / maxR;
+      const alpha = (1 - t) * 14;
+      p.fill(242, 241, 232, alpha);
+      p.ellipse(cx, cy, r * 2);
+    }
+
+    // Faint grid texture — subtle, gives the void some texture
+    p.stroke(242, 241, 232, 10);
+    p.strokeWeight(0.5);
+    const grid = 48;
+    for (let x = 0; x < p.width; x += grid) {
+      p.line(x, 0, x, p.height);
+    }
+    for (let y = 0; y < p.height; y += grid) {
+      p.line(0, y, p.width, y);
+    }
+
+    // Edges first (behind nodes)
+    for (const e of this.edges) {
+      const age = p.millis() - e.to.appearTime;
+      const grow = Math.min(1, age / 500);
+      const t = 1 - Math.pow(1 - grow, 2);
+      const ex = e.from.x + (e.to.x - e.from.x) * t;
+      const ey = e.from.y + (e.to.y - e.from.y) * t;
+
+      // Vary line weight — edges from root are thicker (trunk), others thinner (branches)
+      const isTrunk = e.from === this.root;
+      const weight = e.kind === 'challenge' ? 1 : isTrunk ? 2 : 1.2;
+
+      p.stroke(e.kind === 'challenge' ? PAL.edgeChallenge : PAL.edge);
+      p.strokeWeight(weight);
+      p.noFill();
+      p.line(e.from.x, e.from.y, ex, ey);
+    }
+
+    // Nodes
+    for (const n of this.nodes) {
+      this.drawNode(p, n);
+    }
+  }
+
+  drawNode(p, n) {
+    const pulse = n.kind === 'challenge' ? Math.sin(n.pulsePhase) * 0.3 + 0.7 : 1;
+    const r = n.radius * pulse;
+    if (r < 0.5) return;
+
+    const color = this.kindColor(n.kind);
+    p.noStroke();
+
+    if (n.kind === 'challenge') {
+      // Layered glow with ADD blend — luminous against dark bg
+      p.blendMode(p.ADD);
+      const glowR = r * 6;
+      p.fill(191, 59, 27, 8);
+      p.ellipse(n.x, n.y, glowR);
+      p.fill(191, 59, 27, 20);
+      p.ellipse(n.x, n.y, r * 3.5);
+      p.fill(191, 59, 27, 40);
+      p.ellipse(n.x, n.y, r * 2.2);
+      p.blendMode(p.BLEND);
+      p.fill(PAL.accent);
+      p.ellipse(n.x, n.y, r * 2);
+    } else if (n.kind === 'statement') {
+      // Filled circle
+      p.fill(color);
+      p.ellipse(n.x, n.y, r * 2);
+      p.fill(PAL.bg);
+      p.ellipse(n.x, n.y, r * 1.1);
+    } else if (n.kind === 'contradiction') {
+      // Diamond
+      p.push();
+      p.translate(n.x, n.y);
+      p.rotate(p.PI / 4);
+      p.fill(color);
+      p.rectMode(p.CENTER);
+      p.rect(0, 0, r * 1.6, r * 1.6);
+      p.pop();
+    } else if (n.kind === 'assumption') {
+      // Dashed ring
+      p.noFill();
+      p.stroke(color);
+      p.strokeWeight(1.4);
+      p.ellipse(n.x, n.y, r * 2);
+      // Inner dot
+      p.noStroke();
+      p.fill(color);
+      p.ellipse(n.x, n.y, r * 0.7);
+    } else if (n.kind === 'question') {
+      // Ring with gap
+      p.noFill();
+      p.stroke(color);
+      p.strokeWeight(1.5);
+      p.arc(n.x, n.y, r * 2, r * 2, 0.3, p.TWO_PI - 0.3);
+    }
+  }
+
+  kindColor(kind) {
+    switch (kind) {
+      case 'statement': return PAL.statement;
+      case 'contradiction': return PAL.contradiction;
+      case 'assumption': return PAL.assumption;
+      case 'question': return PAL.question;
+      case 'challenge': return PAL.challenge;
+      default: return PAL.inkSoft;
+    }
+  }
+}
+</script>
+</body>
+</html>

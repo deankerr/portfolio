@@ -1,0 +1,79 @@
+---
+// durian — the durable agent as an unbroken line through time. Channels
+// (dashed segments, different transports at different heights) open, exchange
+// messages with the agent (dotted verticals), and close — the agent's line
+// runs through all of them and keeps going, ending at an accent "now" node.
+// The accent dot is the agent's identity persisting along it.
+---
+
+<svg
+	viewBox="0 0 280 210"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- Message deliveries — channel-to-agent, at moments in each channel's life. -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="1.5 4" opacity="0.35">
+		<line x1="96" y1="51" x2="96" y2="105"></line>
+		<line x1="132" y1="77" x2="132" y2="105"></line>
+		<line x1="180" y1="77" x2="180" y2="105"></line>
+		<line x1="72" y1="133" x2="72" y2="105"></line>
+		<line x1="204" y1="159" x2="204" y2="105"></line>
+	</g>
+
+	<!-- Channels — sessions with a beginning and an end. -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity="0.55">
+		<line x1="36" y1="51" x2="118" y2="51"></line>
+		<line x1="84" y1="77" x2="196" y2="77"></line>
+		<line x1="52" y1="133" x2="148" y2="133"></line>
+		<line x1="122" y1="159" x2="232" y2="159"></line>
+	</g>
+	<g stroke="currentColor" stroke-width="1" fill="var(--surface)">
+		<circle cx="36" cy="51" r="2.5"></circle>
+		<circle cx="118" cy="51" r="2.5"></circle>
+		<circle cx="84" cy="77" r="2.5"></circle>
+		<circle cx="196" cy="77" r="2.5"></circle>
+		<circle cx="52" cy="133" r="2.5"></circle>
+		<circle cx="148" cy="133" r="2.5"></circle>
+		<circle cx="122" cy="159" r="2.5"></circle>
+		<circle cx="232" cy="159" r="2.5"></circle>
+	</g>
+
+	<!-- The agent — starts before the first channel, outlives the last. -->
+	<line x1="18" y1="105" x2="252" y2="105" stroke="currentColor" stroke-width="1.5" opacity="0.85"
+	></line>
+	<circle cx="252" cy="105" r="4" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
+	></circle>
+
+	<!-- Identity in motion — one dot, the whole span, never interrupted. -->
+	<circle class="self" r="3" fill="var(--accent)"></circle>
+</svg>
+
+<style>
+	.self {
+		opacity: 0;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.self {
+			animation: dur-persist 7s linear infinite;
+		}
+		@keyframes dur-persist {
+			0% {
+				transform: translate(18px, 105px);
+				opacity: 0;
+			}
+			6% {
+				opacity: 1;
+			}
+			90% {
+				opacity: 1;
+			}
+			100% {
+				transform: translate(252px, 105px);
+				opacity: 0;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,77 @@
+---
+// advekt — a claim tree. Dense left branch reads as settled; the sparse right
+// branch carries accent challenge diamonds (the design frontier). One dashed
+// node is an assumption. Decorative: inherits currentColor, accent for
+// challenges only.
+---
+
+<svg
+	viewBox="0 0 280 210"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- Edges first so node fills cover the joins. -->
+	<g stroke="currentColor" stroke-width="1" opacity="0.5">
+		<line x1="140" y1="26" x2="76" y2="74"></line>
+		<line x1="140" y1="26" x2="140" y2="78"></line>
+		<line x1="140" y1="26" x2="206" y2="66"></line>
+		<line x1="76" y1="74" x2="40" y2="126"></line>
+		<line x1="76" y1="74" x2="78" y2="130"></line>
+		<line x1="76" y1="74" x2="114" y2="124"></line>
+		<line x1="78" y1="130" x2="60" y2="176"></line>
+		<line x1="78" y1="130" x2="96" y2="178"></line>
+		<line x1="140" y1="78" x2="140" y2="134"></line>
+		<line x1="206" y1="66" x2="226" y2="118"></line>
+		<line x1="206" y1="66" x2="180" y2="108"></line>
+		<line x1="226" y1="118" x2="244" y2="162"></line>
+	</g>
+
+	<!-- Statements — plain circles; the root is just the biggest claim. -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="140" cy="26" r="6"></circle>
+		<circle cx="76" cy="74" r="5"></circle>
+		<circle cx="140" cy="78" r="5"></circle>
+		<circle cx="206" cy="66" r="5"></circle>
+		<circle cx="40" cy="126" r="4"></circle>
+		<circle cx="78" cy="130" r="4"></circle>
+		<circle cx="60" cy="176" r="4"></circle>
+		<circle cx="96" cy="178" r="4"></circle>
+		<circle cx="140" cy="134" r="4"></circle>
+		<circle cx="226" cy="118" r="4"></circle>
+		<!-- Assumption — same shape, dashed outline: present but unproven. -->
+		<circle cx="114" cy="124" r="4" stroke-dasharray="2.5 2.5"></circle>
+	</g>
+
+	<!-- Challenges — accent diamonds, leaf-only, agitating for a response. -->
+	<g stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)">
+		<path class="challenge" d="M 180 101 L 187 108 L 180 115 L 173 108 Z"></path>
+		<path class="challenge challenge-late" d="M 244 155 L 251 162 L 244 169 L 237 162 Z"></path>
+	</g>
+</svg>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		.challenge {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: adv-pulse 2.8s ease-in-out infinite;
+		}
+		.challenge-late {
+			animation-delay: 1.4s;
+		}
+		@keyframes adv-pulse {
+			0%,
+			100% {
+				opacity: 0.4;
+				transform: scale(0.88);
+			}
+			50% {
+				opacity: 1;
+				transform: scale(1.08);
+			}
+		}
+	}
+</style>
