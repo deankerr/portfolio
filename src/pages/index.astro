@@ -52,7 +52,7 @@ const orcaShots = {
 		src: orcaShot,
 		alt: 'ORCA endpoints grid showing OpenRouter models, providers, pricing, features, and context windows',
 	},
-	// Two portrait supporting shots below the hero grid — the monitor makes the
+	// Two supporting shots below the hero grid — the monitor makes the
 	// "catalog in motion" pitch literal.
 	supports: [
 		{
@@ -82,7 +82,7 @@ const majorShots: Record<string, { src: ImageMetadata; alt: string }[]> = {
 	ig: [
 		{
 			src: igFeedShot,
-			alt: 'ig artifact feed — a dense grid of AI-generated images',
+			alt: 'ig artifact feed: a dense grid of AI-generated images',
 		},
 		{
 			src: igBatchShot,
@@ -92,7 +92,7 @@ const majorShots: Record<string, { src: ImageMetadata; alt: string }[]> = {
 	'e-suite': [
 		{
 			src: esuiteArtifactShot,
-			alt: 'e-suite conversation with a live-rendered HTML artifact — an intercepted-transmission interface — beside the chat',
+			alt: 'e-suite conversation with a live-rendered HTML artifact, an intercepted-transmission interface, beside the chat',
 		},
 		{
 			src: esuiteGenShot,
@@ -113,9 +113,9 @@ const diagrams: Record<string, (props: Record<string, never>) => unknown> = {
 	archi: ArchiDiagram,
 };
 
-// Shared class lanes.
+// Shared class lanes. One uppercase eyebrow style, used sparingly (ORCA panel
+// and the "other work" divider); everything else identifies itself in normal case.
 const label = 'font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-ink-faint';
-const kicker = 'font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-accent';
 const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underline';
 ---
 
@@ -129,7 +129,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 				<button
 					data-copy={contact.discord}
 					title={`copy discord handle: ${contact.discord}`}
-					class={`${headerLink} cursor-pointer hover:underline`}
+					class={`${headerLink} cursor-pointer hover:underline active:translate-y-px`}
 				>
 					discord
 				</button>
@@ -139,8 +139,8 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 					aria-label="Toggle color theme"
 					class="cursor-pointer font-mono text-[0.84rem] lowercase text-ink-faint transition-colors hover:text-ink"
 				>
-					<span class="[[data-theme=dark]_&]:hidden">dark ☾</span>
-					<span class="hidden [[data-theme=dark]_&]:inline">light ☀</span>
+					<span class="[[data-theme=dark]_&]:hidden">dark</span>
+					<span class="hidden [[data-theme=dark]_&]:inline">light</span>
 				</button>
 			</nav>
 		</header>
@@ -151,9 +151,8 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 			class="grid items-end gap-9 border-t border-line pt-9 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.36fr)]"
 		>
 			<div>
-				<p class={label}>ai infra · tooling · typescript</p>
 				<h1
-					class="mt-5 max-w-[13ch] text-[clamp(3.25rem,7.5vw,7rem)] leading-[0.92] font-medium tracking-[-0.03em]"
+					class="max-w-[22ch] text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-bold tracking-[-0.02em]"
 				>
 					I build tooling for people who work directly with LLMs and inference.
 				</h1>
@@ -192,17 +191,14 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 					}
 					<a href={orca.repo} {...ext}>github ↗</a>
 				</div>
-				<figure class="mt-8 overflow-hidden rounded-md border border-panel-line">
-					<a
-						href={orcaShots.hero.src.src}
-						class="glightbox block cursor-zoom-in"
-						data-gallery="orca"
-					>
+				<figure class="mt-8 overflow-hidden rounded-md">
+					<a href={orcaShots.hero.src.src} class="glightbox block" data-gallery="orca">
 						<Image
 							src={orcaShots.hero.src}
 							alt={orcaShots.hero.alt}
-							widths={[640, 960, 1280, 1500]}
+							widths={[640, 960, 1320, 1980, 2640]}
 							sizes="(min-width: 1400px) 1320px, 92vw"
+							quality={90}
 							class="w-full"
 						/>
 					</a>
@@ -211,14 +207,15 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 				<div class="mt-4 grid items-start gap-4 sm:grid-cols-2">
 					{
 						orcaShots.supports.map((shot) => (
-							<figure class="overflow-hidden rounded-md border border-panel-line">
-								<a href={shot.src.src} class="glightbox block cursor-zoom-in" data-gallery="orca">
+							<figure class="reveal overflow-hidden rounded-md">
+								<a href={shot.src.src} class="glightbox block " data-gallery="orca">
 									<Image
 										src={shot.src}
 										alt={shot.alt}
-										widths={[432, 648, 864]}
+										widths={[432, 648, 864, 1280]}
 										sizes="(min-width: 640px) 640px, 92vw"
 										loading="lazy"
+										quality={90}
 										class="w-full"
 									/>
 								</a>
@@ -229,17 +226,24 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 			</article>
 		</section>
 
-		<!-- The proof trail — full copy on the left, evidence on the right. The
-		     text column now outruns the shots, so the shots stick instead. -->
+		<!-- The proof trail. Each major shares one split layout for rhythm —
+		     text-left, shots-right — except ig, which flips so the layout
+		     alternates. Copy outruns the shots, so the shots stick. -->
 		<section aria-label="Selected work">
 			{
 				majors.map((m) => (
-					<article class="grid gap-9 border-t border-line py-9 lg:grid-cols-[minmax(300px,0.45fr)_minmax(0,1fr)]">
-						<div>
-							<p class={kicker}>{m.kicker}</p>
-							<h3 class="mt-3.5 text-[clamp(2.6rem,4.5vw,4.5rem)] leading-[0.9] font-medium tracking-[-0.02em]">
+					<article
+						class={`grid gap-9 border-t border-line py-9 ${
+							m.id === 'ig'
+								? 'lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.65fr)]'
+								: 'lg:grid-cols-[minmax(300px,0.65fr)_minmax(0,1fr)]'
+						}`}
+					>
+						<div class={m.id === 'ig' ? 'lg:order-2' : ''}>
+							<h3 class="text-[clamp(2.6rem,4.5vw,4.5rem)] leading-[0.9] font-medium tracking-[-0.02em]">
 								{m.name}
 							</h3>
+							<p class="mt-3 text-[1.02rem] text-accent">{m.kicker}</p>
 							<div class="md-prose mt-5">
 								<m.Content />
 							</div>
@@ -247,24 +251,23 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 								github ↗
 							</a>
 						</div>
-						{/* Same dark-chrome treatment as the ORCA panel, stacked vertically —
+						{/* Same dark-chrome treatment as the ORCA panel, stacked vertically;
 						    landscape shots want the full lane. self-start + sticky so the
 						    shots stay in view while the longer copy scrolls. */}
-						<div class="grid gap-4 self-start lg:sticky lg:top-10">
+						<div
+							class={`grid gap-4 self-start lg:sticky lg:top-10 ${m.id === 'ig' ? 'lg:order-1' : ''}`}
+						>
 							{(majorShots[m.id] ?? []).map((shot) => (
-								<div class="rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
-									<figure class="overflow-hidden rounded-md border border-panel-line">
-										<a
-											href={shot.src.src}
-											class="glightbox block cursor-zoom-in"
-											data-gallery={m.name}
-										>
+								<div class="reveal rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
+									<figure class="overflow-hidden rounded-md">
+										<a href={shot.src.src} class="glightbox block " data-gallery={m.name}>
 											<Image
 												src={shot.src}
 												alt={shot.alt}
-												widths={[640, 960, 1280]}
+												widths={[640, 960, 1280, 1680]}
 												sizes="(min-width: 1024px) 60vw, 92vw"
 												loading="lazy"
+												quality={90}
 												class="w-full"
 											/>
 										</a>
@@ -284,12 +287,10 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 				supporting.map((s) => {
 					const Diagram = diagrams[s.id];
 					return (
-						<article class="grid gap-x-10 gap-y-4 border-b border-line py-8 last:border-b-0 md:grid-cols-[12rem_minmax(0,1fr)] lg:grid-cols-[12rem_minmax(0,1fr)_15rem]">
+						<article class="grid gap-x-10 gap-y-4 border-b border-line py-8 last:border-b-0 md:grid-cols-[12rem_minmax(0,1fr)] lg:grid-cols-[11rem_minmax(0,1.5fr)_minmax(0,1fr)]">
 							<div class="self-start md:sticky md:top-10">
-								<h3 class="font-mono text-[1.05rem] font-semibold">{s.name}</h3>
-								<p class="mt-2 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent">
-									{s.kicker}
-								</p>
+								<h3 class="font-mono text-[1.05rem] font-bold">{s.name}</h3>
+								<p class="mt-2 text-[0.92rem] leading-snug text-ink-soft">{s.kicker}</p>
 								<p class="mt-1.5 font-mono text-[0.72rem] text-ink-faint">{s.date}</p>
 								<a class="mt-3 inline-block font-mono text-[0.8rem]" href={s.repo} {...ext}>
 									github ↗
@@ -299,10 +300,11 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 								<s.Content />
 							</div>
 							{/* Concept diagram in place of a screenshot — decorative, so
-							    hidden from AT; ink-faint keeps it quieter than the prose. */}
+							    hidden from AT; the diagram gray keeps it quieter than the prose.
+							    viewBox-driven, so it fills whatever lane the grid gives it. */}
 							{Diagram && (
 								<div
-									class="w-full max-w-[280px] self-start text-ink-faint lg:sticky lg:top-10"
+									class="mx-auto w-full max-w-[26rem] self-start text-diagram md:col-start-2 lg:sticky lg:top-10 lg:col-start-auto lg:max-w-none"
 									aria-hidden="true"
 								>
 									<Diagram />
@@ -323,7 +325,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 				<button
 					data-copy={contact.discord}
 					title="copy discord handle"
-					class="cursor-pointer no-underline hover:underline"
+					class="cursor-pointer no-underline hover:underline active:translate-y-px"
 				>
 					discord · {contact.discord}
 				</button>
@@ -363,6 +365,9 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 	GLightbox({
 		selector: '.glightbox',
 		loop: true,
+		// No click-to-zoom — the shots already open near full-size, and the extra
+		// zoom just nudges the image sideways instead of enlarging it.
+		zoomable: false,
 		// Snappy fade instead of the default slow zoom.
 		openEffect: 'fade',
 		closeEffect: 'fade',
@@ -397,14 +402,12 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 		--prose-body: var(--ink-soft);
 		--prose-strong: var(--ink);
 		--prose-label: var(--ink-faint);
-		--prose-line: var(--line);
 	}
-	/* Dark chrome variant — panel-ink derivatives, same in both themes. */
+	/* Dark chrome variant: panel-ink derivatives, same in both themes. */
 	.md-prose-panel {
 		--prose-body: rgba(242, 241, 232, 0.72);
 		--prose-strong: #f2f1e8;
 		--prose-label: rgba(242, 241, 232, 0.45);
-		--prose-line: rgba(242, 241, 232, 0.14);
 	}
 	.md-prose p {
 		max-width: 58ch;
@@ -421,24 +424,26 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 		font-family: var(--font-mono);
 		font-size: 0.85em;
 	}
-	/* "## Stack" renders as a section label, matching the page's mono kickers. */
+	/* "## Stack" renders as a quiet lowercase mono label, matching the page's
+	   lowercase furniture. */
 	.md-prose h2 {
 		margin-top: 2.2em;
 		font-family: var(--font-mono);
-		font-size: 0.72rem;
+		font-size: 0.75rem;
 		font-weight: 500;
-		text-transform: uppercase;
-		letter-spacing: 0.16em;
+		text-transform: lowercase;
+		letter-spacing: 0.08em;
 		color: var(--prose-label);
 	}
-	/* Stack lists echo the hero's hairline rows. */
+	/* Stack lists read as a compact block: the bold mono names carry the
+	   structure, so no per-row hairlines. */
 	.md-prose ul {
-		margin-top: 0.6em;
+		margin-top: 0.7em;
+		display: grid;
+		gap: 0.55em;
 		max-width: 62ch;
 	}
 	.md-prose li {
-		border-bottom: 1px solid var(--prose-line);
-		padding: 0.55em 0;
 		font-size: 0.875em;
 		line-height: 1.55;
 		color: var(--prose-body);

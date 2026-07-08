@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-	title = 'Dean Kerr — tooling for people who work with LLMs and inference',
+	title = 'Dean Kerr · tooling for people who work with LLMs and inference',
 	description = 'Dean Kerr builds tooling for people who work directly with LLMs and inference. ORCA, tetra, ig, e-suite.',
 } = Astro.props;
 
@@ -25,7 +25,8 @@ const ogImage = new URL('/og.png', Astro.site);
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<Font cssVariable="--font-inter" preload />
+		<Font cssVariable="--font-satoshi" preload />
+		<Font cssVariable="--font-jetbrains" preload />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
 		<meta property="og:title" content={title} />
@@ -37,7 +38,7 @@ const ogImage = new URL('/og.png', Astro.site);
 		<meta property="og:image:height" content="630" />
 		<meta
 			property="og:image:alt"
-			content="ORCA endpoints grid — OpenRouter models, providers, pricing, and context windows"
+			content="I build tooling for people who work directly with LLMs and inference. ORCA: OpenRouter Capability Analysis."
 		/>
 		<!-- Discord/X render the large-image card off this hint; og:* carries the rest. -->
 		<meta name="twitter:card" content="summary_large_image" />

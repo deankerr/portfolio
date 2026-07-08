@@ -15,6 +15,10 @@
 	--line-strong: rgba(28, 27, 23, 0.34);
 	--accent: #bf3b1b;
 
+	/* Concept diagrams read too pale at ink-faint in light (edges are drawn at
+	   half opacity on top), so they get their own, stronger-than-faint gray. */
+	--diagram: #67655c;
+
 	--panel: #16150f;
 	--frame-shadow: 0 24px 70px -12px rgba(28, 27, 23, 0.28);
 }
@@ -32,6 +36,9 @@
 
 	--panel: #1b1a15;
 	--frame-shadow: 0 24px 70px -12px rgba(0, 0, 0, 0.55);
+
+	/* Dark view was already fine — keep the diagram at faint's dark value. */
+	--diagram: #6f6d63;
 }
 
 /* Map semantic roles into Tailwind utilities: bg-surface, text-ink(-soft/-faint),
@@ -45,6 +52,7 @@
 	--color-line: var(--line);
 	--color-line-strong: var(--line-strong);
 	--color-accent: var(--accent);
+	--color-diagram: var(--diagram);
 
 	/* Dark chrome — the same in both themes, so screenshots always sit in it. */
 	--color-panel: var(--panel);
@@ -54,9 +62,9 @@
 	--shadow-frame: var(--frame-shadow);
 
 	--font-sans:
-		var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
+		var(--font-satoshi), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica,
 		Arial, sans-serif;
-	--font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
+	--font-mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 @layer base {
