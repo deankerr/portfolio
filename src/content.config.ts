@@ -11,6 +11,9 @@ const projects = defineCollection({
 		date: z.string(),
 		repo: z.string().url(),
 		live: z.string().url().optional(),
+		// The stack is data, not prose — the page renders it per section (full-width
+		// band, quiet list), so it lives in frontmatter rather than the markdown body.
+		stack: z.array(z.object({ name: z.string(), note: z.string().optional() })),
 	}),
 });
 
