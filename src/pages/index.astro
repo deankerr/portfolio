@@ -131,8 +131,8 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 	<div class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)]">
 		<!-- Header — quiet; the work should be the loudest thing on the page. -->
 		<header class="flex items-center justify-between gap-6 py-5">
-			<a class="font-semibold lowercase no-underline" href="#top">dean kerr</a>
-			<nav class="flex items-center gap-5" aria-label="Contact links">
+			<a class="font-semibold whitespace-nowrap lowercase no-underline" href="#top">dean kerr</a>
+			<nav class="flex items-center gap-4 sm:gap-5" aria-label="Contact links">
 				<a class={headerLink} href={contact.github} {...ext}>github</a>
 				<button
 					data-copy={contact.discord}
@@ -160,7 +160,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 		>
 			<div>
 				<h1
-					class="max-w-[22ch] text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-bold tracking-[-0.02em]"
+					class="max-w-[22ch] text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-bold tracking-[-0.02em] text-balance"
 				>
 					I build tooling for people who work directly with LLMs and inference.
 				</h1>
@@ -176,7 +176,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 		<section class="border-t border-line pt-7 pb-14" aria-labelledby="orca-title">
 			<article class="rounded-lg bg-panel p-[clamp(1.5rem,3vw,2.75rem)] text-panel-ink">
 				<p
-					class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-panel-ink/50"
+					class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-panel-ink/60"
 				>
 					{orca.kicker}
 				</p>
@@ -215,7 +215,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 				<div class="mt-4 grid items-start gap-4 sm:grid-cols-2">
 					{
 						orcaShots.supports.map((shot) => (
-							<figure class="reveal overflow-hidden rounded-md">
+							<figure class="overflow-hidden rounded-md">
 								<a href={shot.src.src} class="glightbox block " data-gallery="orca">
 									<Image
 										src={shot.src}
@@ -266,7 +266,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 							class={`grid gap-4 self-start lg:sticky lg:top-10 ${m.id === 'ig' ? 'lg:order-1' : ''}`}
 						>
 							{(majorShots[m.id] ?? []).map((shot) => (
-								<div class="reveal rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
+								<div class="rounded-lg bg-panel p-[clamp(0.75rem,1.5vw,1.25rem)] shadow-frame">
 									<figure class="overflow-hidden rounded-md">
 										<a href={shot.src.src} class="glightbox block " data-gallery={m.name}>
 											<Image
@@ -308,7 +308,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 					<div class="md-prose text-[0.95rem]">
 						<iirc.Content />
 					</div>
-					<div class="reveal mt-6 rounded-md bg-panel p-[clamp(0.5rem,1vw,0.85rem)] shadow-frame">
+					<div class="mt-6 rounded-md bg-panel p-[clamp(0.5rem,1vw,0.85rem)] shadow-frame">
 						<figure class="overflow-hidden rounded">
 							<a href={iircShot.src} class="glightbox block" data-gallery="iirc">
 								<Image
@@ -386,16 +386,18 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 			class="mt-16 flex flex-wrap items-baseline justify-between gap-4 border-t border-line py-7 font-mono text-[0.8rem] text-ink-faint"
 		>
 			<span>dean kerr</span>
-			<nav class="flex gap-5" aria-label="Contact links">
+			<nav class="flex flex-wrap gap-x-5 gap-y-1" aria-label="Contact links">
 				<a class="no-underline hover:underline" href={contact.github} {...ext}>github</a>
 				<button
 					data-copy={contact.discord}
 					title="copy discord handle"
-					class="cursor-pointer no-underline hover:underline active:translate-y-px"
+					class="cursor-pointer whitespace-nowrap no-underline hover:underline active:translate-y-px"
 				>
 					discord · {contact.discord}
 				</button>
-				<a class="no-underline hover:underline" href={`mailto:${contact.email}`}>{contact.email}</a>
+				<a class="whitespace-nowrap no-underline hover:underline" href={`mailto:${contact.email}`}
+					>{contact.email}</a
+				>
 			</nav>
 		</footer>
 	</div>
@@ -473,7 +475,7 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 	.md-prose-panel {
 		--prose-body: rgba(242, 241, 232, 0.72);
 		--prose-strong: #f2f1e8;
-		--prose-label: rgba(242, 241, 232, 0.45);
+		--prose-label: rgba(242, 241, 232, 0.55);
 	}
 	.md-prose p {
 		max-width: 58ch;

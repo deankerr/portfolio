@@ -10,7 +10,8 @@
 	--surface: #f3f2ed;
 	--ink: #1c1b17;
 	--ink-soft: #52514a;
-	--ink-faint: #8b897e;
+	/* Faint text still gets read (dates, stack labels, footer) — keep it ≥4.5:1. */
+	--ink-faint: #6e6c63;
 	--line: rgba(28, 27, 23, 0.14);
 	--line-strong: rgba(28, 27, 23, 0.34);
 	--accent: #bf3b1b;
@@ -29,7 +30,7 @@
 	--surface: #131311;
 	--ink: #e9e7df;
 	--ink-soft: #a5a399;
-	--ink-faint: #6f6d63;
+	--ink-faint: #807e72;
 	--line: rgba(233, 231, 223, 0.13);
 	--line-strong: rgba(233, 231, 223, 0.3);
 	--accent: #ff6a3d;
