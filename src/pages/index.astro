@@ -23,6 +23,10 @@ import DurianDiagram from '../components/diagrams/Durian.astro';
 import OrbstackSandboxDiagram from '../components/diagrams/OrbstackSandbox.astro';
 import ArchiDiagram from '../components/diagrams/Archi.astro';
 
+// The hero borrows the same diagram language — an inference request in
+// flight — so the visual signature shows up before any scrolling.
+import HeroDiagram from '../components/diagrams/Hero.astro';
+
 // Contact — single lane, header and footer share it. The discord handle isn't
 // a URL; those render as copy-to-clipboard buttons instead of links.
 const contact = {
@@ -134,10 +138,11 @@ const stackLabel =
 const stackItemSm = 'text-[0.83rem] leading-[1.55] text-ink-soft';
 const stackNameSm = 'font-mono text-[0.76rem] font-semibold text-ink';
 
-// Screenshot rails stay sticky, but track the middle of the viewport rather
-// than the top — the leftover space splits evenly, so scrolling back up
-// doesn't leave the shots clinging to the top of the screen. The min() keeps
-// the offset sane once the container stops growing past 1400px.
+// ORCA's shot rail (the one remaining sticky rail — the majors pin their
+// copy instead) tracks the middle of the viewport rather than the top, so
+// scrolling back up doesn't leave the shots clinging to the top of the
+// screen. The min() keeps the offset sane once the container stops growing
+// past 1400px.
 const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 ---
 
@@ -167,7 +172,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 			</nav>
 		</header>
 
-		<!-- Hero — one claim, one compact proof list. -->
+		<!-- Hero — one claim, a short orientation, one compact proof list. -->
 		<section
 			id="top"
 			class="grid items-end gap-9 border-t border-line pt-9 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.36fr)]"
@@ -178,12 +183,22 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 				>
 					I build tooling for people who work directly with LLMs and inference.
 				</h1>
+				<p class="mt-6 max-w-[54ch] text-[1.02rem] leading-[1.6] text-ink-soft">
+					Everything below is built solo, in TypeScript — edge infrastructure, streaming runtimes,
+					protocol libraries, and the analysis tooling on top. It's one thread, running since 2024:
+					observing the model catalog, building a client runtime against it, and operating inference
+					in production.
+				</p>
 			</div>
-			<ul class="pb-1.5 font-mono text-[0.8rem] text-ink-soft" aria-label="Focus areas">
-				<li class="border-b border-line py-2.5">OpenRouter catalog analysis</li>
-				<li class="border-b border-line py-2.5">Inference runtime design</li>
-				<li class="border-b border-line py-2.5">Edge orchestration</li>
-			</ul>
+			<!-- Diagram is decorative; the location line beneath is the content. -->
+			<div class="mx-auto w-full max-w-[24rem] pb-1.5 lg:mx-0">
+				<div class="text-diagram" aria-hidden="true">
+					<HeroDiagram />
+				</div>
+				<p class="mt-5 border-t border-line pt-3 font-mono text-[0.8rem] text-ink-soft">
+					Melbourne, Australia · UTC+10
+				</p>
+			</div>
 		</section>
 
 		<!-- ORCA — the anchor, in its own dark panel. Copy owns the left lane;
@@ -222,8 +237,9 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 						</div>
 					</div>
 					{
-						/* Shots stick like the majors' do, so the catalog stays in view
-					    while the longer copy scrolls. */
+						/* Here the copy is the long side, so the shots stick and the
+					    stack is capped at a staged width; leftover lane space falls
+					    into the outer gutter. */
 					}
 					{
 						/* The plain wrapper is load-bearing: sticky grid items clamp to the
@@ -231,14 +247,16 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 					    down over the stack band. */
 					}
 					<div>
-						<div class={`grid content-start gap-4 lg:sticky ${railTop}`}>
+						<div
+							class={`mx-auto grid w-full max-w-[41rem] content-start gap-4 lg:mr-auto lg:ml-0 lg:sticky ${railTop}`}
+						>
 							<figure class="overflow-hidden rounded-md">
 								<a href={orcaShots.hero.src.src} class="glightbox block" data-gallery="orca">
 									<Image
 										src={orcaShots.hero.src}
 										alt={orcaShots.hero.alt}
 										widths={[640, 960, 1320, 1980]}
-										sizes="(min-width: 1024px) 48vw, 92vw"
+										sizes="(min-width: 1024px) min(41rem, 46vw), min(41rem, 92vw)"
 										quality={90}
 										class="w-full"
 									/>
@@ -253,7 +271,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 													src={shot.src}
 													alt={shot.alt}
 													widths={[432, 648, 864, 1280]}
-													sizes="(min-width: 1024px) 24vw, (min-width: 640px) 45vw, 92vw"
+													sizes="(min-width: 640px) 20rem, 92vw"
 													loading="lazy"
 													quality={90}
 													class="w-full"
@@ -292,40 +310,52 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 			</article>
 		</section>
 
-		<!-- The proof trail. The copy lane is fixed to the prose measure so the
-		     leftover space always lands in the gap; the shots absorb the rest
-		     and grow with the viewport instead of the dead zone. ig flips so
-		     the layout alternates. The horizontal padding matches the ORCA
-		     panel's interior, so every major sits in the same lanes without a
-		     visible box; the hairlines keep the full width. -->
+		<!-- The proof trail. The shots are staged, not fluid: every frame is
+		     capped at the same designed width, so leftover lane space lands in
+		     the outer gutter instead of stretching the image. The copy is the
+		     short side, so it pins and tracks the scroll while the taller shot
+		     stack streams past. Two columns only from xl, where the staged
+		     shots genuinely fit; below that the shots sit centered under the
+		     copy at the same cap. ig flips so the layout alternates. The
+		     horizontal padding matches the ORCA panel's interior, so every
+		     major sits in the same lanes without a visible box; the hairlines
+		     keep the full width. -->
 		<section aria-label="Selected work">
 			{
 				majors.map((m) => (
 					<article
 						class={`grid gap-x-11 gap-y-9 border-t border-line py-9 lg:px-[clamp(1.5rem,3vw,2.75rem)] ${
 							m.id === 'ig'
-								? 'lg:grid-cols-[minmax(0,1fr)_minmax(30rem,34rem)]'
-								: 'lg:grid-cols-[minmax(30rem,34rem)_minmax(0,1fr)]'
+								? 'xl:grid-cols-[minmax(0,1fr)_minmax(30rem,34rem)]'
+								: 'xl:grid-cols-[minmax(30rem,34rem)_minmax(0,1fr)]'
 						}`}
 					>
-						<div class={m.id === 'ig' ? 'lg:order-2' : ''}>
-							<h3 class="text-[clamp(2.1rem,3.4vw,3.25rem)] leading-[0.95] font-medium tracking-[-0.02em]">
-								{m.name}
-							</h3>
-							<p class="mt-2.5 text-[0.98rem] text-accent">{m.kicker}</p>
-							<p class="mt-1.5 font-mono text-[0.72rem] text-ink-faint">{m.date}</p>
-							<div class="md-prose mt-5">
-								<m.Content />
-							</div>
-							<a class="mt-6 inline-block font-mono text-[0.85rem]" href={m.repo} {...ext}>
-								github ↗
-							</a>
-						</div>
 						{/* The plain wrapper is load-bearing: sticky grid items clamp to
-						    the grid container, not their row, so without it the rail
+						    the grid container, not their row, so without it the copy
 						    slides down over the stack band. */}
-						<div class={m.id === 'ig' ? 'lg:order-1' : ''}>
-							<div class={`grid content-start gap-4 lg:sticky ${railTop}`}>
+						<div class={m.id === 'ig' ? 'xl:order-2' : ''}>
+							<div class="xl:sticky xl:top-10">
+								<h3 class="text-[clamp(2.1rem,3.4vw,3.25rem)] leading-[0.95] font-medium tracking-[-0.02em]">
+									{m.name}
+								</h3>
+								<p class="mt-2.5 text-[0.98rem] text-accent">{m.kicker}</p>
+								<p class="mt-1.5 font-mono text-[0.72rem] text-ink-faint">{m.date}</p>
+								<div class="md-prose mt-5">
+									<m.Content />
+								</div>
+								<a class="mt-6 inline-block font-mono text-[0.85rem]" href={m.repo} {...ext}>
+									github ↗
+								</a>
+							</div>
+						</div>
+						{/* The shot stack hugs the gap side of its lane at xl, so copy
+						    and shots read as one unit and the gutter falls outside. */}
+						<div class={m.id === 'ig' ? 'xl:order-1' : ''}>
+							<div
+								class={`mx-auto grid w-full max-w-[40rem] content-start gap-4 ${
+									m.id === 'ig' ? 'xl:mr-0' : 'xl:ml-0'
+								}`}
+							>
 								{(majorShots[m.id] ?? []).map((shot) => (
 									<div class="rounded-lg bg-panel p-[clamp(0.6rem,1.2vw,1rem)] shadow-frame">
 										<figure class="overflow-hidden rounded-md">
@@ -334,7 +364,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 													src={shot.src}
 													alt={shot.alt}
 													widths={[480, 720, 960, 1440]}
-													sizes="(min-width: 1024px) 46vw, 92vw"
+													sizes="min(40rem, 92vw)"
 													loading="lazy"
 													quality={90}
 													class="w-full"
@@ -348,7 +378,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 						{/* The stack spans both lanes as a footer band — full-bleed on
 						    purpose, so it reads as section furniture, not runaway prose.
 						    order-3 keeps it below the flipped ig columns. */}
-						<div class="mt-2 border-t border-line pt-5 lg:order-3 lg:col-span-2">
+						<div class="mt-2 border-t border-line pt-5 xl:order-3 xl:col-span-2">
 							<p class={stackLabel}>stack</p>
 							<ul class="mt-4 grid gap-x-9 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
 								{m.stack.map((t) => (
@@ -373,7 +403,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 			class="border-t border-line pt-9 pb-14 lg:px-[clamp(1.5rem,3vw,2.75rem)]"
 			aria-labelledby="iirc-title"
 		>
-			<div class="grid items-start gap-x-11 gap-y-10 md:grid-cols-2">
+			<div class="grid gap-x-11 gap-y-10 md:grid-cols-2">
 				{/* The app — flows straight from the section header, no repeated name. */}
 				<div>
 					<h3
@@ -400,14 +430,16 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 							}
 						</ul>
 					</div>
-					<div class="mt-6 rounded-md bg-panel p-[clamp(0.5rem,1vw,0.85rem)] shadow-frame">
+					<div
+						class="mt-6 max-w-[34rem] rounded-md bg-panel p-[clamp(0.5rem,1vw,0.85rem)] shadow-frame"
+					>
 						<figure class="overflow-hidden rounded">
 							<a href={iircShot.src} class="glightbox block" data-gallery="iirc">
 								<Image
 									src={iircShot}
 									alt={iircShotAlt}
 									widths={[480, 720, 1080, 1440]}
-									sizes="(min-width: 768px) 46vw, 92vw"
+									sizes="min(34rem, 92vw)"
 									loading="lazy"
 									quality={88}
 									class="w-full"
@@ -422,32 +454,41 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 
 				{
 					/* The library — a sub-project, so it's a named card set apart from the
-				    app's flowing column. */
+				    app's flowing column. The app column is always the longer side, so
+				    the card pins and tracks the scroll, same principle as the majors'
+				    copy. The plain wrapper is load-bearing: it stretches to the row so
+				    the sticky card has travel. */
 				}
-				<article class="rounded-lg border border-line bg-ink/[0.025] p-[clamp(1.1rem,2vw,1.6rem)]">
-					<h4 class="font-mono text-[1.1rem] font-bold break-words">{iircLib.name}</h4>
-					<p class="mt-2 text-[0.95rem] text-accent">{iircLib.kicker}</p>
-					<div class="md-prose mt-4 text-[0.95rem]">
-						<iircLib.Content />
-					</div>
-					<div class="mt-5">
-						<p class={stackLabel}>stack</p>
-						<ul class="mt-3 grid gap-2">
-							{
-								iircLib.stack.map((t) => (
-									<li class={stackItemSm}>
-										<strong class={stackNameSm}>{t.name}</strong>
-										{t.note && <>: {t.note}</>}
-									</li>
-								))
-							}
-						</ul>
-					</div>
-					<div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-[0.82rem]">
-						<a href={iircLib.live} {...ext}> npm ↗ </a>
-						<a href={iircLib.repo} {...ext}> github ↗ </a>
-					</div>
-				</article>
+				<div>
+					<article
+						class="rounded-lg border border-line bg-ink/[0.025] p-[clamp(1.1rem,2vw,1.6rem)] md:sticky md:top-10"
+					>
+						<h4 class="font-mono text-[1.1rem] font-bold break-words">{iircLib.name}</h4>
+						<p class="mt-2 text-[0.95rem] text-accent">{iircLib.kicker}</p>
+						<div class="md-prose mt-4 text-[0.95rem]">
+							<iircLib.Content />
+						</div>
+						<div class="mt-5">
+							<p class={stackLabel}>stack</p>
+							<ul class="mt-3 grid gap-2">
+								{
+									iircLib.stack.map((t) => (
+										<li class={stackItemSm}>
+											<strong class={stackNameSm}>{t.name}</strong>
+											{t.note && <>: {t.note}</>}
+										</li>
+									))
+								}
+							</ul>
+						</div>
+						<div
+							class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-[0.82rem]"
+						>
+							<a href={iircLib.live} {...ext}> npm ↗ </a>
+							<a href={iircLib.repo} {...ext}> github ↗ </a>
+						</div>
+					</article>
+				</div>
 			</div>
 		</section>
 
