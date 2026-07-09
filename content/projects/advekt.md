@@ -5,21 +5,11 @@ date: Feb 2026
 repo: https://github.com/deankerr/advekt
 ---
 
-Design knowledge is fragile: it lives in conversations that expire, documents that drift, and heads that forget.
+Design knowledge is fragile — it lives in conversations that expire and documents that drift, and when humans and AI collaborate the assumptions accumulate invisibly. advekt starts from one observation: correction is cheaper than generation, for both humans and AI. So instead of chasing consensus, a design grows through friction. It's a tree of typed claims — statements, and three kinds of challenge (contradiction, assumption, question) — that gets stronger by being agitated.
 
-When humans and AI collaborate on a design, decisions get re-explained, assumptions accumulate invisibly, and both sides lose track of what's settled versus what's open.
+Two adversarial roles constrain the tree: the Architect makes canonical statements and shapes it; the Challenger can only attach challenges, which are always leaves. The tree's shape becomes the signal — dense branches are settled, sparse ones need work, challenge-heavy ones are the frontier.
 
-advekt starts from the observation that correction is cheaper than generation — for both humans and AI — and builds a tool around that dynamic.
-
-Designs live as claim trees built from four typed nodes: statements, contradictions, assumptions, and questions.
-
-Two adversarial roles work the tree: the Architect grows and shapes it; the Challenger agitates, attaching challenges as leaf nodes that can't have children.
-
-The tree's shape becomes a signal: dense branches are settled, sparse ones need attention, challenge-heavy ones are the design frontier.
-
-One Bun process serves three surfaces from a single procedure layer: an MCP endpoint so agents can work the tree as tools, an oRPC API, and a React frontend.
-
-The graph is an in-memory Graphology structure, and persistence is event-sourced without ceremony: trees are JSON action logs replayed on startup to rebuild state.
+One Bun process serves three surfaces from a single oRPC procedure layer — an MCP endpoint so agents are first-class participants, an HTTP API, and a React UI. The graph is in-memory Graphology with the domain invariants wrapped around it; persistence is event-sourced without a database, each tree a JSON log of actions replayed on startup.
 
 ## Stack
 

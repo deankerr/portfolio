@@ -1,11 +1,5 @@
 # portfolio
 
-## Project Note
-
-Read the project note at the start of the session:
-
-tolaria: (Water) portfolio.md
-
 ## Development
 
 When starting the dev server, use background mode:

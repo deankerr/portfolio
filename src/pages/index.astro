@@ -13,6 +13,7 @@ import igFeedShot from '../assets/ig-image-feed.png';
 import igBatchShot from '../assets/ig-image-batch.png';
 import esuiteArtifactShot from '../assets/e-suite-artifact-chat.png';
 import esuiteGenShot from '../assets/e-suite-generations.png';
+import iircShot from '../assets/iirc.png';
 
 // The supporting cast has no screenshots — each gets a wireframe diagram
 // keyed to its core idea instead, drawn in currentColor + accent.
@@ -100,6 +101,13 @@ const majorShots: Record<string, { src: ImageMetadata; alt: string }[]> = {
 		},
 	],
 };
+
+// iirc — the app is the project (it owns the section header); iirc-lib is its
+// protocol library, presented as a sub-project alongside. iirc carries the shot.
+const iirc = await load('iirc');
+const iircLib = await load('iirc-lib');
+const iircShotAlt =
+	'iirc web client: a buffer sidebar beside two channel panels, a names list and a live #iirc-client conversation';
 
 // Texture, not co-equal — but the same two-paragraph treatment, no shots.
 const supporting = await Promise.all(
@@ -278,6 +286,64 @@ const headerLink = 'font-mono text-[0.84rem] lowercase no-underline hover:underl
 					</article>
 				))
 			}
+		</section>
+
+		<!-- iirc — the app is the project and owns the major header (matching the
+		     projects above). iirc-lib sits beside it as a sub-project: its own
+		     smaller card, so the hierarchy reads app-then-library, not two peers.
+		     The app carries the one screenshot; it's the weakest shot in the set,
+		     so it stays small and expands on click. -->
+		<section class="border-t border-line pt-9 pb-14" aria-labelledby="iirc-title">
+			<h3
+				id="iirc-title"
+				class="text-[clamp(2.6rem,4.5vw,4.5rem)] leading-[0.9] font-medium tracking-[-0.02em]"
+			>
+				iirc
+			</h3>
+			<p class="mt-3 text-[1.02rem] text-accent">{iirc.kicker}</p>
+
+			<div class="mt-8 grid items-start gap-x-11 gap-y-10 md:grid-cols-2">
+				{/* The app — flows straight from the section header, no repeated name. */}
+				<div>
+					<div class="md-prose text-[0.95rem]">
+						<iirc.Content />
+					</div>
+					<div class="reveal mt-6 rounded-md bg-panel p-[clamp(0.5rem,1vw,0.85rem)] shadow-frame">
+						<figure class="overflow-hidden rounded">
+							<a href={iircShot.src} class="glightbox block" data-gallery="iirc">
+								<Image
+									src={iircShot}
+									alt={iircShotAlt}
+									widths={[480, 720, 1080, 1440]}
+									sizes="(min-width: 768px) 46vw, 92vw"
+									loading="lazy"
+									quality={88}
+									class="w-full"
+								/>
+							</a>
+						</figure>
+					</div>
+					<a class="mt-6 inline-block font-mono text-[0.82rem]" href={iirc.repo} {...ext}>
+						github ↗
+					</a>
+				</div>
+
+				{
+					/* The library — a sub-project, so it's a named card set apart from the
+				    app's flowing column. */
+				}
+				<article class="rounded-lg border border-line bg-ink/[0.025] p-[clamp(1.1rem,2vw,1.6rem)]">
+					<h4 class="font-mono text-[1.1rem] font-bold break-words">{iircLib.name}</h4>
+					<p class="mt-2 text-[0.95rem] text-accent">{iircLib.kicker}</p>
+					<div class="md-prose mt-4 text-[0.95rem]">
+						<iircLib.Content />
+					</div>
+					<div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-[0.82rem]">
+						<a href={iircLib.live} {...ext}> npm ↗ </a>
+						<a href={iircLib.repo} {...ext}> github ↗ </a>
+					</div>
+				</article>
+			</div>
 		</section>
 
 		<!-- Other work — no shots, so the copy carries each entry alone. -->

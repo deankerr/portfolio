@@ -5,17 +5,13 @@ date: Oct 2024 – Mar 2025
 repo: https://github.com/deankerr/e-suite
 ---
 
-e-suite is the origin point: a multi-modal AI content platform built through late 2024, where the later projects' concerns (inference orchestration, artifact tracking, reusable run configuration) first took shape.
+The origin point. A multi-modal AI content platform from late 2024: threaded conversations where any message can trigger a generation run — text and speech through LLM and TTS providers, images through fal.ai — with outputs tracked, organised into collections, and produced through reusable patterns that parameterise a run. The concerns the later projects are built on — inference orchestration, artifact tracking, reusable run configuration — first took shape here.
 
-Conversations are threaded, and any message can trigger a generation run: text and speech through LLM and TTS providers, images through fal.ai. Outputs are tracked, organised into collections, and produced through reusable patterns that parameterise a run.
+The part that holds up best is an early, self-hosted take on LLM artifacts, begun November 2024, roughly five months after Anthropic popularised the concept — the renderer itself, not a consumer of someone else's API. When a model returns a fenced HTML, SVG, or Mermaid block, the UI can open it as a live artifact instead of printing the source.
 
-The backend is Convex-native throughout, with mutations, queries, actions, and crons, entities modelled as a graph of edges and indexes, and images in Convex file storage with blur placeholders.
+HTML renders in a sandboxed iframe — `allow-scripts` only, a CSP, no referrer — and errors thrown inside the frame are caught there and surfaced back to the host over postMessage. Extraction is automatic: any code block gets a save-as-artifact affordance, with the HTML `<title>` pulled out for naming.
 
-The part that holds up best is an early, self-hosted take on LLM artifacts, built about five months after Anthropic popularised the concept — the renderer itself, not a consumer of someone else's API.
-
-When a model returns a fenced HTML, SVG, or Mermaid block, the UI offers to open it as a live artifact instead of printing source.
-
-HTML renders in a sandboxed iframe with a CSP and script isolation.
+The backend is Convex-native throughout — mutations, queries, actions, crons — with entities modelled as a graph of edges and indexes, and images in Convex file storage with blur placeholders. It's parked now, frozen part-way through a UI migration; what it proves is where the ideas started, not current polish.
 
 ## Stack
 
