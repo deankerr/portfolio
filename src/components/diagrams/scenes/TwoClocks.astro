@@ -1,0 +1,140 @@
+---
+// two clocks — the same session on two devices. Each takes an edit the other
+// hasn't seen; the sync arcs carry them across, and both sides converge on
+// identical state. Nobody wins, nothing is lost — the merge is the feature.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- the two devices -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.75">
+		<rect x="30" y="40" width="76" height="64" rx="4"></rect>
+		<rect x="128" y="40" width="76" height="64" rx="4"></rect>
+	</g>
+
+	<!-- shared rows, present on both -->
+	<g fill="currentColor" opacity="0.25">
+		<rect x="42" y="50" width="52" height="6" rx="1.5"></rect>
+		<rect x="42" y="78" width="52" height="6" rx="1.5"></rect>
+		<rect x="140" y="50" width="52" height="6" rx="1.5"></rect>
+		<rect x="140" y="78" width="52" height="6" rx="1.5"></rect>
+	</g>
+
+	<!-- local edits: one on each device, each missing from the other -->
+	<rect class="edit-l" x="42" y="64" width="34" height="6" rx="1.5" fill="var(--accent)" opacity="0"></rect>
+	<rect class="edit-r" x="140" y="92" width="42" height="6" rx="1.5" fill="var(--accent)" opacity="0"></rect>
+
+	<!-- the synced copies, arriving after the arcs -->
+	<rect class="sync-r" x="140" y="64" width="34" height="6" rx="1.5" fill="var(--accent)" opacity="0"></rect>
+	<rect class="sync-l" x="42" y="92" width="42" height="6" rx="1.5" fill="var(--accent)" opacity="0"></rect>
+
+	<!-- sync arcs, one each way -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.3">
+		<path d="M 108 52 C 114 46 120 46 126 52"></path>
+		<path d="M 126 92 C 120 98 114 98 108 92"></path>
+	</g>
+	<circle class="fly to-r" r="2.5" fill="var(--accent)" opacity="0"></circle>
+	<circle class="fly to-l" r="2.5" fill="var(--accent)" opacity="0"></circle>
+</svg>
+
+<style>
+	.to-r {
+		offset-path: path('M 108 52 C 114 46 120 46 126 52');
+	}
+	.to-l {
+		offset-path: path('M 126 92 C 120 98 114 98 108 92');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: devices with shared rows only.
+	   8s cycle: edits land apart → arcs carry both ways → identical state. */
+	@media (prefers-reduced-motion: no-preference) {
+		.edit-l {
+			animation: tc-edit-l 8s linear infinite;
+		}
+		.edit-r {
+			animation: tc-edit-r 8s linear infinite;
+		}
+		.fly {
+			animation: tc-fly 8s linear infinite;
+		}
+		.to-l {
+			animation-delay: 0.4s;
+		}
+		.sync-r {
+			animation: tc-sync 8s linear infinite;
+		}
+		.sync-l {
+			animation: tc-sync 8s linear infinite;
+			animation-delay: 0.4s;
+		}
+
+		@keyframes tc-edit-l {
+			0%,
+			8% {
+				opacity: 0;
+			}
+			11%,
+			90% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tc-edit-r {
+			0%,
+			16% {
+				opacity: 0;
+			}
+			19%,
+			90% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tc-fly {
+			0%,
+			34% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			38% {
+				opacity: 1;
+			}
+			48% {
+				offset-distance: 100%;
+				opacity: 1;
+			}
+			52%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes tc-sync {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			52%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

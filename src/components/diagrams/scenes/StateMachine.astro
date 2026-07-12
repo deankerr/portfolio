@@ -1,0 +1,170 @@
+---
+// state machine — legal edges only. The token walks the lifecycle along real
+// transitions, each edge lighting as it's taken. Then it tries a transition
+// that doesn't exist: refused mid-path, bounced back to where it was.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- transitions -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.35">
+		<path d="M 40 72 C 62 72 72 48 106 46"></path>
+		<path d="M 40 72 C 62 72 72 96 106 98"></path>
+		<path d="M 114 46 C 148 48 168 60 186 68"></path>
+		<path d="M 114 98 C 148 96 168 84 186 76"></path>
+	</g>
+	<!-- the transition that doesn't exist -->
+	<line x1="184" y1="72" x2="46" y2="72" stroke="currentColor" stroke-width="1" stroke-dasharray="1 4" opacity="0.15"
+	></line>
+
+	<!-- taken-edge highlights -->
+	<path class="taken e1" d="M 40 72 C 62 72 72 48 106 46" stroke="var(--accent)" stroke-width="1.25" opacity="0"
+	></path>
+	<path class="taken e2" d="M 114 46 C 148 48 168 60 186 68" stroke="var(--accent)" stroke-width="1.25" opacity="0"
+	></path>
+
+	<!-- states -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="110" cy="46" r="4.5"></circle>
+		<circle cx="110" cy="98" r="4.5"></circle>
+		<circle cx="190" cy="72" r="4.5"></circle>
+	</g>
+	<circle cx="36" cy="72" r="4.5" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"></circle>
+
+	<!-- the refusal -->
+	<g class="refuse" stroke="var(--accent)" stroke-width="1.5" opacity="0">
+		<line x1="136" y1="67" x2="146" y2="77"></line>
+		<line x1="146" y1="67" x2="136" y2="77"></line>
+	</g>
+
+	<!-- the token: the legal walk, then the bounced attempt -->
+	<circle class="walk" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle class="bounce" r="2.75" fill="var(--accent)" opacity="0"></circle>
+</svg>
+
+<style>
+	.walk {
+		offset-path: path('M 40 72 C 62 72 72 48 106 46 L 114 46 C 148 48 168 60 186 68');
+	}
+	.bounce {
+		offset-path: path('M 186 72 L 146 72');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the machine at rest.
+	   8s cycle: walk with a pause at the middle state, then the refusal. */
+	@media (prefers-reduced-motion: no-preference) {
+		.walk {
+			animation: sm-walk 8s linear infinite;
+		}
+		.bounce {
+			animation: sm-bounce 8s linear infinite;
+		}
+		.e1 {
+			animation: sm-e1 8s linear infinite;
+		}
+		.e2 {
+			animation: sm-e2 8s linear infinite;
+		}
+		.refuse {
+			animation: sm-refuse 8s linear infinite;
+		}
+
+		@keyframes sm-walk {
+			0%,
+			4% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			7% {
+				opacity: 1;
+			}
+			/* pause on the middle state */
+			20%,
+			28% {
+				offset-distance: 48%;
+			}
+			40% {
+				offset-distance: 100%;
+				opacity: 1;
+			}
+			44%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		/* the illegal attempt: out, refused, straight back */
+		@keyframes sm-bounce {
+			0%,
+			52% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			55% {
+				opacity: 1;
+			}
+			62%,
+			66% {
+				offset-distance: 100%;
+			}
+			74% {
+				offset-distance: 0%;
+				opacity: 1;
+			}
+			78%,
+			100% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+		}
+		@keyframes sm-e1 {
+			0%,
+			8% {
+				opacity: 0;
+			}
+			20%,
+			86% {
+				opacity: 0.6;
+			}
+			93%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes sm-e2 {
+			0%,
+			28% {
+				opacity: 0;
+			}
+			40%,
+			86% {
+				opacity: 0.6;
+			}
+			93%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes sm-refuse {
+			0%,
+			61% {
+				opacity: 0;
+			}
+			64%,
+			72% {
+				opacity: 1;
+			}
+			78%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

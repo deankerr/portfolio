@@ -1,0 +1,194 @@
+---
+// crdt merge — convergence. Two replicas fork from shared state and take ops
+// independently (ticks on each lane), then tokens carry both histories to the
+// join, where they interleave into one identical sequence. No winner, no loss.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- lanes: fork, then rejoin -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.4">
+		<path d="M 18 72 C 32 72 36 50 58 50 L 128 50 C 150 50 154 72 168 72"></path>
+		<path d="M 18 72 C 32 72 36 94 58 94 L 128 94 C 150 94 154 72 168 72"></path>
+	</g>
+	<line x1="168" y1="72" x2="222" y2="72" stroke="currentColor" stroke-width="1.25" opacity="0.45"
+	></line>
+	<circle cx="18" cy="72" r="2.5" stroke="currentColor" stroke-width="1" fill="var(--surface)" opacity="0.7"
+	></circle>
+	<circle cx="168" cy="72" r="4" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
+	></circle>
+
+	<!-- ops land on each replica independently -->
+	<g stroke="var(--accent)" stroke-width="1.5">
+		<line class="op o1" x1="70" y1="46" x2="70" y2="54" opacity="0"></line>
+		<line class="op o2" x1="92" y1="46" x2="92" y2="54" opacity="0"></line>
+		<line class="op o3" x1="114" y1="46" x2="114" y2="54" opacity="0"></line>
+	</g>
+	<g stroke="currentColor" stroke-width="1.5" opacity="0.75">
+		<line class="op o1" x1="78" y1="90" x2="78" y2="98" opacity="0"></line>
+		<line class="op o2" x1="100" y1="90" x2="100" y2="98" opacity="0"></line>
+		<line class="op o3" x1="122" y1="90" x2="122" y2="98" opacity="0"></line>
+	</g>
+
+	<!-- both histories travel to the join -->
+	<circle class="carry top" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle class="carry bot" r="2.75" fill="currentColor" opacity="0"></circle>
+
+	<!-- the merged, interleaved sequence -->
+	<g stroke-width="1.5">
+		<line class="mg m1" x1="180" y1="67" x2="180" y2="77" stroke="var(--accent)" opacity="0"></line>
+		<line class="mg m1" x1="187" y1="67" x2="187" y2="77" stroke="currentColor" opacity="0"></line>
+		<line class="mg m2" x1="194" y1="67" x2="194" y2="77" stroke="var(--accent)" opacity="0"></line>
+		<line class="mg m2" x1="201" y1="67" x2="201" y2="77" stroke="currentColor" opacity="0"></line>
+		<line class="mg m3" x1="208" y1="67" x2="208" y2="77" stroke="var(--accent)" opacity="0"></line>
+		<line class="mg m3" x1="215" y1="67" x2="215" y2="77" stroke="currentColor" opacity="0"></line>
+	</g>
+</svg>
+
+<style>
+	.top {
+		offset-path: path('M 18 72 C 32 72 36 50 58 50 L 128 50 C 150 50 154 72 168 72');
+	}
+	.bot {
+		offset-path: path('M 18 72 C 32 72 36 94 58 94 L 128 94 C 150 94 154 72 168 72');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the forked lanes at rest.
+	   One 8s cycle: ops land → tokens carry → merged sequence → clear. */
+	@media (prefers-reduced-motion: no-preference) {
+		.o1 {
+			animation: cv-o1 8s linear infinite;
+		}
+		.o2 {
+			animation: cv-o2 8s linear infinite;
+		}
+		.o3 {
+			animation: cv-o3 8s linear infinite;
+		}
+		.carry {
+			animation: cv-carry 8s linear infinite;
+		}
+		.bot {
+			animation-delay: 0.25s;
+		}
+		.m1 {
+			animation: cv-m1 8s linear infinite;
+		}
+		.m2 {
+			animation: cv-m2 8s linear infinite;
+		}
+		.m3 {
+			animation: cv-m3 8s linear infinite;
+		}
+
+		@keyframes cv-o1 {
+			0%,
+			4% {
+				opacity: 0;
+			}
+			7%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cv-o2 {
+			0%,
+			12% {
+				opacity: 0;
+			}
+			15%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cv-o3 {
+			0%,
+			20% {
+				opacity: 0;
+			}
+			23%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cv-carry {
+			0%,
+			30% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			33% {
+				opacity: 1;
+			}
+			50% {
+				opacity: 1;
+			}
+			53%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes cv-m1 {
+			0%,
+			55% {
+				opacity: 0;
+			}
+			58%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cv-m2 {
+			0%,
+			62% {
+				opacity: 0;
+			}
+			65%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cv-m3 {
+			0%,
+			69% {
+				opacity: 0;
+			}
+			72%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

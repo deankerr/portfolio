@@ -9,7 +9,7 @@
 ---
 
 <svg
-	viewBox="0 0 280 212"
+	viewBox="23 34 234 168"
 	fill="none"
 	stroke-linecap="round"
 	stroke-linejoin="round"
@@ -222,29 +222,25 @@
 	/* Static fallback = scene 1's matrix and the first tick; everything else
 	   holds its markup opacity, so reduced motion sees one quiet diagram. */
 	@media (prefers-reduced-motion: no-preference) {
-		.scene {
-			animation: 18s linear infinite;
-		}
+		/* Full shorthand per class, name included — a nameless `animation: 18s …`
+		   base rule gets minified to `animation: none`, silently killing the reel. */
 		.s1 {
-			animation-name: hero-s1;
+			animation: hero-s1 18s linear infinite;
 		}
 		.s2 {
-			animation-name: hero-s2;
+			animation: hero-s2 18s linear infinite;
 		}
 		.s3 {
-			animation-name: hero-s3;
-		}
-		.tick {
-			animation: 18s linear infinite;
+			animation: hero-s3 18s linear infinite;
 		}
 		.tk1 {
-			animation-name: hero-tk1;
+			animation: hero-tk1 18s linear infinite;
 		}
 		.tk2 {
-			animation-name: hero-tk2;
+			animation: hero-tk2 18s linear infinite;
 		}
 		.tk3 {
-			animation-name: hero-tk3;
+			animation: hero-tk3 18s linear infinite;
 		}
 		.sweep {
 			animation: hero-sweep 18s linear infinite;

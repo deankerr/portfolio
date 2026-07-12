@@ -1,0 +1,152 @@
+---
+// dependency extract — the files were always there; the structure wasn't
+// visible. A compiler pass sweeps the project and the import edges draw
+// themselves in behind it, resolving a scatter of modules into a graph.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- import edges, drawn on in waves behind the pass -->
+	<g stroke="currentColor" stroke-width="1" opacity="0.4" stroke-linecap="butt">
+		<g class="wave w1">
+			<line x1="47" y1="50" x2="97" y2="42" pathLength="1"></line>
+			<line x1="44" y1="56" x2="80" y2="94" pathLength="1"></line>
+		</g>
+		<g class="wave w2">
+			<line x1="107" y1="46" x2="146" y2="76" pathLength="1"></line>
+			<line x1="90" y1="100" x2="143" y2="83" pathLength="1"></line>
+		</g>
+		<g class="wave w3">
+			<line x1="156" y1="76" x2="186" y2="52" pathLength="1"></line>
+			<line x1="157" y1="84" x2="176" y2="110" pathLength="1"></line>
+			<line x1="110" y1="42" x2="184" y2="47" pathLength="1"></line>
+		</g>
+	</g>
+
+	<!-- the modules -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.75">
+		<rect x="90" y="35" width="14" height="11" rx="2"></rect>
+		<rect x="76" y="94" width="14" height="11" rx="2"></rect>
+		<rect x="146" y="72" width="14" height="11" rx="2"></rect>
+		<rect x="183" y="42" width="14" height="11" rx="2"></rect>
+		<rect x="173" y="110" width="14" height="11" rx="2"></rect>
+	</g>
+	<!-- the entry point -->
+	<rect x="33" y="44" width="14" height="11" rx="2" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
+	></rect>
+
+	<!-- the pass -->
+	<line
+		class="pass"
+		x1="28"
+		y1="28"
+		x2="28"
+		y2="130"
+		stroke="currentColor"
+		stroke-width="1"
+		stroke-dasharray="3 3"
+		opacity="0"></line>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the graph fully drawn. */
+	.wave line {
+		stroke-dasharray: 1;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.pass {
+			animation: de-pass 9s linear infinite;
+		}
+		.w1 line {
+			animation: de-w1 9s linear infinite;
+		}
+		.w2 line {
+			animation: de-w2 9s linear infinite;
+		}
+		.w3 line {
+			animation: de-w3 9s linear infinite;
+		}
+
+		@keyframes de-pass {
+			0% {
+				transform: translateX(0);
+				opacity: 0;
+			}
+			4% {
+				opacity: 0.5;
+			}
+			42% {
+				opacity: 0.5;
+			}
+			46%,
+			100% {
+				transform: translateX(180px);
+				opacity: 0;
+			}
+		}
+		@keyframes de-w1 {
+			0%,
+			8% {
+				stroke-dashoffset: 1;
+				opacity: 0.4;
+			}
+			18% {
+				stroke-dashoffset: 0;
+			}
+			88% {
+				stroke-dashoffset: 0;
+				opacity: 0.4;
+			}
+			95%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes de-w2 {
+			0%,
+			20% {
+				stroke-dashoffset: 1;
+				opacity: 0.4;
+			}
+			30% {
+				stroke-dashoffset: 0;
+			}
+			88% {
+				stroke-dashoffset: 0;
+				opacity: 0.4;
+			}
+			95%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes de-w3 {
+			0%,
+			32% {
+				stroke-dashoffset: 1;
+				opacity: 0.4;
+			}
+			42% {
+				stroke-dashoffset: 0;
+			}
+			88% {
+				stroke-dashoffset: 0;
+				opacity: 0.4;
+			}
+			95%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+	}
+</style>

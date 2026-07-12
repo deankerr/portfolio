@@ -147,10 +147,16 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 ---
 
 <Layout>
-	<div class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)]">
+	<!-- temp svg border -->
+	<div
+		class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)] [&_svg]:border [&_svg]:border-dashed"
+	>
 		<!-- Header — quiet; the work should be the loudest thing on the page. -->
 		<header class="flex items-center justify-between gap-6 py-5">
-			<a class="font-semibold whitespace-nowrap lowercase no-underline" href="#top">dean kerr</a>
+			<div class="flex items-baseline gap-3.5">
+				<a class="font-semibold whitespace-nowrap lowercase no-underline" href="#top">dean kerr</a>
+				<span class="font-mono text-[0.78rem] whitespace-nowrap text-ink-faint">melbourne, au</span>
+			</div>
 			<nav class="flex items-center gap-4 sm:gap-5" aria-label="Contact links">
 				<a class={headerLink} href={contact.github} {...ext}>github</a>
 				<button
@@ -190,14 +196,9 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 					in production.
 				</p>
 			</div>
-			<!-- Diagram is decorative; the location line beneath is the content. -->
-			<div class="mx-auto w-full max-w-[24rem] pb-1.5 lg:mx-0">
-				<div class="text-diagram" aria-hidden="true">
-					<HeroDiagram />
-				</div>
-				<p class="mt-5 border-t border-line pt-3 font-mono text-[0.8rem] text-ink-soft">
-					Melbourne, Australia · UTC+10
-				</p>
+			<!-- Diagram is decorative — the visual signature, nothing more. -->
+			<div class="mx-auto w-full max-w-[24rem] text-diagram lg:mx-0" aria-hidden="true">
+				<HeroDiagram />
 			</div>
 		</section>
 

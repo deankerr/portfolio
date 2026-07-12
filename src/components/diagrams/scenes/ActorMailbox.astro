@@ -1,0 +1,214 @@
+---
+// actor mailbox — serial processing. Messages arrive on three channels
+// concurrently, but each actor consumes strictly one at a time: the middle
+// lane's second message waits at the queue mark until the first is done.
+// Isolation is the actor, not a row or a job.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- channels -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.3">
+		<line x1="16" y1="42" x2="184" y2="42"></line>
+		<line x1="16" y1="78" x2="184" y2="78"></line>
+		<line x1="16" y1="114" x2="184" y2="114"></line>
+	</g>
+	<!-- queue mark on the busy lane -->
+	<line x1="148" y1="73" x2="148" y2="83" stroke="currentColor" stroke-width="1" opacity="0.35"></line>
+
+	<!-- actors -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="196" cy="42" r="5"></circle>
+		<circle cx="196" cy="78" r="5"></circle>
+		<circle cx="196" cy="114" r="5"></circle>
+	</g>
+	<!-- processing rings — lit only while consuming -->
+	<g stroke="var(--accent)" stroke-width="1" fill="none">
+		<circle class="busy pa" cx="196" cy="42" r="8" opacity="0"></circle>
+		<circle class="busy pb" cx="196" cy="78" r="8" opacity="0"></circle>
+		<circle class="busy pc" cx="196" cy="114" r="8" opacity="0"></circle>
+	</g>
+
+	<!-- messages -->
+	<circle class="msg ma" r="2.75" fill="currentColor" opacity="0"></circle>
+	<circle class="msg mb1" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle class="msg mb2" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle class="msg mc" r="2.75" fill="currentColor" opacity="0"></circle>
+</svg>
+
+<style>
+	.ma {
+		offset-path: path('M 16 42 L 189 42');
+	}
+	.mb1,
+	.mb2 {
+		offset-path: path('M 16 78 L 189 78');
+	}
+	.mc {
+		offset-path: path('M 16 114 L 189 114');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: channels and actors at rest.
+	   7s cycle. On the middle lane, mb2 tails mb1, holds at the queue mark
+	   (~76% of the path) while mb1 is consumed, then enters. */
+	@media (prefers-reduced-motion: no-preference) {
+		.ma {
+			animation: am-ma 7s linear infinite;
+		}
+		.mb1 {
+			animation: am-mb1 7s linear infinite;
+		}
+		.mb2 {
+			animation: am-mb2 7s linear infinite;
+		}
+		.mc {
+			animation: am-mc 7s linear infinite;
+		}
+		.pa {
+			animation: am-pa 7s linear infinite;
+		}
+		.pb {
+			animation: am-pb 7s linear infinite;
+		}
+		.pc {
+			animation: am-pc 7s linear infinite;
+		}
+
+		@keyframes am-ma {
+			0%,
+			8% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			11% {
+				opacity: 0.7;
+			}
+			33% {
+				opacity: 0.7;
+			}
+			36%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes am-mb1 {
+			0%,
+			2% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			5% {
+				opacity: 1;
+			}
+			27% {
+				opacity: 1;
+			}
+			30%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		/* Tails mb1, parks at the queue mark while the actor is busy, then enters. */
+		@keyframes am-mb2 {
+			0%,
+			12% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			15% {
+				opacity: 1;
+			}
+			30%,
+			55% {
+				offset-distance: 76%;
+				opacity: 1;
+			}
+			66% {
+				opacity: 1;
+			}
+			69%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes am-mc {
+			0%,
+			20% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			23% {
+				opacity: 0.7;
+			}
+			45% {
+				opacity: 0.7;
+			}
+			48%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		/* Rings hold while consuming — actor B lights twice, back to back. */
+		@keyframes am-pa {
+			0%,
+			36% {
+				opacity: 0;
+			}
+			39%,
+			55% {
+				opacity: 0.8;
+			}
+			60%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes am-pb {
+			0%,
+			30% {
+				opacity: 0;
+			}
+			33%,
+			52% {
+				opacity: 0.8;
+			}
+			57%,
+			66% {
+				opacity: 0;
+			}
+			69%,
+			86% {
+				opacity: 0.8;
+			}
+			91%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes am-pc {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			51%,
+			67% {
+				opacity: 0.8;
+			}
+			72%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,135 @@
+---
+// scanner study F · calipers — minimal ink: a pair of crop-mark ticks glide
+// across and dwell on each find before moving on. The pauses do the work;
+// the instrument only marks what it actually inspects.
+import MatrixField from './MatrixField.astro';
+---
+
+<svg
+	viewBox="23 34 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<MatrixField />
+
+	<!-- only the inspected cells mark -->
+	<g fill="var(--accent)">
+		<rect class="find f1" x="79" y="68" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="find f2" x="145" y="46" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="find f3" x="233" y="90" width="7" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+
+	<g class="sweep" stroke="currentColor" stroke-width="1.25" opacity="0">
+		<line x1="28" y1="36" x2="28" y2="44"></line>
+		<line x1="28" y1="160" x2="28" y2="168"></line>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. The pan is piecewise: glide, dwell on a find,
+	   glide on — three dwells over the 8s loop, eased between stops. */
+	@media (prefers-reduced-motion: no-preference) {
+		.sweep {
+			animation: scl-pan 8s linear infinite;
+		}
+		.f1 {
+			animation: scl-f1 8s linear infinite;
+		}
+		.f2 {
+			animation: scl-f2 8s linear infinite;
+		}
+		.f3 {
+			animation: scl-f3 8s linear infinite;
+		}
+
+		@keyframes scl-pan {
+			0% {
+				transform: translateX(0);
+				opacity: 0;
+				animation-timing-function: ease-in-out;
+			}
+			4% {
+				opacity: 0.7;
+			}
+			14% {
+				transform: translateX(54.5px);
+				animation-timing-function: linear;
+			}
+			22% {
+				transform: translateX(54.5px);
+				animation-timing-function: ease-in-out;
+			}
+			34% {
+				transform: translateX(120.5px);
+				animation-timing-function: linear;
+			}
+			42% {
+				transform: translateX(120.5px);
+				animation-timing-function: ease-in-out;
+			}
+			56% {
+				transform: translateX(208.5px);
+				animation-timing-function: linear;
+			}
+			64% {
+				transform: translateX(208.5px);
+				opacity: 0.7;
+				animation-timing-function: ease-in-out;
+			}
+			70% {
+				transform: translateX(216px);
+				opacity: 0;
+			}
+			100% {
+				transform: translateX(216px);
+				opacity: 0;
+			}
+		}
+		@keyframes scl-f1 {
+			0%,
+			15% {
+				opacity: 0;
+			}
+			19%,
+			80% {
+				opacity: 1;
+			}
+			90%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes scl-f2 {
+			0%,
+			35% {
+				opacity: 0;
+			}
+			39%,
+			80% {
+				opacity: 1;
+			}
+			90%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes scl-f3 {
+			0%,
+			57% {
+				opacity: 0;
+			}
+			61%,
+			80% {
+				opacity: 1;
+			}
+			90%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

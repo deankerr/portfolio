@@ -1,0 +1,119 @@
+---
+// broadcast sync — one write, every surface. A write lands at the store and
+// ripples outward as a wavefront; each receiver's state cell flips as the
+// front passes, near-simultaneously. BroadcastChannel / reactive fan-out.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- faint reach lines -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.25">
+		<line x1="62" y1="72" x2="168" y2="40"></line>
+		<line x1="62" y1="72" x2="184" y2="72"></line>
+		<line x1="62" y1="72" x2="168" y2="104"></line>
+	</g>
+
+	<!-- the store -->
+	<circle cx="62" cy="72" r="5" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"></circle>
+	<circle cx="62" cy="72" r="2" fill="var(--accent)"></circle>
+
+	<!-- the wavefront -->
+	<circle
+		class="wave"
+		cx="62"
+		cy="72"
+		r="10"
+		stroke="var(--accent)"
+		stroke-width="1"
+		vector-effect="non-scaling-stroke"
+		opacity="0"></circle>
+
+	<!-- receivers, each with a state cell -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.6">
+		<circle cx="172" cy="40" r="4"></circle>
+		<circle cx="188" cy="72" r="4"></circle>
+		<circle cx="172" cy="104" r="4"></circle>
+	</g>
+	<g fill="currentColor">
+		<rect x="182" y="35" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+		<rect x="198" y="67" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+		<rect x="182" y="99" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+	</g>
+	<g fill="var(--accent)">
+		<rect class="flip near" x="182" y="35" width="9" height="9" rx="1.5" opacity="0"></rect>
+		<rect class="flip far" x="198" y="67" width="9" height="9" rx="1.5" opacity="0"></rect>
+		<rect class="flip near" x="182" y="99" width="9" height="9" rx="1.5" opacity="0"></rect>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: store and receivers at rest.
+	   4.5s cycle: the front expands, cells flip as it reaches them. */
+	@media (prefers-reduced-motion: no-preference) {
+		.wave {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: bs-wave 4.5s linear infinite;
+		}
+		.flip.near {
+			animation: bs-near 4.5s linear infinite;
+		}
+		.flip.far {
+			animation: bs-far 4.5s linear infinite;
+		}
+
+		@keyframes bs-wave {
+			0% {
+				transform: scale(0.3);
+				opacity: 0;
+			}
+			8% {
+				opacity: 0.6;
+			}
+			60% {
+				opacity: 0.45;
+			}
+			78%,
+			100% {
+				transform: scale(13);
+				opacity: 0;
+			}
+		}
+		/* Flip as the front passes: the nearer pair first, the far cell a beat later. */
+		@keyframes bs-near {
+			0%,
+			58% {
+				opacity: 0;
+			}
+			62%,
+			84% {
+				opacity: 1;
+			}
+			92%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes bs-far {
+			0%,
+			64% {
+				opacity: 0;
+			}
+			68%,
+			84% {
+				opacity: 1;
+			}
+			92%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

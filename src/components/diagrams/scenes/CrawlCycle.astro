@@ -1,0 +1,144 @@
+---
+// crawl cycle — polling as an orbit. A crawler circles the source on its
+// schedule; each completed pass sends a pulse across and deposits one more
+// stratum onto the snapshot stack. History accumulates; the orbit never stops.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- the source and the crawler's orbit -->
+	<circle cx="68" cy="72" r="30" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.35"
+	></circle>
+	<circle cx="68" cy="72" r="4" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
+	></circle>
+	<g class="orbit">
+		<circle cx="98" cy="72" r="2.75" fill="var(--accent)"></circle>
+	</g>
+
+	<!-- each pass hands off -->
+	<line x1="104" y1="72" x2="136" y2="72" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.3"
+	></line>
+	<circle class="handoff" r="2.25" fill="var(--accent)" opacity="0"></circle>
+
+	<!-- the snapshot stack, newest on top -->
+	<g fill="currentColor">
+		<rect class="stratum s-1" x="140" y="112" width="70" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect class="stratum s-2" x="140" y="100" width="70" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="stratum s-3" x="140" y="88" width="70" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="stratum s-4" x="140" y="76" width="70" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+</svg>
+
+<style>
+	.handoff {
+		offset-path: path('M 104 72 L 136 72');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: orbit + one stratum, at rest.
+	   Loop = 4 orbits of 3.5s; a stratum lands as each orbit completes. */
+	@media (prefers-reduced-motion: no-preference) {
+		.orbit {
+			transform-box: view-box;
+			transform-origin: 68px 72px;
+			animation: cc-orbit 3.5s linear infinite;
+		}
+		.handoff {
+			animation: cc-handoff 3.5s linear infinite;
+		}
+		.s-1 {
+			animation: cc-s1 14s linear infinite;
+		}
+		.s-2 {
+			animation: cc-s2 14s linear infinite;
+		}
+		.s-3 {
+			animation: cc-s3 14s linear infinite;
+		}
+		.s-4 {
+			animation: cc-s4 14s linear infinite;
+		}
+
+		@keyframes cc-orbit {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+		/* Fires as the crawler passes the handoff point (start of each orbit). */
+		@keyframes cc-handoff {
+			0% {
+				offset-distance: 0%;
+				opacity: 0.9;
+			}
+			12% {
+				offset-distance: 100%;
+				opacity: 0.9;
+			}
+			13%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		/* Strata pop on each orbit boundary and reset together — distinct
+		   keyframes, not delays, so the whole stack fades as one. */
+		@keyframes cc-s1 {
+			0%,
+			94% {
+				opacity: 0.4;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cc-s2 {
+			0%,
+			27% {
+				opacity: 0;
+			}
+			29%,
+			94% {
+				opacity: 0.35;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cc-s3 {
+			0%,
+			52% {
+				opacity: 0;
+			}
+			54%,
+			94% {
+				opacity: 0.3;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes cc-s4 {
+			0%,
+			77% {
+				opacity: 0;
+			}
+			79%,
+			94% {
+				opacity: 0.45;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

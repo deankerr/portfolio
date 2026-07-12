@@ -1,76 +1,335 @@
 ---
-// advekt — a claim tree. Dense left branch reads as settled; the sparse right
-// branch carries accent challenge diamonds (the design frontier). One dashed
-// node is an assumption. Decorative: inherits currentColor, accent for
-// challenges only.
+// advekt — a claim tree that grows by being agitated. Top-down, two branches:
+// the dense left one reads as settled (one dashed node is an assumption —
+// present, unproven); the sparse right one is the frontier, where accent
+// challenge diamonds attach — always as leaves — and pulse for a response.
+// Standard canvas (see scenes/STANDARDS.md): 240×144, 12-grid, 9s master
+// loop with a 3s challenge pulse nested inside it.
 ---
 
 <svg
-	viewBox="0 0 280 210"
+	viewBox="0 0 240 144"
 	fill="none"
-	stroke-linecap="round"
 	stroke-linejoin="round"
 	aria-hidden="true"
 	class="w-full"
 >
-	<!-- Edges first so node fills cover the joins. -->
-	<g stroke="currentColor" stroke-width="1" opacity="0.5">
-		<line x1="140" y1="26" x2="76" y2="74"></line>
-		<line x1="140" y1="26" x2="140" y2="78"></line>
-		<line x1="140" y1="26" x2="206" y2="66"></line>
-		<line x1="76" y1="74" x2="40" y2="126"></line>
-		<line x1="76" y1="74" x2="78" y2="130"></line>
-		<line x1="76" y1="74" x2="114" y2="124"></line>
-		<line x1="78" y1="130" x2="60" y2="176"></line>
-		<line x1="78" y1="130" x2="96" y2="178"></line>
-		<line x1="140" y1="78" x2="140" y2="134"></line>
-		<line x1="206" y1="66" x2="226" y2="118"></line>
-		<line x1="206" y1="66" x2="180" y2="108"></line>
-		<line x1="226" y1="118" x2="244" y2="162"></line>
+	<!-- statement edges, drawn on by depth (pathLength normalizes the draw) -->
+	<g stroke="currentColor" stroke-width="1" opacity="0.45" stroke-linecap="butt">
+		<g class="grow d1">
+			<line x1="120" y1="14" x2="72" y2="46" pathLength="1"></line>
+			<line x1="120" y1="14" x2="164" y2="46" pathLength="1"></line>
+		</g>
+		<g class="grow d2">
+			<line x1="72" y1="46" x2="21" y2="75" pathLength="1"></line>
+			<line x1="72" y1="46" x2="56" y2="83" pathLength="1"></line>
+			<line x1="72" y1="46" x2="99" y2="82" pathLength="1"></line>
+			<line x1="164" y1="46" x2="145" y2="84" pathLength="1"></line>
+			<line x1="164" y1="46" x2="188" y2="82" pathLength="1"></line>
+		</g>
+		<g class="grow d3">
+			<line x1="56" y1="83" x2="31" y2="114" pathLength="1"></line>
+			<line x1="56" y1="83" x2="78" y2="122" pathLength="1"></line>
+		</g>
 	</g>
 
-	<!-- Statements — plain circles; the root is just the biggest claim. -->
-	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
-		<circle cx="140" cy="26" r="6"></circle>
-		<circle cx="76" cy="74" r="5"></circle>
-		<circle cx="140" cy="78" r="5"></circle>
-		<circle cx="206" cy="66" r="5"></circle>
-		<circle cx="40" cy="126" r="4"></circle>
-		<circle cx="78" cy="130" r="4"></circle>
-		<circle cx="60" cy="176" r="4"></circle>
-		<circle cx="96" cy="178" r="4"></circle>
-		<circle cx="140" cy="134" r="4"></circle>
-		<circle cx="226" cy="118" r="4"></circle>
-		<!-- Assumption — same shape, dashed outline: present but unproven. -->
-		<circle cx="114" cy="124" r="4" stroke-dasharray="2.5 2.5"></circle>
+	<!-- the root claim — persistent; the tree regrows from it each cycle -->
+	<circle cx="120" cy="14" r="5.5" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
+	></circle>
+
+	<!-- statements pop with their depth -->
+	<g class="node n1" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="72" cy="46" r="4.5"></circle>
+		<circle cx="164" cy="46" r="4.5"></circle>
+	</g>
+	<g class="node n2" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="21" cy="75" r="4"></circle>
+		<circle cx="56" cy="83" r="4"></circle>
+		<!-- assumption — same shape, dashed outline: present but unproven -->
+		<circle cx="99" cy="82" r="4" stroke-dasharray="2.5 2.5"></circle>
+		<circle cx="145" cy="84" r="4"></circle>
+		<circle cx="188" cy="82" r="4"></circle>
+	</g>
+	<g class="node n3" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
+		<circle cx="31" cy="114" r="3.5"></circle>
+		<circle cx="78" cy="122" r="3.5"></circle>
 	</g>
 
-	<!-- Challenges — accent diamonds, leaf-only, agitating for a response. -->
-	<g stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)">
-		<path class="challenge" d="M 180 101 L 187 108 L 180 115 L 173 108 Z"></path>
-		<path class="challenge challenge-late" d="M 244 155 L 251 162 L 244 169 L 237 162 Z"></path>
+	<!-- challenges — accent diamonds, leaf-only, agitating for a response -->
+	<g class="ch c1">
+		<line
+			x1="164"
+			y1="46"
+			x2="211"
+			y2="60"
+			stroke="var(--accent)"
+			stroke-width="1"
+			stroke-dasharray="2 3"
+			opacity="0.5"></line>
+		<path
+			class="pulse"
+			d="M 220 57 L 226 63 L 220 69 L 214 63 Z"
+			stroke="var(--accent)"
+			stroke-width="1.25"
+			fill="var(--surface)"></path>
 	</g>
+	<g class="ch c2">
+		<line
+			x1="145"
+			y1="84"
+			x2="162"
+			y2="112"
+			stroke="var(--accent)"
+			stroke-width="1"
+			stroke-dasharray="2 3"
+			opacity="0.5"></line>
+		<path
+			class="pulse"
+			d="M 167 114 L 173 120 L 167 126 L 161 120 Z"
+			stroke="var(--accent)"
+			stroke-width="1.25"
+			fill="var(--surface)"></path>
+	</g>
+	<g class="ch c3">
+		<line
+			x1="188"
+			y1="82"
+			x2="207"
+			y2="106"
+			stroke="var(--accent)"
+			stroke-width="1"
+			stroke-dasharray="2 3"
+			opacity="0.5"></line>
+		<path
+			class="pulse late"
+			d="M 213 107 L 219 113 L 213 119 L 207 113 Z"
+			stroke="var(--accent)"
+			stroke-width="1.25"
+			fill="var(--surface)"></path>
+	</g>
+	<!-- the frontier node rings as the challenges land -->
+	<circle class="agitate" cx="164" cy="46" r="8" stroke="var(--accent)" stroke-width="1" opacity="0"
+	></circle>
 </svg>
 
 <style>
+	/* Static fallback: the full tree with challenges attached — the draw and
+	   pop animations only run under no-preference. Full animation shorthand
+	   with the name, always: a nameless base rule minifies to `animation: none`. */
+	.grow line {
+		stroke-dasharray: 1;
+	}
+
 	@media (prefers-reduced-motion: no-preference) {
-		.challenge {
+		.d1 line {
+			animation: adv-d1 9s linear infinite;
+		}
+		.d2 line {
+			animation: adv-d2 9s linear infinite;
+		}
+		.d3 line {
+			animation: adv-d3 9s linear infinite;
+		}
+		.n1 {
+			animation: adv-n1 9s linear infinite;
+		}
+		.n2 {
+			animation: adv-n2 9s linear infinite;
+		}
+		.n3 {
+			animation: adv-n3 9s linear infinite;
+		}
+		.c1 {
+			animation: adv-c1 9s linear infinite;
+		}
+		.c2 {
+			animation: adv-c2 9s linear infinite;
+		}
+		.c3 {
+			animation: adv-c3 9s linear infinite;
+		}
+		/* The 3s pulse divides the 9s master, so every loop lands in phase. */
+		.pulse {
 			transform-box: fill-box;
 			transform-origin: center;
-			animation: adv-pulse 2.8s ease-in-out infinite;
+			animation: adv-pulse 3s ease-in-out infinite;
 		}
-		.challenge-late {
-			animation-delay: 1.4s;
+		.late {
+			animation-delay: 1.5s;
+		}
+		.agitate {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: adv-agitate 9s linear infinite;
+		}
+
+		/* growth: edges draw, then their nodes pop — depth by depth */
+		@keyframes adv-d1 {
+			0%,
+			2% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			10% {
+				stroke-dashoffset: 0;
+			}
+			91% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes adv-d2 {
+			0%,
+			14% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			22% {
+				stroke-dashoffset: 0;
+			}
+			91% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes adv-d3 {
+			0%,
+			26% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			34% {
+				stroke-dashoffset: 0;
+			}
+			91% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes adv-n1 {
+			0%,
+			9% {
+				opacity: 0;
+			}
+			12%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes adv-n2 {
+			0%,
+			21% {
+				opacity: 0;
+			}
+			24%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes adv-n3 {
+			0%,
+			33% {
+				opacity: 0;
+			}
+			36%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		/* agitation: challenges attach as leaves, staggered */
+		@keyframes adv-c1 {
+			0%,
+			44% {
+				opacity: 0;
+			}
+			47%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes adv-c2 {
+			0%,
+			52% {
+				opacity: 0;
+			}
+			55%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes adv-c3 {
+			0%,
+			58% {
+				opacity: 0;
+			}
+			61%,
+			91% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
 		}
 		@keyframes adv-pulse {
 			0%,
 			100% {
-				opacity: 0.4;
-				transform: scale(0.88);
+				opacity: 0.55;
+				transform: scale(0.9);
 			}
 			50% {
 				opacity: 1;
 				transform: scale(1.08);
+			}
+		}
+		@keyframes adv-agitate {
+			0%,
+			52% {
+				transform: scale(0.4);
+				opacity: 0;
+			}
+			55% {
+				opacity: 0.6;
+			}
+			70%,
+			100% {
+				transform: scale(1.9);
+				opacity: 0;
 			}
 		}
 	}

@@ -1,0 +1,233 @@
+---
+// adversarial tree — a design grows by being agitated. The claim tree draws
+// on level by level; then challenges attach as accent thorns, always at the
+// leaves. The dense branch is settled; the challenged one is the frontier.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- edges, drawn on by depth (pathLength normalizes the draw) -->
+	<g stroke="currentColor" stroke-width="1" opacity="0.45" stroke-linecap="butt">
+		<g class="grow d1">
+			<path d="M 34 72 C 48 72 52 50 70 48" pathLength="1"></path>
+			<path d="M 34 72 C 48 72 52 96 70 100" pathLength="1"></path>
+		</g>
+		<g class="grow d2">
+			<path d="M 70 48 C 88 46 92 34 110 32" pathLength="1"></path>
+			<path d="M 70 48 C 88 48 92 60 110 60" pathLength="1"></path>
+			<path d="M 70 100 C 92 102 100 106 122 108" pathLength="1"></path>
+		</g>
+		<g class="grow d3">
+			<path d="M 110 32 C 128 30 132 24 150 24" pathLength="1"></path>
+			<path d="M 110 32 C 128 34 132 42 150 44" pathLength="1"></path>
+			<path d="M 110 60 C 128 60 132 66 150 68" pathLength="1"></path>
+		</g>
+	</g>
+
+	<!-- claims pop with their depth -->
+	<circle cx="34" cy="72" r="4.5" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"></circle>
+	<g class="node n1" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0">
+		<circle cx="70" cy="48" r="3.5"></circle>
+		<circle cx="70" cy="100" r="3.5"></circle>
+	</g>
+	<g class="node n2" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0">
+		<circle cx="110" cy="32" r="3.5"></circle>
+		<circle cx="110" cy="60" r="3.5"></circle>
+		<circle cx="122" cy="108" r="3.5"></circle>
+	</g>
+	<g class="node n3" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0">
+		<circle cx="150" cy="24" r="3"></circle>
+		<circle cx="150" cy="44" r="3"></circle>
+		<circle cx="150" cy="68" r="3"></circle>
+	</g>
+
+	<!-- challenges: thorns at the sparse branch's leaf — the frontier -->
+	<g fill="var(--accent)">
+		<polygon class="thorn t1" points="134,102 143,106 134,110" opacity="0"></polygon>
+		<polygon class="thorn t2" points="128,94 136,100 127,101" opacity="0"></polygon>
+		<polygon class="thorn t3" points="128,122 136,116 129,115" opacity="0"></polygon>
+	</g>
+	<circle class="agitate" cx="122" cy="108" r="8" stroke="var(--accent)" stroke-width="1" opacity="0"
+	></circle>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: hide nothing structural — edges
+	   and nodes show fully drawn, thorns attached. */
+	.grow path {
+		stroke-dasharray: 1;
+	}
+	.node,
+	.thorn {
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.d1 path {
+			animation: at-d1 9s linear infinite;
+		}
+		.d2 path {
+			animation: at-d2 9s linear infinite;
+		}
+		.d3 path {
+			animation: at-d3 9s linear infinite;
+		}
+		.n1 {
+			animation: at-n1 9s linear infinite;
+		}
+		.n2 {
+			animation: at-n2 9s linear infinite;
+		}
+		.n3 {
+			animation: at-n3 9s linear infinite;
+		}
+		.thorn {
+			animation: at-thorn 9s linear infinite;
+		}
+		.t2 {
+			animation-delay: 0.5s;
+		}
+		.t3 {
+			animation-delay: 1s;
+		}
+		.agitate {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: at-agitate 9s linear infinite;
+		}
+
+		@keyframes at-d1 {
+			0% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			10% {
+				stroke-dashoffset: 0;
+			}
+			90% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes at-d2 {
+			0%,
+			10% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			20% {
+				stroke-dashoffset: 0;
+			}
+			90% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes at-d3 {
+			0%,
+			20% {
+				stroke-dashoffset: 1;
+				opacity: 0.45;
+			}
+			30% {
+				stroke-dashoffset: 0;
+			}
+			90% {
+				stroke-dashoffset: 0;
+				opacity: 0.45;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes at-n1 {
+			0%,
+			8% {
+				opacity: 0;
+			}
+			11%,
+			90% {
+				opacity: 0.6;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes at-n2 {
+			0%,
+			18% {
+				opacity: 0;
+			}
+			21%,
+			90% {
+				opacity: 0.6;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes at-n3 {
+			0%,
+			28% {
+				opacity: 0;
+			}
+			31%,
+			90% {
+				opacity: 0.6;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes at-thorn {
+			0%,
+			42% {
+				opacity: 0;
+			}
+			46%,
+			86% {
+				opacity: 1;
+			}
+			92%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes at-agitate {
+			0%,
+			42% {
+				transform: scale(0.4);
+				opacity: 0;
+			}
+			46% {
+				opacity: 0.6;
+			}
+			60%,
+			100% {
+				transform: scale(1.8);
+				opacity: 0;
+			}
+		}
+	}
+</style>

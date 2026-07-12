@@ -1,0 +1,155 @@
+---
+// scene 3 · dependency cascade — one change fans out. An accent root fans
+// through uneven layers to a single sink; two tokens trace a low and a high
+// route while rings pulse layer by layer and a ripple radiates from the root.
+// Self-looping (tokens 3.6s, rings 2.8s, ripple 4.2s).
+---
+
+<svg
+	viewBox="23 34 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<g class="flow" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.45">
+		<line x1="48" y1="105" x2="98" y2="62"></line>
+		<line x1="48" y1="105" x2="104" y2="128"></line>
+		<line x1="48" y1="105" x2="88" y2="172"></line>
+		<line x1="98" y1="62" x2="150" y2="40"></line>
+		<line x1="98" y1="62" x2="158" y2="92"></line>
+		<line x1="104" y1="128" x2="158" y2="92"></line>
+		<line x1="104" y1="128" x2="146" y2="150"></line>
+		<line x1="88" y1="172" x2="146" y2="150"></line>
+		<line x1="88" y1="172" x2="198" y2="168"></line>
+		<line x1="150" y1="40" x2="205" y2="64"></line>
+		<line x1="158" y1="92" x2="205" y2="64"></line>
+		<line x1="158" y1="92" x2="210" y2="118"></line>
+		<line x1="146" y1="150" x2="210" y2="118"></line>
+		<line x1="146" y1="150" x2="198" y2="168"></line>
+		<line x1="205" y1="64" x2="252" y2="90"></line>
+		<line x1="210" y1="118" x2="252" y2="90"></line>
+	</g>
+	<circle class="ripple" cx="48" cy="105" r="10" stroke="var(--accent)" stroke-width="1" opacity="0"
+	></circle>
+	<g class="ring r1" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.55">
+		<circle cx="98" cy="62" r="4"></circle>
+		<circle cx="104" cy="128" r="4"></circle>
+		<circle cx="88" cy="172" r="4"></circle>
+	</g>
+	<g class="ring r2" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.55">
+		<circle cx="150" cy="40" r="3.5"></circle>
+		<circle cx="158" cy="92" r="3.5"></circle>
+		<circle cx="146" cy="150" r="3.5"></circle>
+	</g>
+	<g class="ring r3" stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.55">
+		<circle cx="205" cy="64" r="3.5"></circle>
+		<circle cx="210" cy="118" r="3.5"></circle>
+		<circle cx="198" cy="168" r="3.5"></circle>
+	</g>
+	<circle
+		class="ring r4"
+		cx="252"
+		cy="90"
+		r="3.5"
+		stroke="currentColor"
+		stroke-width="1.25"
+		fill="var(--surface)"
+		opacity="0.55"></circle>
+	<circle class="travel low" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle class="travel high" r="2.75" fill="var(--accent)" opacity="0"></circle>
+	<circle cx="48" cy="105" r="5.5" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
+	></circle>
+	<circle cx="48" cy="105" r="2" fill="var(--accent)"></circle>
+</svg>
+
+<style>
+	/* Token routes live here so the markup stays geometry-only. */
+	.low {
+		offset-path: path('M 48 105 L 104 128 L 158 92 L 210 118 L 252 90');
+	}
+	.high {
+		offset-path: path('M 48 105 L 98 62 L 150 40 L 205 64 L 252 90');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the graph at rest. */
+	@media (prefers-reduced-motion: no-preference) {
+		.flow {
+			/* One dash period is 8 — a full multiple keeps the loop seamless. */
+			animation: dc-flow 1.4s linear infinite;
+		}
+		.travel {
+			animation: dc-travel 3.6s linear infinite;
+		}
+		.high {
+			animation-delay: 1.8s;
+		}
+		.ripple {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: dc-ripple 4.2s linear infinite;
+		}
+		.ring {
+			animation: dc-ring 2.8s ease-in-out infinite;
+		}
+		.r1 {
+			animation-delay: 0.35s;
+		}
+		.r2 {
+			animation-delay: 0.7s;
+		}
+		.r3 {
+			animation-delay: 1.05s;
+		}
+		.r4 {
+			animation-delay: 1.4s;
+		}
+
+		@keyframes dc-flow {
+			to {
+				stroke-dashoffset: -8;
+			}
+		}
+		@keyframes dc-travel {
+			0% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			10% {
+				opacity: 1;
+			}
+			90% {
+				opacity: 1;
+			}
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes dc-ring {
+			0%,
+			100% {
+				opacity: 0.55;
+			}
+			50% {
+				opacity: 1;
+			}
+		}
+		@keyframes dc-ripple {
+			0% {
+				transform: scale(0.3);
+				opacity: 0;
+			}
+			14% {
+				opacity: 0.65;
+			}
+			70%,
+			100% {
+				transform: scale(2.3);
+				opacity: 0;
+			}
+		}
+	}
+</style>

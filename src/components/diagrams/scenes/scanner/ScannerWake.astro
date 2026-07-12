@@ -1,0 +1,94 @@
+---
+// scanner study B · comet wake — a crisp solid edge with a fading exposure
+// trail behind it. The pass leaves evidence of where it's been instead of
+// dragging a texture.
+import MatrixField from './MatrixField.astro';
+---
+
+<svg
+	viewBox="23 34 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<defs>
+		<linearGradient id="swk-grad" x1="0" y1="0" x2="1" y2="0">
+			<stop offset="0" stop-color="currentColor" stop-opacity="0"></stop>
+			<stop offset="1" stop-color="currentColor" stop-opacity="0.14"></stop>
+		</linearGradient>
+	</defs>
+
+	<MatrixField />
+	<g fill="var(--accent)">
+		<rect class="blip" x="79" y="68" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b2" x="145" y="46" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b3" x="189" y="112" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b4" x="123" y="134" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b5" x="233" y="90" width="7" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+
+	<g class="sweep" opacity="0">
+		<rect x="10" y="40" width="18" height="124" fill="url(#swk-grad)"></rect>
+		<line x1="28" y1="40" x2="28" y2="164" stroke="currentColor" stroke-width="1" opacity="0.55"
+		></line>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. */
+	@media (prefers-reduced-motion: no-preference) {
+		.sweep {
+			animation: swk-pan 7s linear infinite;
+		}
+		.blip {
+			animation: swk-blip 7s linear infinite;
+		}
+		.b2 {
+			animation-delay: 0.4s;
+		}
+		.b3 {
+			animation-delay: 0.9s;
+		}
+		.b4 {
+			animation-delay: 1.4s;
+		}
+		.b5 {
+			animation-delay: 1.9s;
+		}
+
+		@keyframes swk-pan {
+			0% {
+				transform: translateX(0);
+				opacity: 0;
+			}
+			5% {
+				opacity: 1;
+			}
+			70% {
+				opacity: 1;
+			}
+			77%,
+			100% {
+				transform: translateX(216px);
+				opacity: 0;
+			}
+		}
+		@keyframes swk-blip {
+			0%,
+			24% {
+				opacity: 0;
+			}
+			29%,
+			67% {
+				opacity: 1;
+			}
+			80%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

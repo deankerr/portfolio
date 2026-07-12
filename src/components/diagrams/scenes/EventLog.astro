@@ -1,0 +1,135 @@
+---
+// event log — append-only. A writer extends the tape cell by cell; readers
+// chase it below at their own offsets, never blocking it, never each other.
+// The log is the sole source of truth; everything else is a cursor.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- the tape — revealed left to right behind the writer -->
+	<g class="tape" fill="currentColor">
+		<rect x="22" y="52" width="12" height="10" rx="1.5" opacity="0.35"></rect>
+		<rect x="38" y="52" width="12" height="10" rx="1.5" opacity="0.2"></rect>
+		<rect x="54" y="52" width="12" height="10" rx="1.5" opacity="0.3"></rect>
+		<rect x="70" y="52" width="12" height="10" rx="1.5" opacity="0.25"></rect>
+		<rect x="86" y="52" width="12" height="10" rx="1.5" opacity="0.35"></rect>
+		<rect x="102" y="52" width="12" height="10" rx="1.5" opacity="0.15"></rect>
+		<rect x="118" y="52" width="12" height="10" rx="1.5" opacity="0.3"></rect>
+		<rect x="134" y="52" width="12" height="10" rx="1.5" opacity="0.2"></rect>
+		<rect x="150" y="52" width="12" height="10" rx="1.5" opacity="0.35"></rect>
+		<rect x="166" y="52" width="12" height="10" rx="1.5" opacity="0.25"></rect>
+		<rect x="182" y="52" width="12" height="10" rx="1.5" opacity="0.3"></rect>
+		<rect x="198" y="52" width="12" height="10" rx="1.5" opacity="0.2"></rect>
+	</g>
+
+	<!-- the writer's leading edge -->
+	<line class="writer" x1="20" y1="48" x2="20" y2="66" stroke="var(--accent)" stroke-width="1.5" opacity="0"
+	></line>
+
+	<!-- readers at their own offsets -->
+	<g class="reader r1" opacity="0.9">
+		<circle cx="28" cy="76" r="2.75" fill="var(--accent)"></circle>
+		<line x1="28" y1="66" x2="28" y2="71" stroke="var(--accent)" stroke-width="1"></line>
+	</g>
+	<g class="reader r2" opacity="0.7">
+		<circle cx="28" cy="88" r="2.75" fill="currentColor"></circle>
+		<line x1="28" y1="66" x2="28" y2="83" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"></line>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the full tape with both readers.
+	   8s cycle: the reveal edge is the write head; readers chase behind it. */
+	@media (prefers-reduced-motion: no-preference) {
+		.tape {
+			animation: el-append 8s linear infinite;
+		}
+		.writer {
+			animation: el-writer 8s linear infinite;
+		}
+		.r1 {
+			animation: el-r1 8s linear infinite;
+		}
+		.r2 {
+			animation: el-r2 8s linear infinite;
+		}
+
+		@keyframes el-append {
+			0% {
+				clip-path: inset(0 88% 0 0);
+			}
+			66% {
+				clip-path: inset(0 0% 0 0);
+			}
+			92% {
+				clip-path: inset(0 0% 0 0);
+				opacity: 1;
+			}
+			97%,
+			100% {
+				clip-path: inset(0 0% 0 0);
+				opacity: 0;
+			}
+		}
+		@keyframes el-writer {
+			0% {
+				transform: translateX(8px);
+				opacity: 0;
+			}
+			3% {
+				opacity: 1;
+			}
+			63% {
+				opacity: 1;
+			}
+			66%,
+			92% {
+				transform: translateX(192px);
+				opacity: 0;
+			}
+			100% {
+				opacity: 0;
+			}
+		}
+		/* Readers advance at their own pace and never pass the head. */
+		@keyframes el-r1 {
+			0%,
+			10% {
+				transform: translateX(0);
+				opacity: 0.9;
+			}
+			88% {
+				transform: translateX(150px);
+				opacity: 0.9;
+			}
+			94%,
+			100% {
+				transform: translateX(150px);
+				opacity: 0;
+			}
+		}
+		@keyframes el-r2 {
+			0%,
+			24% {
+				transform: translateX(0);
+				opacity: 0.7;
+			}
+			88% {
+				transform: translateX(96px);
+				opacity: 0.7;
+			}
+			94%,
+			100% {
+				transform: translateX(96px);
+				opacity: 0;
+			}
+		}
+	}
+</style>

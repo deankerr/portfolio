@@ -1,0 +1,259 @@
+---
+// diffusion — denoising. A field of noise shimmers, then resolves step by
+// step into a coherent accent form as the step ticks fill; holds; dissolves
+// back to noise. The generative loop, in the house grid language.
+// Two stacked grids: the noise layer (three interleaved flicker groups) fades
+// down while the pattern layer fades up — the crossfade is the denoise.
+---
+
+<svg viewBox="0 0 234 143" fill="none" aria-hidden="true" class="w-full">
+	<g class="noise">
+		<g class="fl f1" fill="currentColor">
+			<rect x="30" y="32" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="78" y="32" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="126" y="32" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="174" y="32" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="62" y="47" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="110" y="47" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="158" y="47" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="46" y="62" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="94" y="62" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="142" y="62" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="190" y="62" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="30" y="77" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="78" y="77" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="126" y="77" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="174" y="77" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="62" y="92" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="110" y="92" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="158" y="92" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="46" y="107" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="94" y="107" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="142" y="107" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="190" y="107" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+		</g>
+		<g class="fl f2" fill="currentColor">
+			<rect x="46" y="32" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="94" y="32" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="142" y="32" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="190" y="32" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="30" y="47" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="78" y="47" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="126" y="47" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="174" y="47" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="62" y="62" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="110" y="62" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="158" y="62" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="46" y="77" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="94" y="77" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="142" y="77" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="190" y="77" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="30" y="92" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="78" y="92" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="126" y="92" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="174" y="92" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="62" y="107" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="110" y="107" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="158" y="107" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+		</g>
+		<g class="fl f3" fill="currentColor">
+			<rect x="62" y="32" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="110" y="32" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="158" y="32" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="46" y="47" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="94" y="47" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="142" y="47" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="190" y="47" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="30" y="62" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="78" y="62" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="126" y="62" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="174" y="62" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="62" y="77" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="110" y="77" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="158" y="77" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+			<rect x="46" y="92" width="9" height="9" rx="1.5" opacity="0.45"></rect>
+			<rect x="94" y="92" width="9" height="9" rx="1.5" opacity="0.2"></rect>
+			<rect x="142" y="92" width="9" height="9" rx="1.5" opacity="0.35"></rect>
+			<rect x="190" y="92" width="9" height="9" rx="1.5" opacity="0.15"></rect>
+			<rect x="30" y="107" width="9" height="9" rx="1.5" opacity="0.4"></rect>
+			<rect x="78" y="107" width="9" height="9" rx="1.5" opacity="0.25"></rect>
+			<rect x="126" y="107" width="9" height="9" rx="1.5" opacity="0.3"></rect>
+			<rect x="174" y="107" width="9" height="9" rx="1.5" opacity="0.1"></rect>
+		</g>
+	</g>
+
+	<!-- the resolved form: an accent diamond with a soft gray halo -->
+	<g class="pattern" opacity="0">
+		<g fill="var(--accent)">
+			<rect x="110" y="47" width="9" height="9" rx="1.5"></rect>
+			<rect x="94" y="62" width="9" height="9" rx="1.5"></rect>
+			<rect x="110" y="62" width="9" height="9" rx="1.5"></rect>
+			<rect x="126" y="62" width="9" height="9" rx="1.5"></rect>
+			<rect x="78" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="94" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="110" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="126" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="142" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="94" y="92" width="9" height="9" rx="1.5"></rect>
+			<rect x="110" y="92" width="9" height="9" rx="1.5"></rect>
+			<rect x="126" y="92" width="9" height="9" rx="1.5"></rect>
+			<rect x="110" y="107" width="9" height="9" rx="1.5"></rect>
+		</g>
+		<g fill="currentColor" opacity="0.45">
+			<rect x="110" y="32" width="9" height="9" rx="1.5"></rect>
+			<rect x="94" y="47" width="9" height="9" rx="1.5"></rect>
+			<rect x="126" y="47" width="9" height="9" rx="1.5"></rect>
+			<rect x="78" y="62" width="9" height="9" rx="1.5"></rect>
+			<rect x="142" y="62" width="9" height="9" rx="1.5"></rect>
+			<rect x="62" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="158" y="77" width="9" height="9" rx="1.5"></rect>
+			<rect x="78" y="92" width="9" height="9" rx="1.5"></rect>
+			<rect x="142" y="92" width="9" height="9" rx="1.5"></rect>
+			<rect x="94" y="107" width="9" height="9" rx="1.5"></rect>
+			<rect x="126" y="107" width="9" height="9" rx="1.5"></rect>
+		</g>
+	</g>
+
+	<!-- step ticks -->
+	<g stroke="currentColor" stroke-width="2" opacity="0.22">
+		<line x1="80" y1="128" x2="94" y2="128"></line>
+		<line x1="100" y1="128" x2="114" y2="128"></line>
+		<line x1="120" y1="128" x2="134" y2="128"></line>
+		<line x1="140" y1="128" x2="154" y2="128"></line>
+	</g>
+	<g stroke="var(--accent)" stroke-width="2">
+		<line class="st st1" x1="80" y1="128" x2="94" y2="128" opacity="0"></line>
+		<line class="st st2" x1="100" y1="128" x2="114" y2="128" opacity="0"></line>
+		<line class="st st3" x1="120" y1="128" x2="134" y2="128" opacity="0"></line>
+		<line class="st st4" x1="140" y1="128" x2="154" y2="128" opacity="0"></line>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the noise field, ticks unfilled.
+	   9s cycle: shimmer → denoise crossfade as ticks fill → hold → dissolve. */
+	@media (prefers-reduced-motion: no-preference) {
+		.noise {
+			animation: df-noise 9s linear infinite;
+		}
+		.pattern {
+			animation: df-form 9s linear infinite;
+		}
+		.fl {
+			animation: df-flick 0.9s ease-in-out infinite;
+		}
+		.f2 {
+			animation-delay: 0.3s;
+		}
+		.f3 {
+			animation-delay: 0.6s;
+		}
+		.st1 {
+			animation: df-st1 9s linear infinite;
+		}
+		.st2 {
+			animation: df-st2 9s linear infinite;
+		}
+		.st3 {
+			animation: df-st3 9s linear infinite;
+		}
+		.st4 {
+			animation: df-st4 9s linear infinite;
+		}
+
+		@keyframes df-noise {
+			0%,
+			15% {
+				opacity: 1;
+			}
+			70%,
+			86% {
+				opacity: 0.16;
+			}
+			96%,
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes df-form {
+			0%,
+			15% {
+				opacity: 0;
+			}
+			70%,
+			86% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes df-flick {
+			0%,
+			100% {
+				opacity: 1;
+			}
+			50% {
+				opacity: 0.55;
+			}
+		}
+		@keyframes df-st1 {
+			0%,
+			18% {
+				opacity: 0;
+			}
+			21%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes df-st2 {
+			0%,
+			35% {
+				opacity: 0;
+			}
+			38%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes df-st3 {
+			0%,
+			52% {
+				opacity: 0;
+			}
+			55%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes df-st4 {
+			0%,
+			67% {
+				opacity: 0;
+			}
+			70%,
+			88% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

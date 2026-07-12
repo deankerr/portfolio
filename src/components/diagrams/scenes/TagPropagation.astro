@@ -1,0 +1,119 @@
+---
+// tag propagation — provenance rides the edges. Tags attached to a request
+// travel every fan-out edge and attach themselves to each artifact it
+// produces. The searchable record of why an artifact exists.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- the request, wearing its tags -->
+	<rect x="28" y="63" width="20" height="18" rx="2.5" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
+	></rect>
+	<g fill="var(--accent)">
+		<rect x="52" y="65" width="6" height="4" rx="1"></rect>
+		<rect x="52" y="72" width="6" height="4" rx="1"></rect>
+	</g>
+
+	<!-- fan-out edges -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.35">
+		<path d="M 48 68 C 100 60 130 44 174 42"></path>
+		<line x1="48" y1="72" x2="174" y2="72"></line>
+		<path d="M 48 76 C 100 84 130 100 174 102"></path>
+	</g>
+
+	<!-- the artifacts -->
+	<g stroke="currentColor" stroke-width="1.25" fill="var(--surface)" opacity="0.7">
+		<rect x="178" y="34" width="16" height="16" rx="2"></rect>
+		<rect x="178" y="64" width="16" height="16" rx="2"></rect>
+		<rect x="178" y="94" width="16" height="16" rx="2"></rect>
+	</g>
+
+	<!-- tags in flight -->
+	<g fill="var(--accent)">
+		<rect class="ride ra" x="-3" y="-2" width="6" height="4" rx="1" opacity="0"></rect>
+		<rect class="ride rb" x="-3" y="-2" width="6" height="4" rx="1" opacity="0"></rect>
+		<rect class="ride rc" x="-3" y="-2" width="6" height="4" rx="1" opacity="0"></rect>
+	</g>
+
+	<!-- tags attached on arrival -->
+	<g fill="var(--accent)">
+		<rect class="stick" x="198" y="36" width="6" height="4" rx="1" opacity="0"></rect>
+		<rect class="stick s2" x="198" y="66" width="6" height="4" rx="1" opacity="0"></rect>
+		<rect class="stick s3" x="198" y="96" width="6" height="4" rx="1" opacity="0"></rect>
+	</g>
+</svg>
+
+<style>
+	.ra {
+		offset-path: path('M 48 68 C 100 60 130 44 174 42');
+	}
+	.rb {
+		offset-path: path('M 48 72 L 174 72');
+	}
+	.rc {
+		offset-path: path('M 48 76 C 100 84 130 100 174 102');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: request, edges, artifacts at rest.
+	   5s cycle: tags ride out (staggered), attach, hold, clear. */
+	@media (prefers-reduced-motion: no-preference) {
+		.ride {
+			animation: tp-ride 5s linear infinite;
+		}
+		.rb {
+			animation-delay: 0.3s;
+		}
+		.rc {
+			animation-delay: 0.6s;
+		}
+		.stick {
+			animation: tp-stick 5s linear infinite;
+		}
+		.s2 {
+			animation-delay: 0.3s;
+		}
+		.s3 {
+			animation-delay: 0.6s;
+		}
+
+		@keyframes tp-ride {
+			0%,
+			6% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			10% {
+				opacity: 1;
+			}
+			40% {
+				opacity: 1;
+			}
+			44%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes tp-stick {
+			0%,
+			42% {
+				opacity: 0;
+			}
+			46%,
+			86% {
+				opacity: 1;
+			}
+			93%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

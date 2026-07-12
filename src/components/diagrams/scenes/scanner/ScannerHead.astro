@@ -1,0 +1,96 @@
+---
+// scanner study C · read head — a faint guide rail pans while an accent head
+// rasters up and down it, actually visiting the cells. The diagonal weave of
+// pan + raster reads as reading, not wiping.
+import MatrixField from './MatrixField.astro';
+---
+
+<svg
+	viewBox="23 34 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<MatrixField />
+	<g fill="var(--accent)">
+		<rect class="blip" x="79" y="68" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b2" x="145" y="46" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b3" x="189" y="112" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b4" x="123" y="134" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b5" x="233" y="90" width="7" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+
+	<g class="sweep" opacity="0">
+		<line x1="28" y1="40" x2="28" y2="164" stroke="currentColor" stroke-width="1" opacity="0.25"
+		></line>
+		<circle class="head" cx="28" cy="40" r="2.5" fill="var(--accent)"></circle>
+	</g>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. The head's raster is a triangle wave nested inside
+	   the panning group — 5 full down-up passes per 7s sweep. */
+	@media (prefers-reduced-motion: no-preference) {
+		.sweep {
+			animation: shd-pan 7s linear infinite;
+		}
+		.head {
+			animation: shd-raster 1.4s ease-in-out infinite alternate;
+		}
+		.blip {
+			animation: shd-blip 7s linear infinite;
+		}
+		.b2 {
+			animation-delay: 0.4s;
+		}
+		.b3 {
+			animation-delay: 0.9s;
+		}
+		.b4 {
+			animation-delay: 1.4s;
+		}
+		.b5 {
+			animation-delay: 1.9s;
+		}
+
+		@keyframes shd-pan {
+			0% {
+				transform: translateX(0);
+				opacity: 0;
+			}
+			5% {
+				opacity: 1;
+			}
+			70% {
+				opacity: 1;
+			}
+			77%,
+			100% {
+				transform: translateX(216px);
+				opacity: 0;
+			}
+		}
+		@keyframes shd-raster {
+			to {
+				transform: translateY(124px);
+			}
+		}
+		@keyframes shd-blip {
+			0%,
+			24% {
+				opacity: 0;
+			}
+			29%,
+			67% {
+				opacity: 1;
+			}
+			80%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

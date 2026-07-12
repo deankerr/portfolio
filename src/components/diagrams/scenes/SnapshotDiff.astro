@@ -1,0 +1,113 @@
+---
+// snapshot diff — two immutable snapshots side by side, a scan pass walking
+// the rows. Unchanged rows sit quiet; changed rows blip accent and write a
+// mark onto the diff rail. The beat is ORCA's: snapshot, diff, record.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- snapshot A · snapshot B — paired rows of field cells -->
+	<g fill="currentColor">
+		<rect x="58" y="30" width="26" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="118" y="30" width="26" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="58" y="43" width="26" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="118" y="43" width="26" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="58" y="56" width="26" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="118" y="56" width="26" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="58" y="69" width="26" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="118" y="69" width="26" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="58" y="82" width="26" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="118" y="82" width="26" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="58" y="95" width="26" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="118" y="95" width="26" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="58" y="108" width="26" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="118" y="108" width="26" height="7" rx="1.5" opacity="0.45"></rect>
+		<rect x="58" y="121" width="26" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="118" y="121" width="26" height="7" rx="1.5" opacity="0.25"></rect>
+	</g>
+
+	<!-- diff rail -->
+	<line x1="170" y1="28" x2="170" y2="130" stroke="currentColor" stroke-width="1" opacity="0.2"
+	></line>
+
+	<!-- changed rows caught by the pass — accent over the new value, mark on the rail -->
+	<g fill="var(--accent)">
+		<rect class="blip" x="118" y="56" width="26" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip d2" x="118" y="82" width="26" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip d3" x="118" y="108" width="26" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+	<g stroke="var(--accent)" stroke-width="2">
+		<line class="blip" x1="164" y1="59.5" x2="176" y2="59.5" opacity="0"></line>
+		<line class="blip d2" x1="164" y1="85.5" x2="176" y2="85.5" opacity="0"></line>
+		<line class="blip d3" x1="164" y1="111.5" x2="176" y2="111.5" opacity="0"></line>
+	</g>
+
+	<!-- the pass -->
+	<line
+		class="scan"
+		x1="52"
+		y1="26"
+		x2="150"
+		y2="26"
+		stroke="currentColor"
+		stroke-width="1"
+		stroke-dasharray="3 3"
+		opacity="0"></line>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the two snapshots at rest. */
+	@media (prefers-reduced-motion: no-preference) {
+		.scan {
+			animation: sd-scan 7s linear infinite;
+		}
+		.blip {
+			animation: sd-blip 7s linear infinite;
+		}
+		.d2 {
+			animation-delay: 1.05s;
+		}
+		.d3 {
+			animation-delay: 2.1s;
+		}
+
+		@keyframes sd-scan {
+			0% {
+				transform: translateY(0);
+				opacity: 0;
+			}
+			3% {
+				opacity: 0.5;
+			}
+			57% {
+				opacity: 0.5;
+			}
+			60%,
+			100% {
+				transform: translateY(104px);
+				opacity: 0;
+			}
+		}
+		@keyframes sd-blip {
+			0%,
+			18% {
+				opacity: 0;
+			}
+			22%,
+			78% {
+				opacity: 1;
+			}
+			86%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

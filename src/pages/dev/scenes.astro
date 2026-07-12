@@ -1,0 +1,468 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Dev-only workbench for the hero reel — each scene isolated as its own SVG so
+// it can be named, critiqued, and refined on its own loop before going back
+// into the composed reel. Not linked from anywhere; borders are design aids.
+import CatalogMatrix from '../../components/diagrams/scenes/CatalogMatrix.astro';
+import MultiplexBundle from '../../components/diagrams/scenes/MultiplexBundle.astro';
+import DependencyCascade from '../../components/diagrams/scenes/DependencyCascade.astro';
+import SnapshotDiff from '../../components/diagrams/scenes/SnapshotDiff.astro';
+import ChangeFeed from '../../components/diagrams/scenes/ChangeFeed.astro';
+import CrawlCycle from '../../components/diagrams/scenes/CrawlCycle.astro';
+import CrdtMerge from '../../components/diagrams/scenes/CrdtMerge.astro';
+import MessageTree from '../../components/diagrams/scenes/MessageTree.astro';
+import BroadcastSync from '../../components/diagrams/scenes/BroadcastSync.astro';
+import EventLog from '../../components/diagrams/scenes/EventLog.astro';
+import QueueWorkers from '../../components/diagrams/scenes/QueueWorkers.astro';
+import TagPropagation from '../../components/diagrams/scenes/TagPropagation.astro';
+import SandboxOverlay from '../../components/diagrams/scenes/SandboxOverlay.astro';
+import ActorMailbox from '../../components/diagrams/scenes/ActorMailbox.astro';
+import Normalizer from '../../components/diagrams/scenes/Normalizer.astro';
+import Diffusion from '../../components/diagrams/scenes/Diffusion.astro';
+import SortingPass from '../../components/diagrams/scenes/SortingPass.astro';
+import BlueGreen from '../../components/diagrams/scenes/BlueGreen.astro';
+import HashBuckets from '../../components/diagrams/scenes/HashBuckets.astro';
+import RingBuffer from '../../components/diagrams/scenes/RingBuffer.astro';
+import StateMachine from '../../components/diagrams/scenes/StateMachine.astro';
+import AdversarialTree from '../../components/diagrams/scenes/AdversarialTree.astro';
+import DependencyExtract from '../../components/diagrams/scenes/DependencyExtract.astro';
+import SessionGrid from '../../components/diagrams/scenes/SessionGrid.astro';
+import ArtifactFrame from '../../components/diagrams/scenes/ArtifactFrame.astro';
+import TokenStream from '../../components/diagrams/scenes/TokenStream.astro';
+import SlidingWindow from '../../components/diagrams/scenes/SlidingWindow.astro';
+import TwoClocks from '../../components/diagrams/scenes/TwoClocks.astro';
+import HeroDiagram from '../../components/diagrams/Hero.astro';
+
+// Site rebuilds — production diagrams reworked on the standard canvas
+// (scenes/STANDARDS.md). These render on the homepage; shown here for review.
+import AdvektDiagram from '../../components/diagrams/Advekt.astro';
+
+// Scanner studies — six treatments of the same pass over the same matrix,
+// directly comparable. The original scene 01 above is the baseline.
+import ScannerMarch from '../../components/diagrams/scenes/scanner/ScannerMarch.astro';
+import ScannerWake from '../../components/diagrams/scenes/scanner/ScannerWake.astro';
+import ScannerHead from '../../components/diagrams/scenes/scanner/ScannerHead.astro';
+import ScannerStep from '../../components/diagrams/scenes/scanner/ScannerStep.astro';
+import ScannerWave from '../../components/diagrams/scenes/scanner/ScannerWave.astro';
+import ScannerCalipers from '../../components/diagrams/scenes/scanner/ScannerCalipers.astro';
+
+const studies = [
+	{
+		key: 'A',
+		name: 'marching dashes',
+		note: 'Same dashed line, but the dashes stream downward as it pans — running machinery, not a dragged ruler.',
+		Study: ScannerMarch,
+	},
+	{
+		key: 'B',
+		name: 'comet wake',
+		note: 'A crisp solid edge with a fading exposure trail behind it. The pass leaves evidence of where it has been.',
+		Study: ScannerWake,
+	},
+	{
+		key: 'C',
+		name: 'read head',
+		note: 'A faint rail pans while an accent head rasters up and down it, actually visiting the cells as it goes.',
+		Study: ScannerHead,
+	},
+	{
+		key: 'D',
+		name: 'step cursor',
+		note: 'No line: a column-wide highlight snaps cell to cell like a spreadsheet cursor. Blips fire on landing.',
+		Study: ScannerStep,
+	},
+	{
+		key: 'E',
+		name: 'wavefront',
+		note: 'No instrument at all — the pass is a crest of brightness moving through the columns; blips ride the crest.',
+		Study: ScannerWave,
+	},
+	{
+		key: 'F',
+		name: 'calipers',
+		note: 'Crop-mark ticks glide and dwell on each find before moving on. The pauses do the work; only inspected cells mark.',
+		Study: ScannerCalipers,
+	},
+];
+
+const scenes = [
+	{
+		n: '01',
+		name: 'catalog matrix',
+		thread: 'observing the model catalog · ORCA',
+		description:
+			'The catalog as a living surface: a grid of cells — models × providers, opacity as ' +
+			'noise. A scanline sweeps on a schedule, and the changes it catches blip accent over ' +
+			'their cells. The beat is observe, diff, record.',
+		Scene: CatalogMatrix,
+	},
+	{
+		n: '02',
+		name: 'multiplex bundle',
+		thread: 'building a client runtime · streaming',
+		description:
+			'Many streams, one connection: five lanes pinch through a single node and cross over ' +
+			'to swapped destinations. A token rides the accent path end to end. The beat is ' +
+			'multiplexed streaming — one wire, many conversations.',
+		Scene: MultiplexBundle,
+	},
+	{
+		n: '03',
+		name: 'dependency cascade',
+		thread: 'operating inference in production',
+		description:
+			'One change fans out: an accent root spreads through uneven layers to a single sink, ' +
+			'activity tracing the edges. Two tokens take a low and a high route; rings pulse layer ' +
+			'by layer. The beat is propagation — everything downstream feels it.',
+		Scene: DependencyCascade,
+	},
+	{
+		n: '04',
+		name: 'snapshot diff',
+		thread: 'ORCA · immutable snapshots, field-level diff',
+		description:
+			'Two snapshots side by side, a scan pass walking the rows. Unchanged rows sit quiet; ' +
+			'changed rows blip accent and write a mark onto the diff rail. Snapshot, diff, record.',
+		Scene: SnapshotDiff,
+	},
+	{
+		n: '05',
+		name: 'change feed',
+		thread: 'ORCA · monitor, subscriptions, dispatch',
+		description:
+			'Events stream past a filter gate; most pass through, the matching one deflects down ' +
+			'to its subscriber, which rings on delivery. Pub-sub dispatch in one line.',
+		Scene: ChangeFeed,
+	},
+	{
+		n: '06',
+		name: 'crawl cycle',
+		thread: 'ORCA · scheduled crawl, history accumulates',
+		description:
+			'Polling as an orbit. The crawler circles the source on its schedule; each completed ' +
+			'pass hands off a pulse and deposits a stratum onto the snapshot stack. The orbit ' +
+			'never stops; the stack only grows.',
+		Scene: CrawlCycle,
+	},
+	{
+		n: '07',
+		name: 'crdt merge',
+		thread: 'tetra · replicas converge',
+		description:
+			'Two replicas fork from shared state and take ops independently, then both histories ' +
+			'travel to the join and interleave into one identical sequence. No winner, no loss.',
+		Scene: CrdtMerge,
+	},
+	{
+		n: '08',
+		name: 'message tree',
+		thread: 'tetra · branching, derived transcripts',
+		description:
+			'The session as a tree, not a transcript. The trunk forks at a regeneration point; ' +
+			'each branch is a complete history, and the cursor walks whichever one is active.',
+		Scene: MessageTree,
+	},
+	{
+		n: '09',
+		name: 'broadcast sync',
+		thread: 'tetra · one write, every surface',
+		description:
+			'A write lands at the store and ripples outward as a wavefront; every receiver’s ' +
+			'state cell flips as the front passes. BroadcastChannel fan-out, near-simultaneous.',
+		Scene: BroadcastSync,
+	},
+	{
+		n: '10',
+		name: 'event log',
+		thread: 'iirc · append-only, readers at offsets',
+		description:
+			'A writer extends the tape cell by cell; readers chase below at their own offsets, ' +
+			'never blocking it, never each other. The log is the truth; everything else is a cursor.',
+		Scene: EventLog,
+	},
+	{
+		n: '11',
+		name: 'queue & artifacts',
+		thread: 'ig · transient jobs, lasting artifacts',
+		description:
+			'A job travels the queue lane, passes the gate one at a time, and lands as an ' +
+			'artifact in the library grid. The job is transient plumbing; the artifact stays.',
+		Scene: QueueWorkers,
+	},
+	{
+		n: '12',
+		name: 'tag propagation',
+		thread: 'ig · provenance rides the edges',
+		description:
+			'Tags attached to a request travel every fan-out edge and attach themselves to each ' +
+			'artifact it produces — the searchable record of why an artifact exists.',
+		Scene: TagPropagation,
+	},
+	{
+		n: '13',
+		name: 'sandbox overlay',
+		thread: 'orbstack-sandbox · namespaces, empty mounts',
+		description:
+			'A namespace boundary draws itself around the sandboxed world; the host mounts inside ' +
+			'hollow out to empty tmpfs. A process probes the wall and bounces; the host dirs ' +
+			'outside stay solid. A seatbelt, not a jail.',
+		Scene: SandboxOverlay,
+	},
+	{
+		n: '14',
+		name: 'actor mailbox',
+		thread: 'durian · serial processing, isolated state',
+		description:
+			'Messages arrive on three channels concurrently, but each actor consumes strictly one ' +
+			'at a time — the second message waits at the queue mark until the first is done.',
+		Scene: ActorMailbox,
+	},
+	{
+		n: '15',
+		name: 'normalizer',
+		thread: 'iirc-lib · dialects in, typed events out',
+		description:
+			'Three jagged wire dialects flow into the library; what leaves is one even, typed ' +
+			'pulse train — over the faint raw line, which is always there underneath.',
+		Scene: Normalizer,
+	},
+	{
+		n: '16',
+		name: 'diffusion',
+		thread: 'ig / e-suite · generative, denoising',
+		description:
+			'A field of noise shimmers, then resolves step by step into a coherent accent form as ' +
+			'the step ticks fill; holds; dissolves back. The generative loop in the grid language.',
+		Scene: Diffusion,
+	},
+	{
+		n: '17',
+		name: 'sorting pass',
+		thread: 'ORCA · the grid orders itself',
+		description:
+			'A pass sweeps the unsorted bars and leaves them sorted in its wake — two bar sets ' +
+			'swapped by complementary clip reveals riding the same edge. Watch the accent value ' +
+			'find its place at the end.',
+		Scene: SortingPass,
+	},
+	{
+		n: '18',
+		name: 'blue-green',
+		thread: 'ig · two stages, one switch',
+		description:
+			'Two identical stages; traffic rides the live lane while the other idles. Then the ' +
+			'cutover: the flow drains from one and picks up on the other. No gap, no big bang.',
+		Scene: BlueGreen,
+	},
+	{
+		n: '19',
+		name: 'hash buckets',
+		thread: 'indexes · items bin by hash',
+		description:
+			'Items rain into the hash bar and route to their buckets. Two collide into the same ' +
+			'one and it chains — the overflow cell stacks in accent. Constant-time until it isn’t.',
+		Scene: HashBuckets,
+	},
+	{
+		n: '20',
+		name: 'ring buffer',
+		thread: 'streaming · writer and reader chase',
+		description:
+			'A fixed ring of slots; the writer orbits with the unread region trailing it as an ' +
+			'accent arc, the reader riding its tail. Nothing allocates, nothing stops.',
+		Scene: RingBuffer,
+	},
+	{
+		n: '21',
+		name: 'state machine',
+		thread: 'lifecycle · legal edges only',
+		description:
+			'The token walks the lifecycle along real transitions, each edge lighting as taken. ' +
+			'Then it tries a transition that doesn’t exist: refused mid-path, bounced straight back.',
+		Scene: StateMachine,
+	},
+	{
+		n: '22',
+		name: 'adversarial tree',
+		thread: 'advekt · challenges at the leaves',
+		description:
+			'The claim tree draws on level by level; then challenges attach as accent thorns, ' +
+			'always at the leaves. The dense branch is settled; the challenged one is the frontier.',
+		Scene: AdversarialTree,
+	},
+	{
+		n: '23',
+		name: 'dependency extract',
+		thread: 'archi · edges draw themselves',
+		description:
+			'The files were always there; the structure wasn’t visible. A compiler pass sweeps ' +
+			'the project and the import edges draw themselves in behind it.',
+		Scene: DependencyExtract,
+	},
+	{
+		n: '24',
+		name: 'session grid',
+		thread: 'omux · crash stays visible, rerun heals',
+		description:
+			'Six deterministic slots — the command is the session name. One process crashes and ' +
+			'its exit stays visible instead of vanishing; the same run arrives again and re-lights ' +
+			'the same slot. Never a new one, nothing to track.',
+		Scene: SessionGrid,
+	},
+	{
+		n: '25',
+		name: 'artifact frame',
+		thread: 'e-suite · fenced code becomes live UI',
+		description:
+			'A fenced code block transmits into the sandboxed frame and renders live. When it ' +
+			'throws, the error arcs back to the host over postMessage instead of dying silently.',
+		Scene: ArtifactFrame,
+	},
+	{
+		n: '26',
+		name: 'token stream',
+		thread: 'LLM · tokens land, caret chases',
+		description:
+			'Generation as it actually arrives: variable-width tokens landing line by line, the ' +
+			'caret riding the frontier, hopping lines, blinking when the stream goes idle.',
+		Scene: TokenStream,
+	},
+	{
+		n: '27',
+		name: 'sliding window',
+		thread: 'context · inside bright, outside decays',
+		description:
+			'A fixed budget over a longer sequence. The window glides across the tape and back; ' +
+			'cells inside are vivid, everything outside decays to memory.',
+		Scene: SlidingWindow,
+	},
+	{
+		n: '28',
+		name: 'two clocks',
+		thread: 'tetra · devices converge',
+		description:
+			'The same session on two devices; each takes an edit the other hasn’t seen. The sync ' +
+			'arcs carry them across and both sides converge on identical state. The merge is the ' +
+			'feature.',
+		Scene: TwoClocks,
+	},
+	{
+		n: '29',
+		name: 'advekt · site rebuild',
+		thread: 'advekt · live on the homepage',
+		description:
+			'The production advekt diagram rebuilt on the standard canvas (240×144, 12-grid): ' +
+			'top-down as before — dense-left settled, dashed assumption, accent challenges on the ' +
+			'sparse frontier — now growing depth by depth from a persistent root, challenges ' +
+			'attaching and pulsing on a 3s beat nested in the 9s loop.',
+		canvas: '240×144',
+		Scene: AdvektDiagram,
+	},
+];
+
+// Design-aid frame — dashed so it reads as scaffolding, not part of the work.
+const frame = 'rounded-md border border-dashed border-line p-5';
+---
+
+<Layout title="hero scenes · dev" description="Dev workbench for the hero scene reel.">
+	<div class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)]">
+		<header class="flex items-baseline justify-between gap-6 border-b border-line py-5">
+			<div class="flex items-baseline gap-3.5">
+				<h1 class="font-semibold lowercase">hero scenes</h1>
+				<span class="font-mono text-[0.78rem] text-ink-faint">dev workbench · not linked</span>
+			</div>
+			<a class="font-mono text-[0.84rem] lowercase no-underline hover:underline" href="/">← home</a>
+		</header>
+
+		<p class="max-w-[62ch] pt-6 text-[0.95rem] leading-[1.6] text-ink-soft">
+			The scene workbench: the three reel scenes plus the exploration spree, each isolated on
+			its own loop. Every scene shares the same canvas (234×143 user units) — the dashed border
+			is the frame, there to judge weight and balance, not to ship. Concept notes live in
+			src/components/diagrams/scenes/IDEAS.md; the composed reel sits at the bottom for
+			comparison.
+		</p>
+
+		<section class="grid gap-x-10 gap-y-12 pt-10 pb-12">
+			{
+				scenes.map(({ n, name, thread, description, Scene, canvas = '234×143' }) => (
+					<article class="grid items-start gap-x-10 gap-y-5 border-t border-line pt-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+						<div>
+							<p class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-ink-faint">
+								scene {n}
+							</p>
+							<h2 class="mt-2 text-[1.6rem] leading-tight font-semibold lowercase tracking-[-0.01em]">
+								{name}
+							</h2>
+							<p class="mt-1.5 font-mono text-[0.78rem] text-accent">{thread}</p>
+							<p class="mt-4 max-w-[52ch] text-[0.95rem] leading-[1.6] text-ink-soft">
+								{description}
+							</p>
+						</div>
+						<div class="w-full max-w-[34rem]">
+							<div class={`${frame} text-diagram`}>
+								<Scene />
+							</div>
+							<p class="mt-2 text-right font-mono text-[0.7rem] text-ink-faint">canvas {canvas}</p>
+						</div>
+					</article>
+				))
+			}
+
+			<!-- Scanner studies — two-up so the treatments sit side by side. -->
+			<section class="border-t border-line pt-8">
+				<p class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-ink-faint">
+					scanner studies
+				</p>
+				<p class="mt-3 max-w-[62ch] text-[0.95rem] leading-[1.6] text-ink-soft">
+					Six treatments of the same pass over the same matrix — scene 01 is the baseline. Only
+					the scanner varies: what the instrument is, whether it has internal motion, and whether
+					there's an instrument at all.
+				</p>
+				<div class="mt-8 grid gap-x-10 gap-y-10 md:grid-cols-2">
+					{
+						studies.map(({ key, name, note, Study }) => (
+							<div>
+								<h3 class="font-mono text-[0.95rem] font-semibold lowercase">
+									<span class="text-ink-faint">{key} ·</span> {name}
+								</h3>
+								<p class="mt-2 min-h-[3.2em] max-w-[46ch] text-[0.88rem] leading-[1.55] text-ink-soft">
+									{note}
+								</p>
+								<div class={`mt-3 ${frame} text-diagram`}>
+									<Study />
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- The composed reel, at the size the hero actually renders it. -->
+			<article
+				class="grid items-start gap-x-10 gap-y-5 border-t border-line pt-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]"
+			>
+				<div>
+					<p
+						class="font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-ink-faint"
+					>
+						reference
+					</p>
+					<h2 class="mt-2 text-[1.6rem] leading-tight font-semibold lowercase tracking-[-0.01em]">
+						the reel
+					</h2>
+					<p class="mt-4 max-w-[52ch] text-[0.95rem] leading-[1.6] text-ink-soft">
+						The composed 18-second loop as the homepage hero runs it — three scenes crossfading,
+						progress ticks along the bottom — rendered at its production width (24rem).
+					</p>
+				</div>
+				<div class="w-full max-w-[24rem]">
+					<div class={`${frame} text-diagram`}>
+						<HeroDiagram />
+					</div>
+					<p class="mt-2 text-right font-mono text-[0.7rem] text-ink-faint">canvas 234×168</p>
+				</div>
+			</article>
+		</section>
+	</div>
+</Layout>

@@ -1,0 +1,162 @@
+---
+// token stream — generation as it actually arrives: variable-width tokens
+// landing left to right, line by line, with the caret chasing the frontier
+// and blinking when the stream goes idle.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- three lines of tokens, revealed in stream order -->
+	<g class="line l1" fill="currentColor">
+		<rect x="30" y="44" width="18" height="9" rx="2" opacity="0.35"></rect>
+		<rect x="52" y="44" width="10" height="9" rx="2" opacity="0.2"></rect>
+		<rect x="66" y="44" width="26" height="9" rx="2" opacity="0.3"></rect>
+		<rect x="96" y="44" width="14" height="9" rx="2" opacity="0.25"></rect>
+		<rect x="114" y="44" width="22" height="9" rx="2" opacity="0.35"></rect>
+		<rect x="140" y="44" width="30" height="9" rx="2" opacity="0.2"></rect>
+		<rect x="174" y="44" width="16" height="9" rx="2" opacity="0.3"></rect>
+	</g>
+	<g class="line l2" fill="currentColor">
+		<rect x="30" y="64" width="24" height="9" rx="2" opacity="0.25"></rect>
+		<rect x="58" y="64" width="16" height="9" rx="2" opacity="0.35"></rect>
+		<rect x="78" y="64" width="12" height="9" rx="2" opacity="0.2"></rect>
+		<rect x="94" y="64" width="28" height="9" rx="2" opacity="0.3"></rect>
+		<rect x="126" y="64" width="18" height="9" rx="2" opacity="0.25"></rect>
+		<rect x="148" y="64" width="34" height="9" rx="2" opacity="0.35"></rect>
+	</g>
+	<g class="line l3" fill="currentColor">
+		<rect x="30" y="84" width="14" height="9" rx="2" opacity="0.3"></rect>
+		<rect x="48" y="84" width="20" height="9" rx="2" opacity="0.2"></rect>
+		<rect x="72" y="84" width="10" height="9" rx="2" opacity="0.35"></rect>
+	</g>
+
+	<!-- the caret, chasing the frontier -->
+	<rect class="caret" x="28" y="42" width="2.5" height="13" rx="1" fill="var(--accent)"></rect>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: the full response, caret parked.
+	   7s cycle: each line clip-reveals in stream order; the caret glides along
+	   each frontier, hops lines, then blinks at rest. */
+	@media (prefers-reduced-motion: no-preference) {
+		.l1 {
+			animation: ts-l1 7s linear infinite;
+		}
+		.l2 {
+			animation: ts-l2 7s linear infinite;
+		}
+		.l3 {
+			animation: ts-l3 7s linear infinite;
+		}
+		.caret {
+			animation: ts-caret 7s linear infinite;
+		}
+
+		@keyframes ts-l1 {
+			0%,
+			3% {
+				clip-path: inset(-2px 172px -2px 0px);
+			}
+			24% {
+				clip-path: inset(-2px 0px -2px 0px);
+			}
+			90% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 1;
+			}
+			96%,
+			100% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 0;
+			}
+		}
+		@keyframes ts-l2 {
+			0%,
+			27% {
+				clip-path: inset(-2px 164px -2px 0px);
+			}
+			46% {
+				clip-path: inset(-2px 0px -2px 0px);
+			}
+			90% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 1;
+			}
+			96%,
+			100% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 0;
+			}
+		}
+		@keyframes ts-l3 {
+			0%,
+			49% {
+				clip-path: inset(-2px 164px -2px 0px);
+			}
+			62% {
+				clip-path: inset(-2px 0px -2px 0px);
+			}
+			90% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 1;
+			}
+			96%,
+			100% {
+				clip-path: inset(-2px 0px -2px 0px);
+				opacity: 0;
+			}
+		}
+		/* Rides each line's reveal edge, hops to the next line's start, and
+		   blinks once the stream idles. Base position is (28, 42). */
+		@keyframes ts-caret {
+			0%,
+			3% {
+				transform: translate(0, 0);
+				opacity: 1;
+			}
+			24% {
+				transform: translate(162px, 0);
+			}
+			27% {
+				transform: translate(0, 20px);
+			}
+			46% {
+				transform: translate(154px, 20px);
+			}
+			49% {
+				transform: translate(0, 40px);
+			}
+			62%,
+			66% {
+				transform: translate(54px, 40px);
+				opacity: 1;
+			}
+			70% {
+				opacity: 0;
+			}
+			74% {
+				opacity: 1;
+			}
+			78% {
+				opacity: 0;
+			}
+			82%,
+			90% {
+				transform: translate(54px, 40px);
+				opacity: 1;
+			}
+			96%,
+			100% {
+				transform: translate(54px, 40px);
+				opacity: 0;
+			}
+		}
+	}
+</style>

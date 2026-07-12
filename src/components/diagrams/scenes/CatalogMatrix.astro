@@ -1,0 +1,153 @@
+---
+// scene 1 · catalog matrix — the model catalog as a living surface. A grid of
+// cells (opacity as noise) stands in for models × providers. A scanline sweeps
+// on a schedule; changes caught in the pass blip accent over their cells.
+// Standalone 7s loop; the reel version gates this to its 18s window.
+---
+
+<svg
+	viewBox="23 34 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<g fill="currentColor">
+		<rect x="35" y="46" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="57" y="46" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="79" y="46" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="101" y="46" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="123" y="46" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="145" y="46" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="167" y="46" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="189" y="46" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="211" y="46" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="233" y="46" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="35" y="68" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="57" y="68" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="79" y="68" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="101" y="68" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="123" y="68" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="145" y="68" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="167" y="68" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="189" y="68" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="211" y="68" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="233" y="68" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="35" y="90" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="57" y="90" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="79" y="90" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="101" y="90" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="123" y="90" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="145" y="90" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="167" y="90" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="189" y="90" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="211" y="90" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="233" y="90" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="35" y="112" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="57" y="112" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="79" y="112" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="101" y="112" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="123" y="112" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="145" y="112" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="167" y="112" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="189" y="112" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="211" y="112" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="233" y="112" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="35" y="134" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="57" y="134" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="79" y="134" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="101" y="134" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="123" y="134" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="145" y="134" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="167" y="134" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="189" y="134" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="211" y="134" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="233" y="134" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="35" y="156" width="7" height="7" rx="1.5" opacity="0.25"></rect>
+		<rect x="57" y="156" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="79" y="156" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="101" y="156" width="7" height="7" rx="1.5" opacity="0.3"></rect>
+		<rect x="123" y="156" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="145" y="156" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+		<rect x="167" y="156" width="7" height="7" rx="1.5" opacity="0.35"></rect>
+		<rect x="189" y="156" width="7" height="7" rx="1.5" opacity="0.2"></rect>
+		<rect x="211" y="156" width="7" height="7" rx="1.5" opacity="0.4"></rect>
+		<rect x="233" y="156" width="7" height="7" rx="1.5" opacity="0.15"></rect>
+	</g>
+	<!-- Catalog changes caught by the pass — accent blips over their cells. -->
+	<g fill="var(--accent)">
+		<rect class="blip" x="79" y="68" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b2" x="145" y="46" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b3" x="189" y="112" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b4" x="123" y="134" width="7" height="7" rx="1.5" opacity="0"></rect>
+		<rect class="blip b5" x="233" y="90" width="7" height="7" rx="1.5" opacity="0"></rect>
+	</g>
+	<line
+		class="sweep"
+		x1="28"
+		y1="40"
+		x2="28"
+		y2="164"
+		stroke="currentColor"
+		stroke-width="1"
+		stroke-dasharray="3 3"
+		opacity="0"></line>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless `animation: 7s …` base rule
+	   gets minified to `animation: none`. Static fallback: matrix only. */
+	@media (prefers-reduced-motion: no-preference) {
+		.sweep {
+			animation: cm-sweep 7s linear infinite;
+		}
+		.blip {
+			animation: cm-blip 7s linear infinite;
+		}
+		.b2 {
+			animation-delay: 0.4s;
+		}
+		.b3 {
+			animation-delay: 0.9s;
+		}
+		.b4 {
+			animation-delay: 1.4s;
+		}
+		.b5 {
+			animation-delay: 1.9s;
+		}
+
+		@keyframes cm-sweep {
+			0% {
+				transform: translateX(0);
+				opacity: 0;
+			}
+			5% {
+				opacity: 0.5;
+			}
+			70% {
+				opacity: 0.5;
+			}
+			77%,
+			100% {
+				transform: translateX(216px);
+				opacity: 0;
+			}
+		}
+		@keyframes cm-blip {
+			0%,
+			24% {
+				opacity: 0;
+			}
+			29%,
+			67% {
+				opacity: 1;
+			}
+			80%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

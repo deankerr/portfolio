@@ -1,0 +1,99 @@
+---
+// sliding window — a fixed budget over a longer sequence. The window glides
+// across the tape and back; cells inside it are vivid, everything outside
+// decays to memory. Two layers of the same cells — the bright one clipped to
+// the window, the outline translating in lockstep.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- the sequence, decayed -->
+	<g fill="currentColor" opacity="0.18">
+		<rect x="22" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="36" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="50" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="64" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="78" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="92" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="106" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="120" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="134" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="148" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="162" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="176" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="190" y="64" width="10" height="14" rx="1.5"></rect>
+		<rect x="204" y="64" width="10" height="14" rx="1.5"></rect>
+	</g>
+
+	<!-- the same cells, vivid, clipped to the window -->
+	<g class="bright" fill="currentColor">
+		<rect x="22" y="64" width="10" height="14" rx="1.5" opacity="0.55"></rect>
+		<rect x="36" y="64" width="10" height="14" rx="1.5" opacity="0.4"></rect>
+		<rect x="50" y="64" width="10" height="14" rx="1.5" opacity="0.5"></rect>
+		<rect x="64" y="64" width="10" height="14" rx="1.5" opacity="0.45"></rect>
+		<rect x="78" y="64" width="10" height="14" rx="1.5" opacity="0.55"></rect>
+		<rect x="92" y="64" width="10" height="14" rx="1.5" opacity="0.4"></rect>
+		<rect x="106" y="64" width="10" height="14" rx="1.5" opacity="0.5"></rect>
+		<rect x="120" y="64" width="10" height="14" rx="1.5" opacity="0.55"></rect>
+		<rect x="134" y="64" width="10" height="14" rx="1.5" opacity="0.4"></rect>
+		<rect x="148" y="64" width="10" height="14" rx="1.5" opacity="0.5"></rect>
+		<rect x="162" y="64" width="10" height="14" rx="1.5" opacity="0.45"></rect>
+		<rect x="176" y="64" width="10" height="14" rx="1.5" opacity="0.55"></rect>
+		<rect x="190" y="64" width="10" height="14" rx="1.5" opacity="0.4"></rect>
+		<rect x="204" y="64" width="10" height="14" rx="1.5" opacity="0.5"></rect>
+	</g>
+
+	<!-- the window itself -->
+	<rect class="win" x="18" y="57" width="74" height="28" rx="4" stroke="var(--accent)" stroke-width="1.25" opacity="0.8"
+	></rect>
+</svg>
+
+<style>
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: window parked at the start.
+	   10s ping-pong: outline and clip translate together, ease both ways.
+	   Clip insets are user units within the bright layer's box (22 → 214). */
+	@media (prefers-reduced-motion: no-preference) {
+		.win {
+			animation: sw-win 10s ease-in-out infinite;
+		}
+		.bright {
+			animation: sw-clip 10s ease-in-out infinite;
+		}
+
+		@keyframes sw-win {
+			0%,
+			6% {
+				transform: translateX(0);
+			}
+			44%,
+			56% {
+				transform: translateX(124px);
+			}
+			94%,
+			100% {
+				transform: translateX(0);
+			}
+		}
+		@keyframes sw-clip {
+			0%,
+			6% {
+				clip-path: inset(-4px 122px -4px 0px);
+			}
+			44%,
+			56% {
+				clip-path: inset(-4px -2px -4px 124px);
+			}
+			94%,
+			100% {
+				clip-path: inset(-4px 122px -4px 0px);
+			}
+		}
+	}
+</style>

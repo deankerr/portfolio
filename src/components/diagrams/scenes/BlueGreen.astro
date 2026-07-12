@@ -1,0 +1,232 @@
+---
+// blue-green — two identical stages, one switch. Traffic rides the live path
+// while the other stage idles; then the cutover: the flow drains from one
+// lane and picks up on the other. No gap, no big-bang deploy.
+---
+
+<svg
+	viewBox="0 0 234 143"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- ingress -->
+	<circle cx="30" cy="72" r="4" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"></circle>
+
+	<!-- the two lanes -->
+	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.3">
+		<path d="M 34 72 C 74 72 96 52 144 52"></path>
+		<path d="M 34 72 C 74 72 96 98 144 98"></path>
+	</g>
+	<!-- live-lane overlays -->
+	<path
+		class="lane top"
+		d="M 34 72 C 74 72 96 52 144 52"
+		stroke="var(--accent)"
+		stroke-width="1.25"
+		stroke-dasharray="3 6"
+		opacity="0"></path>
+	<path
+		class="lane bot"
+		d="M 34 72 C 74 72 96 98 144 98"
+		stroke="var(--accent)"
+		stroke-width="1.25"
+		stroke-dasharray="3 6"
+		opacity="0"></path>
+
+	<!-- the stages, each with its release bars -->
+	<g class="stage-a">
+		<rect x="148" y="38" width="60" height="28" rx="4" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
+		></rect>
+		<g fill="currentColor" opacity="0.4">
+			<rect x="156" y="46" width="26" height="4" rx="1"></rect>
+			<rect x="156" y="54" width="36" height="4" rx="1"></rect>
+		</g>
+	</g>
+	<g class="stage-b">
+		<rect x="148" y="84" width="60" height="28" rx="4" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
+		></rect>
+		<g fill="currentColor" opacity="0.4">
+			<rect x="156" y="92" width="30" height="4" rx="1"></rect>
+			<rect x="156" y="100" width="22" height="4" rx="1"></rect>
+		</g>
+	</g>
+
+	<!-- traffic — each lane's dots sit inside an 8s gate so they only run
+	     while that lane is live -->
+	<g class="gate-a">
+		<circle class="req r-top" r="2.5" fill="var(--accent)" opacity="0"></circle>
+		<circle class="req r-top t2" r="2.5" fill="var(--accent)" opacity="0"></circle>
+	</g>
+	<g class="gate-b">
+		<circle class="req r-bot" r="2.5" fill="var(--accent)" opacity="0"></circle>
+		<circle class="req r-bot t2" r="2.5" fill="var(--accent)" opacity="0"></circle>
+	</g>
+</svg>
+
+<style>
+	.r-top {
+		offset-path: path('M 34 72 C 74 72 96 52 144 52');
+	}
+	.r-bot {
+		offset-path: path('M 34 72 C 74 72 96 98 144 98');
+	}
+
+	/* Full shorthand, name included — a nameless base shorthand gets minified
+	   to `animation: none`. Static fallback: both stages idle.
+	   8s cycle, two halves: stage A live, cutover, stage B live. */
+	@media (prefers-reduced-motion: no-preference) {
+		.lane.top {
+			animation: bg-lane-a 8s linear infinite;
+		}
+		.lane.bot {
+			animation: bg-lane-b 8s linear infinite;
+		}
+		.stage-a {
+			animation: bg-stage-a 8s linear infinite;
+		}
+		.stage-b {
+			animation: bg-stage-b 8s linear infinite;
+		}
+		.r-top {
+			animation: bg-req-a 4s linear infinite;
+		}
+		.r-bot {
+			animation: bg-req-b 4s linear infinite;
+		}
+		.t2 {
+			animation-delay: 2s;
+		}
+		.gate-a {
+			animation: bg-gate-a 8s linear infinite;
+		}
+		.gate-b {
+			animation: bg-gate-b 8s linear infinite;
+		}
+
+		@keyframes bg-gate-a {
+			0%,
+			40% {
+				opacity: 1;
+			}
+			44%,
+			94% {
+				opacity: 0;
+			}
+			98%,
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes bg-gate-b {
+			0%,
+			44% {
+				opacity: 0;
+			}
+			48%,
+			90% {
+				opacity: 1;
+			}
+			94%,
+			100% {
+				opacity: 0;
+			}
+		}
+
+		@keyframes bg-lane-a {
+			0%,
+			40% {
+				opacity: 0.7;
+			}
+			48%,
+			90% {
+				opacity: 0;
+			}
+			98%,
+			100% {
+				opacity: 0.7;
+			}
+		}
+		@keyframes bg-lane-b {
+			0%,
+			40% {
+				opacity: 0;
+			}
+			48%,
+			90% {
+				opacity: 0.7;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes bg-stage-a {
+			0%,
+			40% {
+				opacity: 1;
+			}
+			48%,
+			90% {
+				opacity: 0.45;
+			}
+			98%,
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes bg-stage-b {
+			0%,
+			40% {
+				opacity: 0.45;
+			}
+			48%,
+			90% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0.45;
+			}
+		}
+		/* Requests run on a 4s subcycle — two per lane phase; each lane's dots
+		   only show while that lane is live (the 8s gates above do the rest,
+		   these opacities gate per-trip). */
+		@keyframes bg-req-a {
+			0% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			8% {
+				opacity: 1;
+			}
+			72% {
+				opacity: 1;
+			}
+			80%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+		@keyframes bg-req-b {
+			0% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			8% {
+				opacity: 1;
+			}
+			72% {
+				opacity: 1;
+			}
+			80%,
+			100% {
+				offset-distance: 100%;
+				opacity: 0;
+			}
+		}
+	}
+</style>
