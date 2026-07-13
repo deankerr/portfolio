@@ -1,0 +1,212 @@
+---
+// ORCA · history gains depth — catalog states arrive as immutable strips.
+// Each new snapshot remains behind, while the accent thread connects the
+// field-level changes that would otherwise disappear with the present.
+
+const snapshots = [
+	{ className: 'snapshot-1', x: 34, y: 100, opacity: 0.3, changed: 2 },
+	{ className: 'snapshot-2', x: 38, y: 80, opacity: 0.4, changed: 4 },
+	{ className: 'snapshot-3', x: 42, y: 60, opacity: 0.5, changed: 5 },
+	{ className: 'snapshot-4', x: 46, y: 40, opacity: 0.7, changed: 7 },
+];
+
+const cells = Array.from({ length: 10 }, (_, index) => index);
+const threadPoints = snapshots
+	.map(({ x, y, changed }) => `${x + 10 + changed * 14 + 4},${y + 8}`)
+	.join(' ');
+---
+
+<svg
+	viewBox="0 0 240 144"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- The archive is visible before its relationship is explained. -->
+	{
+		snapshots.map(({ className, x, y, opacity, changed }) => (
+			<g class={`snapshot ${className}`} opacity={opacity}>
+				<rect
+					x={x}
+					y={y}
+					width="160"
+					height="16"
+					rx="3"
+					fill="var(--surface)"
+					stroke="currentColor"
+					stroke-width="1"
+				/>
+				<g fill="currentColor">
+					{cells.map((cell) => (
+						<rect
+							x={x + 10 + cell * 14}
+							y={y + 5}
+							width="8"
+							height="6"
+							rx="1.25"
+							opacity={cell === changed ? 0 : 0.42 - ((cell * 3 + changed) % 3) * 0.08}
+						/>
+					))}
+				</g>
+				<rect
+					class="changed-cell"
+					x={x + 10 + changed * 14}
+					y={y + 5}
+					width="8"
+					height="6"
+					rx="1.25"
+					fill="var(--accent)"
+				/>
+			</g>
+		))
+	}
+
+	<!-- The same field changing through time becomes a readable history. -->
+	<polyline
+		class="history-thread"
+		points={threadPoints}
+		stroke="var(--accent)"
+		stroke-width="1.25"
+		opacity="0.72"></polyline>
+	{
+		snapshots.map(({ x, y, changed }, index) => (
+			<rect
+				class={`history-node history-node-${index + 1}`}
+				x={x + 10 + changed * 14 + 1}
+				y={y + 5}
+				width="6"
+				height="6"
+				rx="1.25"
+				fill="var(--accent)"
+			/>
+		))
+	}
+</svg>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		.snapshot-1 {
+			animation: orca-history-1 9s linear infinite;
+		}
+		.snapshot-2 {
+			animation: orca-history-2 9s linear infinite;
+		}
+		.snapshot-3 {
+			animation: orca-history-3 9s linear infinite;
+		}
+		.snapshot-4 {
+			animation: orca-history-4 9s linear infinite;
+		}
+		.history-thread {
+			stroke-dasharray: 110;
+			animation: orca-history-thread 9s linear infinite;
+		}
+		.history-node {
+			animation: orca-history-node 9s linear infinite;
+		}
+		.history-node-2 {
+			animation-delay: 0.16s;
+		}
+		.history-node-3 {
+			animation-delay: 0.32s;
+		}
+		.history-node-4 {
+			animation-delay: 0.48s;
+		}
+
+		@keyframes orca-history-1 {
+			0%,
+			90% {
+				opacity: 0.3;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes orca-history-2 {
+			0%,
+			12% {
+				transform: translateY(14px);
+				opacity: 0;
+			}
+			18%,
+			90% {
+				transform: translateY(0);
+				opacity: 0.4;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes orca-history-3 {
+			0%,
+			30% {
+				transform: translateY(14px);
+				opacity: 0;
+			}
+			36%,
+			90% {
+				transform: translateY(0);
+				opacity: 0.5;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes orca-history-4 {
+			0%,
+			48% {
+				transform: translateY(14px);
+				opacity: 0;
+			}
+			54%,
+			90% {
+				transform: translateY(0);
+				opacity: 0.7;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes orca-history-thread {
+			0%,
+			57% {
+				stroke-dashoffset: 110;
+				opacity: 0;
+			}
+			62% {
+				opacity: 0.72;
+			}
+			78%,
+			90% {
+				stroke-dashoffset: 0;
+				opacity: 0.72;
+			}
+			96%,
+			100% {
+				stroke-dashoffset: 0;
+				opacity: 0;
+			}
+		}
+		@keyframes orca-history-node {
+			0%,
+			62% {
+				opacity: 0;
+			}
+			68%,
+			90% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

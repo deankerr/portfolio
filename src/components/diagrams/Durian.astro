@@ -1,9 +1,9 @@
 ---
 // durian — the durable agent. One persistent entity at the center; the
 // participants around it come and go. Its presence sweeps out as a sonar
-// ping — each participant lights as the wavefront reaches it — and a softer
-// wave returns, converging on the agent, which registers the receipt.
-// Standard canvas: 240×144, 6s master loop.
+// ping — each participant lights as the wavefront reaches it. Independent
+// message traffic crosses the channels continuously on an irregular cadence.
+// Standard canvas: 240×144, 7s ping loop; packet loops deliberately differ.
 ---
 
 <svg
@@ -29,33 +29,34 @@
 		<circle cx="48" cy="114" r="4"></circle>
 		<circle cx="198" cy="108" r="4"></circle>
 	</g>
-	<!-- they light as the ping reaches them -->
+	<!-- they light as the elliptical ping reaches them -->
 	<g stroke="var(--accent)" stroke-width="1" fill="none">
-		<circle class="heard near" cx="48" cy="114" r="7" opacity="0"></circle>
+		<circle class="heard near" cx="204" cy="42" r="7" opacity="0"></circle>
 		<circle class="heard near" cx="198" cy="108" r="7" opacity="0"></circle>
-		<circle class="heard far" cx="204" cy="42" r="7" opacity="0"></circle>
 		<circle class="heard far" cx="36" cy="38" r="7" opacity="0"></circle>
+		<circle class="heard far" cx="48" cy="114" r="7" opacity="0"></circle>
 	</g>
 
-	<!-- the ping, and the quieter wave coming home -->
-	<circle
+	<!-- The wide wavefront matches the canvas, reaching every participant
+	     without escaping through the shorter vertical axis first. -->
+	<ellipse
 		class="ping"
 		cx="120"
 		cy="72"
-		r="10"
+		rx="10"
+		ry="5"
 		stroke="var(--accent)"
 		stroke-width="1"
 		vector-effect="non-scaling-stroke"
-		opacity="0"></circle>
-	<circle
-		class="echo"
-		cx="120"
-		cy="72"
-		r="10"
-		stroke="currentColor"
-		stroke-width="1"
-		vector-effect="non-scaling-stroke"
-		opacity="0"></circle>
+		opacity="0"></ellipse>
+
+	<!-- independent messages travel home on the same faint channels -->
+	<g fill="var(--accent)">
+		<rect class="packet p1" x="-2" y="-2" width="4" height="4" rx="1" opacity="0"></rect>
+		<rect class="packet p2" x="-2" y="-2" width="4" height="4" rx="1" opacity="0"></rect>
+		<rect class="packet p3" x="-2" y="-2" width="4" height="4" rx="1" opacity="0"></rect>
+		<rect class="packet p4" x="-2" y="-2" width="4" height="4" rx="1" opacity="0"></rect>
+	</g>
 
 	<!-- the durable agent — identity that outlives every session -->
 	<circle cx="120" cy="72" r="10" stroke="currentColor" stroke-width="1" opacity="0.3"></circle>
@@ -65,30 +66,49 @@
 </svg>
 
 <style>
+	.p1 {
+		offset-path: path('M 40 40 L 110 68');
+	}
+	.p2 {
+		offset-path: path('M 200 45 L 130 68');
+	}
+	.p3 {
+		offset-path: path('M 52 111 L 112 78');
+	}
+	.p4 {
+		offset-path: path('M 194 105 L 129 77');
+	}
+
 	/* Full shorthand, name included — a nameless base rule gets minified to
 	   `animation: none`. Static fallback: agent and participants at rest.
-	   6s master: ping out → participants light → soft echo home → receipt. */
+	   The 7s ping and four incommensurate packet loops stay intentionally
+	   unsynchronised, so traffic reads as ambient rather than as a reply. */
 	@media (prefers-reduced-motion: no-preference) {
 		.ping {
 			transform-box: fill-box;
 			transform-origin: center;
-			animation: dur-ping 6s linear infinite;
-		}
-		.echo {
-			transform-box: fill-box;
-			transform-origin: center;
-			animation: dur-echo 6s linear infinite;
+			animation: dur-ping 7s linear infinite;
 		}
 		.heard.near {
-			animation: dur-near 6s linear infinite;
+			animation: dur-near 7s linear infinite;
 		}
 		.heard.far {
-			animation: dur-far 6s linear infinite;
+			animation: dur-far 7s linear infinite;
 		}
-		.core {
-			transform-box: fill-box;
-			transform-origin: center;
-			animation: dur-core 6s linear infinite;
+		.packet {
+			animation: dur-packet 3.8s linear infinite -0.7s;
+		}
+		.p2 {
+			animation-duration: 5.1s;
+			animation-delay: -3.4s;
+		}
+		.p3 {
+			animation-duration: 4.4s;
+			animation-delay: -1.9s;
+		}
+		.p4 {
+			animation-duration: 6.2s;
+			animation-delay: -4.8s;
 		}
 
 		@keyframes dur-ping {
@@ -99,72 +119,56 @@
 			6% {
 				opacity: 0.6;
 			}
-			34% {
+			36% {
 				opacity: 0.4;
 			}
-			46%,
+			48%,
 			100% {
-				transform: scale(10.5);
-				opacity: 0;
-			}
-		}
-		/* the reply converges — quieter, in the structure color */
-		@keyframes dur-echo {
-			0%,
-			52% {
-				transform: scale(9);
-				opacity: 0;
-			}
-			58% {
-				opacity: 0.3;
-			}
-			84% {
-				opacity: 0.25;
-			}
-			90%,
-			100% {
-				transform: scale(0.4);
+				transform: scale(11.2);
 				opacity: 0;
 			}
 		}
 		@keyframes dur-near {
 			0%,
-			33% {
+			36% {
 				opacity: 0;
 			}
-			36% {
+			40% {
 				opacity: 0.8;
 			}
-			46%,
+			52%,
 			100% {
 				opacity: 0;
 			}
 		}
 		@keyframes dur-far {
 			0%,
-			36% {
+			39% {
 				opacity: 0;
 			}
-			39% {
+			43% {
 				opacity: 0.8;
 			}
-			49%,
+			55%,
 			100% {
 				opacity: 0;
 			}
 		}
-		/* the receipt — the identity registers what came back */
-		@keyframes dur-core {
-			0%,
+		@keyframes dur-packet {
+			0% {
+				offset-distance: 0%;
+				opacity: 0;
+			}
+			9% {
+				opacity: 0.9;
+			}
 			86% {
-				transform: scale(1);
+				offset-distance: 100%;
+				opacity: 0.9;
 			}
-			91% {
-				transform: scale(1.5);
-			}
-			96%,
 			100% {
-				transform: scale(1);
+				offset-distance: 100%;
+				opacity: 0;
 			}
 		}
 	}

@@ -6,33 +6,21 @@
 // Standard canvas: 240×144, 9s master loop, 2.25s dash flow nested inside.
 ---
 
-<svg
-	viewBox="0 0 240 144"
-	fill="none"
-	stroke-linejoin="round"
-	aria-hidden="true"
-	class="w-full"
->
+<svg viewBox="0 0 240 144" fill="none" stroke-linejoin="round" aria-hidden="true" class="w-full">
 	<!-- the edges being discovered — solid, drawn on by layer -->
 	<g stroke="currentColor" stroke-width="1" opacity="0.45" stroke-linecap="butt">
 		<g class="draw w1">
-			<path d="M 120 25 C 120 40 60 39 60 47" pathLength="1"></path>
-			<path d="M 120 25 L 120 47" pathLength="1"></path>
-			<path d="M 120 25 C 120 40 180 39 180 47" pathLength="1"></path>
+			<path d="M 120 25 C 120 45 48 45 48 61" pathLength="1"></path>
+			<path d="M 120 25 L 120 61" pathLength="1"></path>
+			<path d="M 120 25 C 120 45 192 45 192 61" pathLength="1"></path>
 		</g>
 		<g class="draw w2">
-			<path d="M 60 61 C 60 76 36 75 36 83" pathLength="1"></path>
-			<path d="M 60 61 C 60 76 96 75 96 83" pathLength="1"></path>
-			<path d="M 120 61 C 120 76 96 75 96 83" pathLength="1"></path>
-			<path d="M 120 61 C 120 76 156 75 156 83" pathLength="1"></path>
-			<path d="M 180 61 C 180 76 156 75 156 83" pathLength="1"></path>
-			<path d="M 180 61 C 180 76 210 75 210 83" pathLength="1"></path>
-		</g>
-		<g class="draw w3">
-			<path d="M 36 97 C 36 112 78 111 78 119" pathLength="1"></path>
-			<path d="M 96 97 C 96 112 78 111 78 119" pathLength="1"></path>
-			<path d="M 156 97 C 156 112 174 111 174 119" pathLength="1"></path>
-			<path d="M 210 97 C 210 112 174 111 174 119" pathLength="1"></path>
+			<path d="M 48 75 C 48 95 30 95 30 112" pathLength="1"></path>
+			<path d="M 48 75 C 48 95 90 95 90 112" pathLength="1"></path>
+			<path d="M 120 75 C 120 95 90 95 90 112" pathLength="1"></path>
+			<path d="M 120 75 C 120 95 150 95 150 112" pathLength="1"></path>
+			<path d="M 192 75 C 192 95 150 95 150 112" pathLength="1"></path>
+			<path d="M 192 75 C 192 95 210 95 210 112" pathLength="1"></path>
 		</g>
 	</g>
 
@@ -45,38 +33,37 @@
 		stroke-linecap="round"
 		opacity="0"
 	>
-		<path d="M 120 25 C 120 40 60 39 60 47"></path>
-		<path d="M 120 25 L 120 47"></path>
-		<path d="M 120 25 C 120 40 180 39 180 47"></path>
-		<path d="M 60 61 C 60 76 36 75 36 83"></path>
-		<path d="M 60 61 C 60 76 96 75 96 83"></path>
-		<path d="M 120 61 C 120 76 96 75 96 83"></path>
-		<path d="M 120 61 C 120 76 156 75 156 83"></path>
-		<path d="M 180 61 C 180 76 156 75 156 83"></path>
-		<path d="M 180 61 C 180 76 210 75 210 83"></path>
-		<path d="M 36 97 C 36 112 78 111 78 119"></path>
-		<path d="M 96 97 C 96 112 78 111 78 119"></path>
-		<path d="M 156 97 C 156 112 174 111 174 119"></path>
-		<path d="M 210 97 C 210 112 174 111 174 119"></path>
+		<path d="M 120 25 C 120 45 48 45 48 61"></path>
+		<path d="M 120 25 L 120 61"></path>
+		<path d="M 120 25 C 120 45 192 45 192 61"></path>
+		<path d="M 48 75 C 48 95 30 95 30 112"></path>
+		<path d="M 48 75 C 48 95 90 95 90 112"></path>
+		<path d="M 120 75 C 120 95 90 95 90 112"></path>
+		<path d="M 120 75 C 120 95 150 95 150 112"></path>
+		<path d="M 192 75 C 192 95 150 95 150 112"></path>
+		<path d="M 192 75 C 192 95 210 95 210 112"></path>
 	</g>
 
 	<!-- modules — the entry point is accent and persistent; the rest resolve -->
-	<rect x="105" y="11" width="30" height="14" rx="3" stroke="var(--accent)" stroke-width="1.25" fill="var(--surface)"
-	></rect>
+	<rect
+		x="105"
+		y="11"
+		width="30"
+		height="14"
+		rx="3"
+		stroke="var(--accent)"
+		stroke-width="1.25"
+		fill="var(--surface)"></rect>
 	<g class="mods m1" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
-		<rect x="45" y="47" width="30" height="14" rx="3"></rect>
-		<rect x="105" y="47" width="30" height="14" rx="3"></rect>
-		<rect x="165" y="47" width="30" height="14" rx="3"></rect>
+		<rect x="33" y="61" width="30" height="14" rx="3"></rect>
+		<rect x="105" y="61" width="30" height="14" rx="3"></rect>
+		<rect x="177" y="61" width="30" height="14" rx="3"></rect>
 	</g>
 	<g class="mods m2" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
-		<rect x="21" y="83" width="30" height="14" rx="3"></rect>
-		<rect x="81" y="83" width="30" height="14" rx="3"></rect>
-		<rect x="141" y="83" width="30" height="14" rx="3"></rect>
-		<rect x="195" y="83" width="30" height="14" rx="3"></rect>
-	</g>
-	<g class="mods m3" stroke="currentColor" stroke-width="1.25" fill="var(--surface)">
-		<rect x="63" y="119" width="30" height="14" rx="3"></rect>
-		<rect x="159" y="119" width="30" height="14" rx="3"></rect>
+		<rect x="15" y="112" width="30" height="14" rx="3"></rect>
+		<rect x="75" y="112" width="30" height="14" rx="3"></rect>
+		<rect x="135" y="112" width="30" height="14" rx="3"></rect>
+		<rect x="195" y="112" width="30" height="14" rx="3"></rect>
 	</g>
 </svg>
 
@@ -96,17 +83,11 @@
 		.w2 path {
 			animation: arc-w2 9s linear infinite;
 		}
-		.w3 path {
-			animation: arc-w3 9s linear infinite;
-		}
 		.m1 {
 			animation: arc-m1 9s linear infinite;
 		}
 		.m2 {
 			animation: arc-m2 9s linear infinite;
-		}
-		.m3 {
-			animation: arc-m3 9s linear infinite;
 		}
 		.flowset {
 			animation:
@@ -152,25 +133,6 @@
 				opacity: 0;
 			}
 		}
-		@keyframes arc-w3 {
-			0%,
-			22% {
-				stroke-dashoffset: 1;
-				opacity: 0.45;
-			}
-			30% {
-				stroke-dashoffset: 0;
-			}
-			38% {
-				stroke-dashoffset: 0;
-				opacity: 0.45;
-			}
-			44%,
-			100% {
-				stroke-dashoffset: 0;
-				opacity: 0;
-			}
-		}
 		@keyframes arc-m1 {
 			0%,
 			9% {
@@ -191,20 +153,6 @@
 				opacity: 0;
 			}
 			22%,
-			91% {
-				opacity: 1;
-			}
-			96%,
-			100% {
-				opacity: 0;
-			}
-		}
-		@keyframes arc-m3 {
-			0%,
-			29% {
-				opacity: 0;
-			}
-			32%,
 			91% {
 				opacity: 1;
 			}

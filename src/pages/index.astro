@@ -148,9 +148,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 
 <Layout>
 	<!-- temp svg border -->
-	<div
-		class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)] [&_svg]:border [&_svg]:border-dashed"
-	>
+	<div class="mx-auto w-full max-w-[1400px] px-[clamp(1.25rem,3vw,2rem)]">
 		<!-- Header — quiet; the work should be the loudest thing on the page. -->
 		<header class="flex items-center justify-between gap-6 py-5">
 			<div class="flex items-baseline gap-3.5">
@@ -181,7 +179,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 		<!-- Hero — one claim, a short orientation, one compact proof list. -->
 		<section
 			id="top"
-			class="grid items-end gap-9 border-t border-line pt-9 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.36fr)]"
+			class="grid items-center gap-9 border-t border-line pt-9 pb-12 lg:grid-cols-[minmax(0,clamp(37rem,60%,52rem))_minmax(0,1fr)]"
 		>
 			<div>
 				<h1
@@ -197,7 +195,7 @@ const railTop = 'lg:top-[max(2.5rem,calc(50dvh-min(23vw,320px)))]';
 				</p>
 			</div>
 			<!-- Diagram is decorative — the visual signature, nothing more. -->
-			<div class="mx-auto w-full max-w-[24rem] text-diagram lg:mx-0" aria-hidden="true">
+			<div class="mx-auto w-full max-w-[24rem] text-diagram lg:max-w-none" aria-hidden="true">
 				<HeroDiagram />
 			</div>
 		</section>

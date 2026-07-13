@@ -1,0 +1,253 @@
+---
+// tetra · state outlives its surfaces — three readers can mount and unmount,
+// while the runtime-owned state tape keeps advancing underneath. When the
+// missing surface returns it reads the latest durable state immediately.
+
+const tapeCells = Array.from({ length: 12 }, (_, index) => 27 + index * 16);
+const surfaces = [24, 89, 154];
+---
+
+<svg
+	viewBox="0 0 240 144"
+	fill="none"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- Reader surfaces: brackets keep them lighter than application windows. -->
+	{
+		surfaces.map((x, index) => (
+			<g class={`surface surface-${index + 1}`}>
+				<path
+					d={`M ${x + 10} 28 H ${x} V 40 M ${x + 43} 28 H ${x + 53} V 40 M ${x} 66 V 78 H ${x + 10} M ${x + 53} 66 V 78 H ${x + 43}`}
+					stroke="currentColor"
+					stroke-width="1.25"
+					opacity="0.5"
+				/>
+				<g fill="currentColor">
+					<rect x={x + 9} y="40" width="29" height="5" rx="1.25" opacity="0.22" />
+					<rect x={x + 9} y="50" width="36" height="5" rx="1.25" opacity="0.3" />
+					<rect x={x + 9} y="60" width="23" height="5" rx="1.25" opacity="0.2" />
+				</g>
+				<rect
+					class={`surface-update surface-update-${index + 1}`}
+					x={x + 37}
+					y="60"
+					width="8"
+					height="5"
+					rx="1.25"
+					fill="var(--accent)"
+				/>
+				<line
+					x1={x + 26.5}
+					y1="82"
+					x2={x + 26.5}
+					y2="99"
+					stroke="currentColor"
+					stroke-width="1"
+					stroke-dasharray="2 4"
+					opacity="0.25"
+				/>
+			</g>
+		))
+	}
+
+	<!-- Runtime-owned state. It never disappears when a reader does. -->
+	<line x1="21" y1="109" x2="219" y2="109" stroke="currentColor" stroke-width="1" opacity="0.18"
+	></line>
+	<g fill="currentColor">
+		{
+			tapeCells.map((x, index) => (
+				<rect
+					x={x}
+					y="105"
+					width="9"
+					height="8"
+					rx="1.5"
+					opacity={index < 5 ? 0.34 - (index % 3) * 0.06 : 0.12}
+				/>
+			))
+		}
+	</g>
+	<g fill="var(--accent)">
+		<rect class="write write-1" x="107" y="105" width="9" height="8" rx="1.5"></rect>
+		<rect class="write write-2" x="123" y="105" width="9" height="8" rx="1.5"></rect>
+		<rect class="write write-3" x="139" y="105" width="9" height="8" rx="1.5"></rect>
+		<rect class="write write-4" x="155" y="105" width="9" height="8" rx="1.5"></rect>
+	</g>
+	<rect class="frontier" x="101" y="101" width="2" height="16" rx="1" fill="var(--accent)"></rect>
+</svg>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		.surface-2 {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: tetra-surface-away 9s linear infinite;
+		}
+		.surface-update-1 {
+			animation: tetra-surface-update-1 9s linear infinite;
+		}
+		.surface-update-2 {
+			animation: tetra-surface-update-2 9s linear infinite;
+		}
+		.surface-update-3 {
+			animation: tetra-surface-update-3 9s linear infinite;
+		}
+		.write-1 {
+			animation: tetra-write-1 9s linear infinite;
+		}
+		.write-2 {
+			animation: tetra-write-2 9s linear infinite;
+		}
+		.write-3 {
+			animation: tetra-write-3 9s linear infinite;
+		}
+		.write-4 {
+			animation: tetra-write-4 9s linear infinite;
+		}
+		.frontier {
+			animation: tetra-frontier 9s linear infinite;
+		}
+
+		@keyframes tetra-surface-away {
+			0%,
+			18% {
+				transform: translateY(0);
+				opacity: 1;
+			}
+			28%,
+			56% {
+				transform: translateY(-9px);
+				opacity: 0;
+			}
+			66%,
+			92% {
+				transform: translateY(0);
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-frontier {
+			0%,
+			12% {
+				transform: translateX(0);
+				opacity: 0;
+			}
+			16% {
+				opacity: 1;
+			}
+			68% {
+				transform: translateX(64px);
+				opacity: 1;
+			}
+			74%,
+			100% {
+				transform: translateX(64px);
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-write-1 {
+			0%,
+			18% {
+				opacity: 0;
+			}
+			22%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-write-2 {
+			0%,
+			31% {
+				opacity: 0;
+			}
+			35%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-write-3 {
+			0%,
+			44% {
+				opacity: 0;
+			}
+			48%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-write-4 {
+			0%,
+			57% {
+				opacity: 0;
+			}
+			61%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-surface-update-1 {
+			0%,
+			27% {
+				opacity: 0;
+			}
+			31%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-surface-update-3 {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			52%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes tetra-surface-update-2 {
+			0%,
+			64% {
+				opacity: 0;
+			}
+			69%,
+			92% {
+				opacity: 1;
+			}
+			98%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

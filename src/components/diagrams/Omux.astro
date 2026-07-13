@@ -1,9 +1,8 @@
 ---
-// omux — one terminal, two operators. A single tmux window sits between a
-// human (circle) and an agent (square); each sends a command in, the same
-// output lands in the shared scrollback, and both watch it happen. The
-// window is the meeting point — neither side owns it.
-// Standard canvas: 240×144, 8s master loop, 1s cursor blink nested inside.
+// omux — one durable terminal session. A project-scoped command and its
+// scrollback appear in a single wide window; the quiet pulse is the only
+// persistent signal that the process is still live.
+// Standard canvas: 240×144, 10s master loop, 2s live pulse nested inside.
 ---
 
 <svg
@@ -14,174 +13,146 @@
 	aria-hidden="true"
 	class="w-full"
 >
-	<!-- the shared window -->
-	<rect x="72" y="26" width="96" height="92" rx="4" stroke="currentColor" stroke-width="1.25"
-	></rect>
-	<line x1="72" y1="98" x2="168" y2="98" stroke="currentColor" stroke-width="1" opacity="0.3"
-	></line>
+	<g class="terminal">
+		<rect x="30" y="18" width="180" height="108" rx="5" stroke="currentColor" stroke-width="1.25"
+		></rect>
 
-	<!-- scrollback — always mid-stream -->
-	<g stroke="currentColor" stroke-width="2">
-		<line x1="80" y1="40" x2="120" y2="40" opacity="0.9"></line>
-		<line x1="80" y1="50" x2="144" y2="50" opacity="0.5"></line>
-		<line x1="80" y1="60" x2="132" y2="60" opacity="0.35"></line>
-		<line class="out l1" x1="80" y1="70" x2="138" y2="70" opacity="0.5"></line>
-		<line class="out l2" x1="80" y1="80" x2="116" y2="80" opacity="0.5"></line>
+		<!-- The agent shares the console body; there is no reserved title bar. -->
+		<g fill="var(--accent)">
+			<circle cx="196" cy="31" r="2"></circle>
+			<circle
+				class="live-ring"
+				cx="196"
+				cy="31"
+				r="5"
+				fill="none"
+				stroke="var(--accent)"
+				opacity="0"></circle>
+		</g>
+
+		<!-- Four console rows share a baseline rhythm and a prompt-width gutter. -->
+		<g class="console-line line-1">
+			<path d="M 43 28 L 47 32 L 43 36" stroke="var(--accent)" stroke-width="1.25"></path>
+			<g stroke="currentColor" stroke-width="2">
+				<line x1="54" y1="32" x2="84" y2="32" opacity="0.7"></line>
+				<line x1="90" y1="32" x2="124" y2="32" opacity="0.3"></line>
+				<line x1="130" y1="32" x2="161" y2="32" opacity="0.3"></line>
+			</g>
+		</g>
+		<g class="console-line line-2" stroke="currentColor" stroke-width="2">
+			<line x1="54" y1="53" x2="104" y2="53" opacity="0.7"></line>
+			<line x1="111" y1="53" x2="149" y2="53" opacity="0.3"></line>
+		</g>
+		<g class="console-line line-3" stroke="currentColor" stroke-width="2">
+			<line x1="54" y1="74" x2="124" y2="74" opacity="0.7"></line>
+			<line x1="131" y1="74" x2="185" y2="74" opacity="0.3"></line>
+		</g>
+		<g class="console-line line-4" stroke="currentColor" stroke-width="2">
+			<line x1="54" y1="95" x2="111" y2="95" opacity="0.7"></line>
+			<line x1="118" y1="95" x2="166" y2="95" opacity="0.3"></line>
+		</g>
+
+		<!-- tmux footer: project, command, and live process state. -->
+		<line x1="30" y1="105" x2="210" y2="105" stroke="currentColor" opacity="0.3"></line>
+		<g stroke-width="2">
+			<line x1="41" y1="115" x2="76" y2="115" stroke="var(--accent)"></line>
+			<line x1="84" y1="115" x2="126" y2="115" stroke="currentColor" opacity="0.3"></line>
+			<line x1="134" y1="115" x2="164" y2="115" stroke="currentColor" opacity="0.3"></line>
+		</g>
 	</g>
-	<rect class="cursor" x="80" y="86" width="5" height="9" fill="var(--accent)"></rect>
-
-	<!-- status bar — deterministic session ticks; the active one is accent -->
-	<g stroke-width="2">
-		<line x1="80" y1="108" x2="96" y2="108" stroke="var(--accent)"></line>
-		<line x1="102" y1="108" x2="118" y2="108" stroke="currentColor" opacity="0.35"></line>
-		<line x1="124" y1="108" x2="140" y2="108" stroke="currentColor" opacity="0.35"></line>
-	</g>
-
-	<!-- the operators: human left, agent right -->
-	<circle cx="28" cy="72" r="5" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
-	></circle>
-	<rect x="198" y="66" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.25" fill="var(--surface)"
-	></rect>
-
-	<!-- both hold the same line to the same window -->
-	<g stroke="currentColor" stroke-width="1" stroke-dasharray="3 5" opacity="0.3">
-		<line x1="36" y1="72" x2="68" y2="72"></line>
-		<line x1="194" y1="72" x2="172" y2="72"></line>
-	</g>
-
-	<!-- commands in, and the watching rings when output lands -->
-	<circle class="cmd h" r="2.5" fill="var(--accent)" opacity="0"></circle>
-	<circle class="cmd a" r="2.5" fill="var(--accent)" opacity="0"></circle>
-	<circle class="see" cx="28" cy="72" r="9" stroke="var(--accent)" stroke-width="1" opacity="0"
-	></circle>
-	<circle class="see" cx="204" cy="72" r="9" stroke="var(--accent)" stroke-width="1" opacity="0"
-	></circle>
 </svg>
 
 <style>
-	.cmd.h {
-		offset-path: path('M 36 72 L 68 72');
-	}
-	.cmd.a {
-		offset-path: path('M 194 72 L 172 72');
-	}
-
-	/* Full shorthand, name included — a nameless base rule gets minified to
-	   `animation: none`. Static fallback: the full window with both operators.
-	   8s master: human command → output line, agent command → output line;
-	   both rings pulse whenever the shared scrollback moves. */
+	/* Static fallback: a complete, quiet terminal. Motion only establishes the
+	   window and lets its evenly spaced scrollback arrive in sequence. */
 	@media (prefers-reduced-motion: no-preference) {
-		.cmd.h {
-			animation: omx-cmdh 8s linear infinite;
+		.terminal {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: omx-terminal 10s ease-in-out infinite;
 		}
-		.cmd.a {
-			animation: omx-cmda 8s linear infinite;
+		.console-line {
+			animation: omx-line-1 10s ease-out infinite;
 		}
-		.l1 {
-			animation: omx-l1 8s linear infinite;
+		.line-2 {
+			animation-name: omx-line-2;
 		}
-		.l2 {
-			animation: omx-l2 8s linear infinite;
+		.line-3 {
+			animation-name: omx-line-3;
 		}
-		.see {
-			animation: omx-see 8s linear infinite;
+		.line-4 {
+			animation-name: omx-line-4;
 		}
-		/* 1s blink divides the 8s master — every loop lands in phase. */
-		.cursor {
-			animation: omx-blink 1s steps(1) infinite;
+		.live-ring {
+			transform-box: fill-box;
+			transform-origin: center;
+			animation: omx-live 2s ease-out infinite;
 		}
 
-		@keyframes omx-cmdh {
-			0%,
-			6% {
-				offset-distance: 0%;
+		@keyframes omx-terminal {
+			0% {
+				transform: translateY(3px);
 				opacity: 0;
 			}
-			9% {
+			8%,
+			92% {
+				transform: translateY(0);
 				opacity: 1;
 			}
-			14% {
-				opacity: 1;
-			}
-			16%,
+			98%,
 			100% {
-				offset-distance: 100%;
+				transform: translateY(0);
 				opacity: 0;
 			}
 		}
-		@keyframes omx-cmda {
+		@keyframes omx-line-1 {
 			0%,
-			40% {
-				offset-distance: 0%;
+			12% {
 				opacity: 0;
 			}
-			43% {
+			18%,
+			100% {
 				opacity: 1;
 			}
-			48% {
-				opacity: 1;
-			}
-			50%,
-			100% {
-				offset-distance: 100%;
-				opacity: 0;
-			}
 		}
-		@keyframes omx-l1 {
+		@keyframes omx-line-2 {
 			0%,
-			17% {
+			24% {
 				opacity: 0;
-			}
-			19%,
-			90% {
-				opacity: 0.5;
-			}
-			95%,
-			100% {
-				opacity: 0;
-			}
-		}
-		@keyframes omx-l2 {
-			0%,
-			51% {
-				opacity: 0;
-			}
-			53%,
-			90% {
-				opacity: 0.5;
-			}
-			95%,
-			100% {
-				opacity: 0;
-			}
-		}
-		/* two pulses per loop — one per landed line, both observers together */
-		@keyframes omx-see {
-			0%,
-			19% {
-				opacity: 0;
-			}
-			23% {
-				opacity: 0.6;
 			}
 			30%,
-			53% {
-				opacity: 0;
-			}
-			57% {
-				opacity: 0.6;
-			}
-			64%,
-			100% {
-				opacity: 0;
-			}
-		}
-		@keyframes omx-blink {
-			0%,
 			100% {
 				opacity: 1;
 			}
-			50% {
+		}
+		@keyframes omx-line-3 {
+			0%,
+			36% {
+				opacity: 0;
+			}
+			42%,
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes omx-line-4 {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			54%,
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes omx-live {
+			0% {
+				transform: scale(0.5);
+				opacity: 0.5;
+			}
+			75%,
+			100% {
+				transform: scale(1.7);
 				opacity: 0;
 			}
 		}
