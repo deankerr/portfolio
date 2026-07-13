@@ -1,0 +1,126 @@
+---
+import type { ContactDetails } from '../../types/portfolio';
+
+interface Props {
+	contact: ContactDetails;
+}
+
+const { contact } = Astro.props;
+const externalLink = { target: '_blank', rel: 'noopener' };
+---
+
+<header class="site-header">
+	<div class="identity">
+		<a class="name" href="#top">dean kerr</a>
+		<span class="location">melbourne, au</span>
+	</div>
+	<nav aria-label="Contact links">
+		<a href={contact.github} {...externalLink}>github</a>
+		<button data-copy={contact.discord} title={`copy discord handle: ${contact.discord}`}>
+			discord
+		</button>
+		<a href={`mailto:${contact.email}`}>email</a>
+		<button data-theme-toggle aria-label="Toggle color theme" class="theme-toggle">
+			<span class="theme-light">dark</span>
+			<span class="theme-dark">light</span>
+		</button>
+	</nav>
+</header>
+
+<style>
+	.site-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.5rem;
+		padding-block: 0.625rem;
+	}
+
+	.identity {
+		display: flex;
+		align-items: baseline;
+		gap: 0.875rem;
+	}
+
+	.name {
+		font-weight: 600;
+		text-decoration: none;
+		text-transform: lowercase;
+		white-space: nowrap;
+	}
+
+	.location {
+		color: var(--ink-faint);
+		font-family: var(--font-mono);
+		font-size: 0.78rem;
+		white-space: nowrap;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	nav a,
+	nav button {
+		display: inline-flex;
+		min-height: 2.75rem;
+		align-items: center;
+		padding-inline: 0.375rem;
+		font-family: var(--font-mono);
+		font-size: 0.84rem;
+		text-decoration: none;
+		text-transform: lowercase;
+	}
+
+	nav a:hover,
+	nav button:hover {
+		text-decoration: underline;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	button:active {
+		scale: 0.96;
+	}
+
+	.theme-toggle {
+		color: var(--ink-faint);
+		transition: color 150ms ease-out;
+	}
+
+	.theme-toggle:hover {
+		color: var(--ink);
+	}
+
+	.theme-dark {
+		display: none;
+	}
+
+	:global(html[data-theme='dark']) .theme-light {
+		display: none;
+	}
+
+	:global(html[data-theme='dark']) .theme-dark {
+		display: inline;
+	}
+
+	@media (max-width: 42rem) {
+		.site-header {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.location {
+			display: none;
+		}
+
+		nav {
+			width: 100%;
+			justify-content: space-between;
+		}
+	}
+</style>

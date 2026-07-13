@@ -1,0 +1,42 @@
+---
+interface Props {
+	tone?: 'page' | 'panel';
+}
+
+const { tone = 'page' } = Astro.props;
+---
+
+<div class:list={['prose', tone === 'panel' && 'panel']}>
+	<slot />
+</div>
+
+<style>
+	.prose {
+		--prose-body: var(--ink-soft);
+		--prose-strong: var(--ink);
+	}
+
+	.prose.panel {
+		--prose-body: rgb(242 241 232 / 72%);
+		--prose-strong: var(--panel-ink);
+	}
+
+	.prose :global(p) {
+		max-width: 58ch;
+		color: var(--prose-body);
+	}
+
+	.prose :global(p + p) {
+		margin-top: 0.9em;
+	}
+
+	.prose :global(strong) {
+		color: var(--prose-strong);
+		font-weight: 600;
+	}
+
+	.prose :global(code) {
+		font-family: var(--font-mono);
+		font-size: 0.85em;
+	}
+</style>

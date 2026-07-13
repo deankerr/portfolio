@@ -21,6 +21,8 @@
 	--diagram: #67655c;
 
 	--panel: #16150f;
+	--panel-ink: #f2f1e8;
+	--panel-line: rgba(242, 241, 232, 0.14);
 	--frame-shadow: 0 24px 70px -12px rgba(28, 27, 23, 0.28);
 }
 
@@ -57,8 +59,8 @@
 
 	/* Dark chrome — the same in both themes, so screenshots always sit in it. */
 	--color-panel: var(--panel);
-	--color-panel-ink: #f2f1e8;
-	--color-panel-line: rgba(242, 241, 232, 0.14);
+	--color-panel-ink: var(--panel-ink);
+	--color-panel-line: var(--panel-line);
 
 	--shadow-frame: var(--frame-shadow);
 

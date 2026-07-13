@@ -1,0 +1,66 @@
+---
+import type { ContactDetails } from '../../types/portfolio';
+
+interface Props {
+	contact: ContactDetails;
+}
+
+const { contact } = Astro.props;
+const externalLink = { target: '_blank', rel: 'noopener' };
+---
+
+<footer>
+	<span>dean kerr</span>
+	<nav aria-label="Contact links">
+		<a href={contact.github} {...externalLink}>github</a>
+		<button data-copy={contact.discord} title="copy discord handle">
+			discord · {contact.discord}
+		</button>
+		<a href={`mailto:${contact.email}`}>{contact.email}</a>
+	</nav>
+</footer>
+
+<style>
+	footer {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 4rem;
+		padding-block: 1.25rem;
+		border-top: 1px solid var(--line);
+		color: var(--ink-faint);
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+	}
+
+	a,
+	button {
+		display: inline-flex;
+		min-height: 2.75rem;
+		align-items: center;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+
+	a:hover,
+	button:hover {
+		text-decoration: underline;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	button:active {
+		scale: 0.96;
+	}
+</style>

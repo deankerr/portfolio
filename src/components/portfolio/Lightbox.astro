@@ -1,0 +1,31 @@
+<script>
+	import GLightbox from 'glightbox';
+	import 'glightbox/dist/css/glightbox.min.css';
+
+	GLightbox({
+		selector: '.glightbox',
+		loop: true,
+		zoomable: false,
+		openEffect: 'fade',
+		closeEffect: 'fade',
+		slideEffect: 'fade',
+	});
+</script>
+
+<style is:global>
+	.gfadeIn,
+	.gfadeOut,
+	.gzoomIn,
+	.gzoomOut {
+		animation-duration: 0.18s !important;
+	}
+
+	.goverlay {
+		transition-duration: 0.18s !important;
+	}
+
+	.gslide-image img {
+		max-width: 92vw !important;
+		max-height: 88vh !important;
+	}
+</style>
