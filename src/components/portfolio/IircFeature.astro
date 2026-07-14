@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import type { Project, ProjectScreenshot } from '../../types/portfolio';
 import ProjectStack from './ProjectStack.astro';
 import Prose from './Prose.astro';
+import Screenshot from './Screenshot.astro';
 
 interface Props {
 	app: Project;
@@ -14,47 +14,42 @@ const { app, library, screenshot } = Astro.props;
 const externalLink = { target: '_blank', rel: 'noopener' };
 ---
 
-<section class="section" aria-labelledby="iirc-title">
-	<div class="layout">
-		<div class="app">
-			<h3 id="iirc-title">{app.name}</h3>
-			<p class="kicker">{app.kicker}</p>
-			<p class="date">{app.date}</p>
-			<div class="app-description">
+<section class="border-t border-line pt-9 pb-14 lg:px-8 xl:px-11" aria-labelledby="iirc-title">
+	<div class="grid gap-x-11 gap-y-10 md:grid-cols-2">
+		<div>
+			<h3
+				id="iirc-title"
+				class="text-3xl leading-none font-medium tracking-tight text-balance md:text-4xl lg:text-5xl"
+			>
+				{app.name}
+			</h3>
+			<p class="mt-2.5 text-base text-accent">{app.kicker}</p>
+			<p class="mt-1.5 font-mono text-xs text-ink-faint">{app.date}</p>
+			<div class="mt-8 text-base">
 				<Prose><slot name="app" /></Prose>
 			</div>
-			<div class="app-stack">
+			<div class="mt-6 max-w-[58ch]">
 				<ProjectStack items={app.stack} />
 			</div>
-			<div class="frame">
-				<figure>
-					<a href={screenshot.src.src} class="glightbox" data-gallery="iirc">
-						<Image
-							src={screenshot.src}
-							alt={screenshot.alt}
-							widths={[480, 720, 1080, 1440]}
-							sizes="min(34rem, 92vw)"
-							loading="lazy"
-							quality={88}
-							class="screenshot"
-						/>
-					</a>
+			<div class="mt-6 max-w-[34rem] rounded-2xl bg-panel p-3 shadow-frame">
+				<figure class="overflow-hidden rounded">
+					<Screenshot screenshot={screenshot} gallery="iirc" width={544} />
 				</figure>
 			</div>
-			<a class="project-link" href={app.repo} {...externalLink}>github ↗</a>
+			<a class="mt-6 inline-block font-mono text-sm" href={app.repo} {...externalLink}>github ↗</a>
 		</div>
 
-		<div class="library-column">
-			<article class="library">
-				<h4>{library.name}</h4>
-				<p class="library-kicker">{library.kicker}</p>
-				<div class="library-description">
+		<div>
+			<article class="rounded-xl bg-surface-subtle p-5 ring-1 ring-line md:sticky md:top-10 md:p-6">
+				<h4 class="font-mono text-lg font-bold wrap-anywhere">{library.name}</h4>
+				<p class="mt-2 text-base text-accent">{library.kicker}</p>
+				<div class="mt-4 text-base">
 					<Prose><slot name="library" /></Prose>
 				</div>
-				<div class="library-stack">
+				<div class="mt-5">
 					<ProjectStack items={library.stack} />
 				</div>
-				<div class="library-links">
+				<div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-sm">
 					{
 						library.live && (
 							<a href={library.live} {...externalLink}>
@@ -68,151 +63,3 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 		</div>
 	</div>
 </section>
-
-<style>
-	.section {
-		padding-block: 2.25rem 3.5rem;
-		border-top: 1px solid var(--line);
-	}
-
-	.layout {
-		display: grid;
-		gap: 2.5rem 2.75rem;
-	}
-
-	h3 {
-		font-size: 2.1rem;
-		font-weight: 500;
-		letter-spacing: -0.02em;
-		line-height: 0.95;
-	}
-
-	.kicker {
-		margin-top: 0.625rem;
-		color: var(--accent);
-		font-size: 0.98rem;
-	}
-
-	.date {
-		margin-top: 0.375rem;
-		color: var(--ink-faint);
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-	}
-
-	.app-description {
-		margin-top: 2rem;
-		font-size: 0.95rem;
-	}
-
-	.app-stack {
-		max-width: 58ch;
-		margin-top: 1.5rem;
-	}
-
-	.frame {
-		max-width: 34rem;
-		margin-top: 1.5rem;
-		padding: 0.75rem;
-		border-radius: 1rem;
-		background: var(--panel);
-		box-shadow: var(--frame-shadow);
-	}
-
-	figure {
-		overflow: hidden;
-		border-radius: 0.25rem;
-	}
-
-	figure a {
-		display: block;
-	}
-
-	.screenshot {
-		width: 100%;
-		outline: 1px solid oklch(1 0 0 / 10%);
-		outline-offset: -1px;
-	}
-
-	.project-link {
-		display: inline-block;
-		margin-top: 1.5rem;
-		font-family: var(--font-mono);
-		font-size: 0.82rem;
-	}
-
-	.library {
-		padding: 1.25rem;
-		border-radius: 0.75rem;
-		background: rgb(28 27 23 / 2.5%);
-		box-shadow: 0 0 0 1px var(--line);
-	}
-
-	:global(html[data-theme='dark']) .library {
-		background: rgb(233 231 223 / 2.5%);
-	}
-
-	h4 {
-		font-family: var(--font-mono);
-		font-size: 1.1rem;
-		font-weight: 700;
-		overflow-wrap: anywhere;
-	}
-
-	.library-kicker {
-		margin-top: 0.5rem;
-		color: var(--accent);
-		font-size: 0.95rem;
-	}
-
-	.library-description {
-		margin-top: 1rem;
-		font-size: 0.95rem;
-	}
-
-	.library-stack {
-		margin-top: 1.25rem;
-	}
-
-	.library-links {
-		display: flex;
-		align-items: baseline;
-		flex-wrap: wrap;
-		gap: 0.5rem 1.5rem;
-		margin-top: 1.5rem;
-		font-family: var(--font-mono);
-		font-size: 0.82rem;
-	}
-
-	@media (min-width: 48rem) {
-		.layout {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-
-		h3 {
-			font-size: 2.75rem;
-		}
-
-		.library {
-			position: sticky;
-			top: 2.5rem;
-			padding: 1.5rem;
-		}
-	}
-
-	@media (min-width: 64rem) {
-		.section {
-			padding-inline: 2rem;
-		}
-
-		h3 {
-			font-size: 3.25rem;
-		}
-	}
-
-	@media (min-width: 80rem) {
-		.section {
-			padding-inline: 2.75rem;
-		}
-	}
-</style>

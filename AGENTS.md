@@ -10,6 +10,11 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Interaction design
+
+- Do not scale text-only buttons that are styled like links on press or active states.
+- Never scale elements up on hover.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build

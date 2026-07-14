@@ -10,83 +10,41 @@ interface Props {
 const { items, layout = 'compact', tone = 'page' } = Astro.props;
 ---
 
-<div class:list={['stack', layout, tone === 'panel' && 'panel']}>
-	<p class="label">stack</p>
-	<ul>
+<div>
+	<p
+		class:list={[
+			'font-mono text-xs font-medium tracking-widest lowercase',
+			tone === 'panel' ? 'text-panel-ink/60' : 'text-ink-faint',
+		]}
+	>
+		stack
+	</p>
+	<ul
+		class:list={[
+			layout === 'wide'
+				? 'mt-4 grid gap-x-9 gap-y-3 sm:grid-cols-2 lg:grid-cols-3'
+				: 'mt-3 grid gap-2',
+		]}
+	>
 		{
 			items.map((item) => (
-				<li>
-					<strong>{item.name}</strong>
+				<li
+					class:list={[
+						'text-sm leading-normal',
+						tone === 'panel' ? 'text-panel-ink/70' : 'text-ink-soft',
+					]}
+				>
+					<strong
+						class:list={[
+							'font-mono text-xs font-semibold',
+							tone === 'panel' ? 'text-panel-ink' : 'text-ink',
+						]}
+					>
+						{item.name}
+					</strong>
 					{item.note && <>: {item.note}</>}
 				</li>
 			))
 		}
 	</ul>
 </div>
-
-<style>
-	.stack {
-		--stack-label: var(--ink-faint);
-		--stack-name: var(--ink);
-		--stack-copy: var(--ink-soft);
-	}
-
-	.stack.panel {
-		--stack-label: rgb(242 241 232 / 60%);
-		--stack-name: var(--panel-ink);
-		--stack-copy: rgb(242 241 232 / 70%);
-	}
-
-	.label {
-		color: var(--stack-label);
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.08em;
-		text-transform: lowercase;
-	}
-
-	ul {
-		display: grid;
-		gap: 0.5rem;
-		margin-top: 0.75rem;
-	}
-
-	li {
-		color: var(--stack-copy);
-		font-size: 0.83rem;
-		line-height: 1.55;
-	}
-
-	strong {
-		color: var(--stack-name);
-		font-family: var(--font-mono);
-		font-size: 0.76rem;
-		font-weight: 600;
-	}
-
-	.wide ul {
-		gap: 0.75rem 2.25rem;
-		margin-top: 1rem;
-	}
-
-	.wide li {
-		font-size: 0.875rem;
-	}
-
-	.wide strong {
-		font-size: 0.8rem;
-	}
-
-	@media (min-width: 40rem) {
-		.wide ul {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (min-width: 64rem) {
-		.wide ul {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-	}
-</style>

@@ -9,118 +9,42 @@ const { contact } = Astro.props;
 const externalLink = { target: '_blank', rel: 'noopener' };
 ---
 
-<header class="site-header">
-	<div class="identity">
-		<a class="name" href="#top">dean kerr</a>
-		<span class="location">melbourne, au</span>
+<header
+	class="flex items-center justify-between gap-x-6 gap-y-3 py-2.5 max-[42rem]:flex-col max-[42rem]:items-start"
+>
+	<div class="flex items-baseline gap-3.5">
+		<a class="font-semibold whitespace-nowrap lowercase no-underline" href="#top">dean kerr</a>
+		<span class="font-mono text-xs whitespace-nowrap text-ink-faint max-[42rem]:hidden"
+			>melbourne, au</span
+		>
 	</div>
-	<nav aria-label="Contact links">
-		<a href={contact.github} {...externalLink}>github</a>
-		<button data-copy={contact.discord} title={`copy discord handle: ${contact.discord}`}>
+	<nav
+		class="flex items-center gap-1 max-[42rem]:w-full max-[42rem]:justify-between"
+		aria-label="Contact links"
+	>
+		<a
+			class="inline-flex min-h-11 items-center px-1.5 font-mono text-sm lowercase no-underline hover:underline"
+			href={contact.github}
+			{...externalLink}>github</a
+		>
+		<button
+			class="inline-flex min-h-11 cursor-pointer items-center px-1.5 font-mono text-sm lowercase hover:underline"
+			data-copy={contact.discord}
+			title={`copy discord handle: ${contact.discord}`}
+		>
 			discord
 		</button>
-		<a href={`mailto:${contact.email}`}>email</a>
-		<button data-theme-toggle aria-label="Toggle color theme" class="theme-toggle">
-			<span class="theme-light">dark</span>
-			<span class="theme-dark">light</span>
+		<a
+			class="inline-flex min-h-11 items-center px-1.5 font-mono text-sm lowercase no-underline hover:underline"
+			href={`mailto:${contact.email}`}>email</a
+		>
+		<button
+			data-theme-toggle
+			aria-label="Toggle color theme"
+			class="inline-flex min-h-11 cursor-pointer items-center px-1.5 font-mono text-sm lowercase text-ink-faint transition-colors duration-150 ease-out hover:text-ink"
+		>
+			<span class="dark:hidden">dark</span>
+			<span class="hidden dark:inline">light</span>
 		</button>
 	</nav>
 </header>
-
-<style>
-	.site-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.75rem 1.5rem;
-		padding-block: 0.625rem;
-	}
-
-	.identity {
-		display: flex;
-		align-items: baseline;
-		gap: 0.875rem;
-	}
-
-	.name {
-		font-weight: 600;
-		text-decoration: none;
-		text-transform: lowercase;
-		white-space: nowrap;
-	}
-
-	.location {
-		color: var(--ink-faint);
-		font-family: var(--font-mono);
-		font-size: 0.78rem;
-		white-space: nowrap;
-	}
-
-	nav {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	nav a,
-	nav button {
-		display: inline-flex;
-		min-height: 2.75rem;
-		align-items: center;
-		padding-inline: 0.375rem;
-		font-family: var(--font-mono);
-		font-size: 0.84rem;
-		text-decoration: none;
-		text-transform: lowercase;
-	}
-
-	nav a:hover,
-	nav button:hover {
-		text-decoration: underline;
-	}
-
-	button {
-		cursor: pointer;
-	}
-
-	button:active {
-		scale: 0.96;
-	}
-
-	.theme-toggle {
-		color: var(--ink-faint);
-		transition: color 150ms ease-out;
-	}
-
-	.theme-toggle:hover {
-		color: var(--ink);
-	}
-
-	.theme-dark {
-		display: none;
-	}
-
-	:global(html[data-theme='dark']) .theme-light {
-		display: none;
-	}
-
-	:global(html[data-theme='dark']) .theme-dark {
-		display: inline;
-	}
-
-	@media (max-width: 42rem) {
-		.site-header {
-			align-items: flex-start;
-			flex-direction: column;
-		}
-
-		.location {
-			display: none;
-		}
-
-		nav {
-			width: 100%;
-			justify-content: space-between;
-		}
-	}
-</style>

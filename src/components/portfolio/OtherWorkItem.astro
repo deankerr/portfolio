@@ -12,26 +12,30 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 const hasDiagram = Astro.slots.has('diagram');
 ---
 
-<article>
-	<div class="summary">
-		<h3>{project.name}</h3>
-		<p class="kicker">{project.kicker}</p>
-		<p class="date">{project.date}</p>
-		<a href={project.repo} {...externalLink}>github ↗</a>
+<article class="grid gap-x-10 gap-y-6 border-b border-line py-8 last:border-b-0">
+	<div class="summary md:sticky md:top-10 md:self-start">
+		<h3 class="font-mono text-base font-bold">{project.name}</h3>
+		<p class="mt-2 text-sm leading-tight text-ink-soft">{project.kicker}</p>
+		<p class="mt-1.5 font-mono text-xs text-ink-faint">{project.date}</p>
+		<a class="mt-3 inline-block font-mono text-xs" href={project.repo} {...externalLink}>github ↗</a
+		>
 	</div>
 
-	<div class="details">
-		<div class="description">
+	<div class="max-w-[68ch]">
+		<div class="text-base">
 			<Prose><slot /></Prose>
 		</div>
-		<div class="stack">
+		<div class="mt-7 max-w-[58ch]">
 			<ProjectStack items={project.stack} />
 		</div>
 	</div>
 
 	{
 		hasDiagram && (
-			<div class="diagram" aria-hidden="true">
+			<div
+				class="mx-auto w-full max-w-md text-diagram md:col-start-2 lg:sticky lg:top-10 lg:col-auto lg:max-w-none lg:self-start"
+				aria-hidden="true"
+			>
 				<slot name="diagram" />
 			</div>
 		)
@@ -39,91 +43,15 @@ const hasDiagram = Astro.slots.has('diagram');
 </article>
 
 <style>
-	article {
-		display: grid;
-		gap: 1.5rem 2.5rem;
-		padding-block: 2rem;
-		border-bottom: 1px solid var(--line);
-	}
-
-	article:last-child {
-		border-bottom: 0;
-	}
-
-	h3 {
-		font-family: var(--font-mono);
-		font-size: 1.05rem;
-		font-weight: 700;
-	}
-
-	.kicker {
-		margin-top: 0.5rem;
-		color: var(--ink-soft);
-		font-size: 0.92rem;
-		line-height: 1.25;
-	}
-
-	.date {
-		margin-top: 0.375rem;
-		color: var(--ink-faint);
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-	}
-
-	.summary a {
-		display: inline-block;
-		margin-top: 0.75rem;
-		font-family: var(--font-mono);
-		font-size: 0.8rem;
-	}
-
-	.details {
-		max-width: 68ch;
-	}
-
-	.description {
-		font-size: 0.95rem;
-	}
-
-	.stack {
-		max-width: 58ch;
-		margin-top: 1.75rem;
-	}
-
-	.diagram {
-		width: 100%;
-		max-width: 26rem;
-		margin-inline: auto;
-		color: var(--diagram);
-	}
-
 	@media (min-width: 48rem) {
 		article {
 			grid-template-columns: 12rem minmax(0, 1fr);
-		}
-
-		.summary {
-			position: sticky;
-			top: 2.5rem;
-			align-self: start;
-		}
-
-		.diagram {
-			grid-column: 2;
 		}
 	}
 
 	@media (min-width: 64rem) {
 		article {
 			grid-template-columns: 11rem minmax(0, 1.5fr) minmax(0, 1fr);
-		}
-
-		.diagram {
-			position: sticky;
-			top: 2.5rem;
-			grid-column: auto;
-			align-self: start;
-			max-width: none;
 		}
 	}
 </style>

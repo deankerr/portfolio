@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 /* Raw theme values. Light is the primary design — warm paper, near-black ink,
    one vermillion accent. Dark screenshots live inside fixed dark "chrome"
    (panel/frame) surfaces, which barely move between themes; only the page
@@ -8,6 +10,7 @@
 	color-scheme: light;
 
 	--surface: #f3f2ed;
+	--surface-subtle: rgb(28 27 23 / 2.5%);
 	--ink: #1c1b17;
 	--ink-soft: #52514a;
 	/* Faint text still gets read (dates, stack labels, footer) — keep it ≥4.5:1. */
@@ -23,6 +26,7 @@
 	--panel: #16150f;
 	--panel-ink: #f2f1e8;
 	--panel-line: rgba(242, 241, 232, 0.14);
+	--screenshot-outline: oklch(1 0 0 / 10%);
 	--frame-shadow: 0 24px 70px -12px rgba(28, 27, 23, 0.28);
 }
 
@@ -30,6 +34,7 @@
 	color-scheme: dark;
 
 	--surface: #131311;
+	--surface-subtle: rgb(233 231 223 / 2.5%);
 	--ink: #e9e7df;
 	--ink-soft: #a5a399;
 	--ink-faint: #807e72;
@@ -49,6 +54,7 @@
 @theme inline {
 	--color-*: initial;
 	--color-surface: var(--surface);
+	--color-surface-subtle: var(--surface-subtle);
 	--color-ink: var(--ink);
 	--color-ink-soft: var(--ink-soft);
 	--color-ink-faint: var(--ink-faint);
@@ -61,6 +67,7 @@
 	--color-panel: var(--panel);
 	--color-panel-ink: var(--panel-ink);
 	--color-panel-line: var(--panel-line);
+	--color-screenshot-outline: var(--screenshot-outline);
 
 	--shadow-frame: var(--frame-shadow);
 
@@ -82,16 +89,8 @@
 	}
 
 	body {
-		background: var(--surface);
-		color: var(--ink);
-		font-family: var(--font-sans);
-		font-size: 16px;
-		line-height: 1.6;
-		-webkit-font-smoothing: antialiased;
+		font-synthesis: none;
 		text-rendering: optimizeLegibility;
-		transition:
-			background-color 0.2s,
-			color 0.2s;
 	}
 
 	/* Editorial link default: quiet underline, accent on hover. */

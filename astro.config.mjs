@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+	server: {
+		port: 4666,
+	},
 	// Temporary Vercel URL until the real domain is decided. Absolute URLs for
 	// og:image/canonical derive from this.
 	site: 'https://portfolio-six-xi-62.vercel.app',
@@ -15,7 +18,7 @@ export default defineConfig({
 			provider: fontProviders.fontshare(),
 			name: 'Satoshi',
 			cssVariable: '--font-satoshi',
-			weights: ['400', '500', '700'],
+			weights: ['400', '500', '600', '700'],
 			styles: ['normal', 'italic'],
 			subsets: ['latin'],
 		},

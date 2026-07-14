@@ -6,24 +6,23 @@ interface Props {
 const { tone = 'page' } = Astro.props;
 ---
 
-<div class:list={['prose', tone === 'panel' && 'panel']}>
+<div
+	class:list={['prose text-base', tone === 'panel' ? 'panel text-panel-ink/70' : 'text-ink-soft']}
+>
 	<slot />
 </div>
 
 <style>
 	.prose {
-		--prose-body: var(--ink-soft);
 		--prose-strong: var(--ink);
 	}
 
 	.prose.panel {
-		--prose-body: rgb(242 241 232 / 72%);
 		--prose-strong: var(--panel-ink);
 	}
 
 	.prose :global(p) {
 		max-width: 58ch;
-		color: var(--prose-body);
 	}
 
 	.prose :global(p + p) {
@@ -32,11 +31,11 @@ const { tone = 'page' } = Astro.props;
 
 	.prose :global(strong) {
 		color: var(--prose-strong);
-		font-weight: 600;
+		font-weight: var(--font-weight-semibold);
 	}
 
 	.prose :global(code) {
 		font-family: var(--font-mono);
-		font-size: 0.85em;
+		font-size: var(--text-sm);
 	}
 </style>

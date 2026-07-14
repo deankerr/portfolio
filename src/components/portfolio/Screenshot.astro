@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets';
+import type { ProjectScreenshot } from '../../types/portfolio';
+
+interface Props {
+	screenshot: ProjectScreenshot;
+	gallery: string;
+	width: number;
+}
+
+const { screenshot, gallery, width } = Astro.props;
+---
+
+<a class="glightbox block" href={screenshot.src.src} data-gallery={gallery}>
+	<Image
+		src={screenshot.src}
+		alt={screenshot.alt}
+		layout="constrained"
+		width={width}
+		quality={90}
+		loading="lazy"
+		class="w-full outline outline-screenshot-outline outline-offset-[-1px]"
+	/>
+</a>

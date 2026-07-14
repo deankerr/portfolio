@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import type { Project, ProjectScreenshot } from '../../types/portfolio';
 import ProjectStack from './ProjectStack.astro';
 import Prose from './Prose.astro';
+import Screenshot from './Screenshot.astro';
 
 interface Props {
 	project: Project;
@@ -16,19 +16,28 @@ const { project, screenshots } = Astro.props;
 const externalLink = { target: '_blank', rel: 'noopener' };
 ---
 
-<section class="section" aria-labelledby="orca-title">
-	<article class="panel">
-		<div class="layout">
-			<div class="copy">
-				<p class="eyebrow">{project.kicker}</p>
-				<h2 id="orca-title">{project.name}</h2>
-				<p class="date">{project.date}</p>
-				<div class="description">
+<section class="border-t border-line pt-7 pb-14" aria-labelledby="orca-title">
+	<article class="rounded-lg bg-panel p-6 text-panel-ink md:p-8 lg:p-11">
+		<div class="layout grid gap-x-11 gap-y-9">
+			<div>
+				<p
+					class="eyebrow font-mono text-xs font-medium tracking-widest text-panel-ink/60 uppercase"
+				>
+					{project.kicker}
+				</p>
+				<h2
+					id="orca-title"
+					class="mt-4 text-5xl leading-none font-medium tracking-tight md:text-6xl lg:text-7xl"
+				>
+					{project.name}
+				</h2>
+				<p class="mt-3 font-mono text-xs text-panel-ink/60">{project.date}</p>
+				<div class="mt-6">
 					<Prose tone="panel">
 						<slot />
 					</Prose>
 				</div>
-				<div class="links">
+				<div class="mt-7 flex flex-wrap items-baseline gap-x-7 gap-y-2 font-mono text-sm">
 					{
 						project.live && (
 							<a href={project.live} {...externalLink}>
@@ -40,35 +49,16 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 				</div>
 			</div>
 
-			<div class="gallery-column">
-				<div class="gallery">
-					<figure>
-						<a href={screenshots.hero.src.src} class="glightbox" data-gallery="orca">
-							<Image
-								src={screenshots.hero.src}
-								alt={screenshots.hero.alt}
-								widths={[640, 960, 1320, 1980]}
-								sizes="(min-width: 1024px) min(41rem, 46vw), min(41rem, 92vw)"
-								quality={90}
-								class="screenshot"
-							/>
-						</a>
+			<div>
+				<div class="mx-auto grid w-full max-w-2xl content-start gap-4 lg:sticky lg:top-10 lg:ml-0">
+					<figure class="overflow-hidden rounded-md">
+						<Screenshot screenshot={screenshots.hero} gallery="orca" width={672} />
 					</figure>
-					<div class="supporting-shots">
+					<div class="grid items-start gap-4 sm:grid-cols-2">
 						{
 							screenshots.supporting.map((screenshot) => (
-								<figure>
-									<a href={screenshot.src.src} class="glightbox" data-gallery="orca">
-										<Image
-											src={screenshot.src}
-											alt={screenshot.alt}
-											widths={[432, 648, 864, 1280]}
-											sizes="(min-width: 640px) 20rem, 92vw"
-											loading="lazy"
-											quality={90}
-											class="screenshot"
-										/>
-									</a>
+								<figure class="overflow-hidden rounded-md">
+									<Screenshot screenshot={screenshot} gallery="orca" width={328} />
 								</figure>
 							))
 						}
@@ -77,138 +67,16 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 			</div>
 		</div>
 
-		<div class="stack">
+		<div class="mt-9 border-t border-panel-line pt-5">
 			<ProjectStack items={project.stack} layout="wide" tone="panel" />
 		</div>
 	</article>
 </section>
 
 <style>
-	.section {
-		padding-block: 1.75rem 3.5rem;
-		border-top: 1px solid var(--line);
-	}
-
-	.panel {
-		padding: 1.5rem;
-		border-radius: 0.5rem;
-		background: var(--panel);
-		color: var(--panel-ink);
-	}
-
-	.layout {
-		display: grid;
-		gap: 2.25rem 2.75rem;
-	}
-
-	.eyebrow,
-	.date {
-		color: rgb(242 241 232 / 60%);
-		font-family: var(--font-mono);
-		font-size: 0.72rem;
-	}
-
-	.eyebrow {
-		font-weight: 500;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-	}
-
-	h2 {
-		margin-top: 1rem;
-		font-size: 2.75rem;
-		font-weight: 500;
-		letter-spacing: -0.02em;
-		line-height: 0.9;
-	}
-
-	.date {
-		margin-top: 0.75rem;
-	}
-
-	.description {
-		margin-top: 1.5rem;
-	}
-
-	.links {
-		display: flex;
-		align-items: baseline;
-		flex-wrap: wrap;
-		gap: 0.5rem 1.75rem;
-		margin-top: 1.75rem;
-		font-family: var(--font-mono);
-		font-size: 0.85rem;
-	}
-
-	.gallery {
-		display: grid;
-		align-content: start;
-		gap: 1rem;
-		width: 100%;
-		max-width: 41rem;
-		margin-inline: auto;
-	}
-
-	figure {
-		overflow: hidden;
-		border-radius: 0.375rem;
-	}
-
-	.gallery a {
-		display: block;
-	}
-
-	.screenshot {
-		width: 100%;
-		outline: 1px solid oklch(1 0 0 / 10%);
-		outline-offset: -1px;
-	}
-
-	.supporting-shots {
-		display: grid;
-		align-items: start;
-		gap: 1rem;
-	}
-
-	.stack {
-		margin-top: 2.25rem;
-		padding-top: 1.25rem;
-		border-top: 1px solid var(--panel-line);
-	}
-
-	@media (min-width: 40rem) {
-		.supporting-shots {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (min-width: 48rem) {
-		.panel {
-			padding: 2rem;
-		}
-
-		h2 {
-			font-size: 3.5rem;
-		}
-	}
-
 	@media (min-width: 64rem) {
-		.panel {
-			padding: 2.75rem;
-		}
-
 		.layout {
 			grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-		}
-
-		h2 {
-			font-size: 4.5rem;
-		}
-
-		.gallery {
-			position: sticky;
-			top: 2.5rem;
-			margin-left: 0;
 		}
 	}
 </style>
