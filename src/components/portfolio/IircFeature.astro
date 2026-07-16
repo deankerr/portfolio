@@ -1,6 +1,5 @@
 ---
 import type { Project, ProjectScreenshot } from '../../types/portfolio';
-import ProjectStack from './ProjectStack.astro';
 import Prose from './Prose.astro';
 import Screenshot from './Screenshot.astro';
 
@@ -29,7 +28,21 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 				<Prose><slot name="app" /></Prose>
 			</div>
 			<div class="mt-6 max-w-[58ch]">
-				<ProjectStack items={app.stack} />
+				<div>
+					<p class="font-mono text-xs font-medium tracking-widest text-ink-faint lowercase">
+						stack
+					</p>
+					<ul class="mt-3 grid gap-2">
+						{
+							app.stack.map((item) => (
+								<li class="text-sm leading-normal text-ink-soft">
+									<strong class="font-mono text-xs font-semibold text-ink">{item.name}</strong>
+									{item.note && <>: {item.note}</>}
+								</li>
+							))
+						}
+					</ul>
+				</div>
 			</div>
 			<div class="mt-6 max-w-[34rem] rounded-2xl bg-panel p-3 shadow-frame">
 				<figure class="overflow-hidden rounded">
@@ -47,7 +60,21 @@ const externalLink = { target: '_blank', rel: 'noopener' };
 					<Prose><slot name="library" /></Prose>
 				</div>
 				<div class="mt-5">
-					<ProjectStack items={library.stack} />
+					<div>
+						<p class="font-mono text-xs font-medium tracking-widest text-ink-faint lowercase">
+							stack
+						</p>
+						<ul class="mt-3 grid gap-2">
+							{
+								library.stack.map((item) => (
+									<li class="text-sm leading-normal text-ink-soft">
+										<strong class="font-mono text-xs font-semibold text-ink">{item.name}</strong>
+										{item.note && <>: {item.note}</>}
+									</li>
+								))
+							}
+						</ul>
+					</div>
 				</div>
 				<div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-sm">
 					{
