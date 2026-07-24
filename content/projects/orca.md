@@ -22,4 +22,4 @@ It crawls OpenRouter on a schedule, stores each result as an immutable snapshot,
 
 The endpoints data grid is the primary one: a dense, filterable comparison across pricing, capabilities, modalities, and supported parameters, on TanStack Table and Virtual so it stays responsive over the whole catalog. Monitor replays the diff stream as a change feed: model, endpoint, and provider activity that's otherwise invisible. Discord alerts deliver a personalised Monitor for subscribed model-id patterns, generated and dispatched entirely server-side. A public API exposes the curated data as JSON.
 
-It's built for people who read context lengths, quantization, and reasoning-token support closely and copy model slugs straight into their code. Technical precision over simplification.
+It's built for people who read context lengths, quantization, and reasoning-token support closely and copy model slugs straight into their code.

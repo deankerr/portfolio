@@ -1,11 +1,17 @@
 {
-	"version": 1,
-	"skills": {
-		"svg-animations": {
-			"source": "supermemoryai/skills",
-			"sourceType": "github",
-			"skillPath": "svg-animations/SKILL.md",
-			"computedHash": "9be4b3e0afe9d3cbb1bcf238f8504f9a23552f742350fbef9483070112ac1977"
-		}
-	}
+  "version": 1,
+  "skills": {
+    "creating-svg-illustrations": {
+      "source": "narumiruna/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/slides-visuals/creating-svg-illustrations/SKILL.md",
+      "computedHash": "a9026a7ba22858ab24165af6627e6a72aff53546f5a305575f4f936c02e846ff"
+    },
+    "svg-animations": {
+      "source": "supermemoryai/skills",
+      "sourceType": "github",
+      "skillPath": "svg-animations/SKILL.md",
+      "computedHash": "9be4b3e0afe9d3cbb1bcf238f8504f9a23552f742350fbef9483070112ac1977"
+    }
+  }
 }

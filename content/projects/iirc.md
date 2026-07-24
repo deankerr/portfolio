@@ -13,7 +13,7 @@ stack:
   - name: 'Turborepo, TypeScript, Zod, OXC toolchain'
 ---
 
-The server is infrastructure, not application logic. It does two things: stream a persistent event log down to clients, and broadcast commands up to plugins. Everything protocol-specific (connections, state, how a message renders) is plugin-defined, so a new protocol is another plugin rather than a server change. IRC is the one implemented today; the server assumes nothing about it.
+The server does two things: stream a persistent event log down to clients, and broadcast commands up to plugins. Everything protocol-specific (connections, state, how a message renders) is plugin-defined, so a new protocol is another plugin rather than a server change. IRC is the one implemented today; the server assumes nothing about it.
 
 Events flow down: a plugin emits, the server persists to SQLite and pushes to every client over SSE. Commands flow up: the client sends one, the server broadcasts it to all plugins, and each self-selects on an opaque context string like `irc:localhost/6697:#dev`. Commands are fire-and-forget; the event stream is the sole source of truth.
 

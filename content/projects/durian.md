@@ -18,8 +18,8 @@ stack:
     note: 'five workspaces, with typed env validation shared across server, web, and bot'
 ---
 
-Most agent systems are stateless responders: a request arrives, a loop runs, everything evaporates. durian is built around a working theory of the durable agent — a persistent, multi-context entity instead. Durable meaning an identity that outlives any single session, an awareness of who wrote each message and which channel it's scoped to, and serial processing, so participants never see contradictory output from concurrent inference.
+durian is built around a working theory of the durable agent: a persistent, multi-context entity, rather than the usual stateless responder where a request arrives, a loop runs, and everything evaporates. Durable meaning an identity that outlives any single session, an awareness of who wrote each message and which channel it's scoped to, and serial processing, so participants never see contradictory output from concurrent inference.
 
 The actor model is that theory's execution substrate. Each agent and each channel is an independent RivetKit actor holding its own state, indexed by a singleton registry — so the unit of isolation is the actor, not a row in a database or a job on a queue, and persistent identity and channel scoping fall out of it. A Discord bot and a management UI sit on top of the same actor server.
 
-A working vertical slice shipped — isolated actor state, streaming with tool calls, across the bot and the UI — but the durable core, long-term memory and identity, was still on the roadmap when it went dormant. It leaves the question it was built to probe: actors or queues for stateful, streaming, tool-using agents?
+A working vertical slice shipped — isolated actor state, streaming with tool calls, across the bot and the UI — but the durable core, long-term memory and identity, are still on the roadmap.
