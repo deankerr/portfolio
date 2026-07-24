@@ -1,0 +1,26 @@
+---
+// Dev-only badge (gated at the render site in Layout): shows the active
+// Tailwind breakpoint and the live viewport width in the bottom-left corner.
+---
+
+<div
+	class="pointer-events-none fixed bottom-3 left-3 z-50 flex gap-2 rounded bg-panel px-2.5 py-1.5 font-mono text-xs text-panel-ink shadow-frame"
+	aria-hidden="true"
+>
+	<span class="font-semibold text-accent">
+		<span class="sm:hidden">base</span>
+		<span class="hidden sm:max-md:inline">sm</span>
+		<span class="hidden md:max-lg:inline">md</span>
+		<span class="hidden lg:max-xl:inline">lg</span>
+		<span class="hidden xl:max-2xl:inline">xl</span>
+		<span class="hidden 2xl:inline">2xl</span>
+	</span>
+	<span data-viewport-width></span>
+</div>
+
+<script>
+	const readout = document.querySelector('[data-viewport-width]')!;
+	const update = () => (readout.textContent = `${window.innerWidth}px`);
+	update();
+	window.addEventListener('resize', update);
+</script>

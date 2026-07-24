@@ -19,9 +19,9 @@ stack:
   - name: 'Zod, Remeda, OXC toolchain'
 ---
 
-Most chat UIs bind the inference stream to the React component lifecycle: switch sessions or navigate between views and the in-flight request stalls or dies, because component state owns the conversation. tetra inverts that. The runtime writes streaming snapshots into TinyBase, a reactive in-memory database, and every UI is a pure reader. The runtime has no React dependency at all.
+Most chat UIs bind the inference stream to the React component lifecycle: switch sessions or navigate between views and the in-flight request stalls or dies, because component state owns the conversation. tetra inverts that. The runtime writes streaming snapshots into TinyBase, a reactive in-memory database, and every UI is a pure reader.
 
-So a generation keeps streaming as you switch sessions and move between views: the components unmount and remount, the request doesn't care. The same engine drives the browser SPA, the desktop app, and the CLI unchanged. Because the store is mergeable (CRDT), one shape serves local persistence, tab sync over BroadcastChannel, and opt-in cross-device sync through a Cloudflare Durable Object. A session in the terminal and the same session on the desktop converge on identical state.
+The same engine drives the browser SPA, the desktop app, and the CLI unchanged. Because the store is mergeable (CRDT), one shape serves local persistence, tab sync over BroadcastChannel, and opt-in cross-device sync through a Cloudflare Durable Object. A session in the terminal and the same session on the desktop converge on identical state.
 
 Underneath, a session is a durable tree of messages rather than a linear transcript, so branching, regeneration, and transcript editing are derived views instead of bolted-on features. Run configuration is a shared recipe every surface reads, and tools run over the same primitives.
 

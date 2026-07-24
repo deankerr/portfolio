@@ -7,13 +7,13 @@ description: Create, revise, embed, or troubleshoot accessible SVG diagrams and 
 
 Start with `references/core-rules.md`; load only the extra detail the artifact needs.
 
-| Need | Read or use |
-| --- | --- |
-| Canvas, style, text, accessibility, validation | `references/core-rules.md` |
-| Reusable compositions | `references/pattern-examples.md` |
-| Marp embedding | `references/embedding.md` |
-| Rendering failures | `references/troubleshooting.md` |
-| Known-good deck example | `assets/examples/with-diagrams.md` |
+| Need                                           | Read or use                        |
+| ---------------------------------------------- | ---------------------------------- |
+| Canvas, style, text, accessibility, validation | `references/core-rules.md`         |
+| Reusable compositions                          | `references/pattern-examples.md`   |
+| Marp embedding                                 | `references/embedding.md`          |
+| Rendering failures                             | `references/troubleshooting.md`    |
+| Known-good deck example                        | `assets/examples/with-diagrams.md` |
 
 ## Workflow
 

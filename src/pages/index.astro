@@ -2,16 +2,15 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-import esuiteArtifactShot from '../assets/e-suite-artifact-chat.png';
-import esuiteGenShot from '../assets/e-suite-generations.png';
-import igBatchShot from '../assets/ig-image-batch.png';
-import igFeedShot from '../assets/ig-image-feed.png';
-import iircShot from '../assets/iirc.png';
-import orcaApiShot from '../assets/orca-api.png';
-import orcaShot from '../assets/orca-endpoints-grid.png';
-import orcaMonitorShot from '../assets/orca-monitor.png';
-import tetraImageShot from '../assets/tetra-image-chat.png';
-import tetraMarkdownShot from '../assets/tetra-markdown-chat.png';
+import esuiteArtifactShot from '../assets/esuite-1.png';
+import esuiteModelsShot from '../assets/esuite-2.png';
+import igArtifactShot from '../assets/ig-1.png';
+import igFeedShot from '../assets/ig-2.png';
+import iircShot from '../assets/iirc-1.png';
+import orcaEndpointsShot from '../assets/orca-1.png';
+import orcaMonitorShot from '../assets/orca-2.png';
+import tetraMarkdownShot from '../assets/tetra-1.png';
+import tetraImageShot from '../assets/tetra-2.png';
 
 import ArchiDiagram from '../components/diagrams/Archi.astro';
 import AdvektDiagram from '../components/diagrams/Advekt.astro';
@@ -50,22 +49,16 @@ async function loadProject(id: string) {
 }
 
 const orca = await loadProject('orca');
-const orcaScreenshots = {
-	hero: {
-		src: orcaShot,
-		alt: 'ORCA endpoints grid showing OpenRouter models, providers, pricing, features, and context windows',
+const orcaScreenshots = [
+	{
+		src: orcaEndpointsShot,
+		alt: 'ORCA endpoints grid showing OpenRouter models, providers, pricing, modalities, features, and context windows',
 	},
-	supporting: [
-		{
-			src: orcaMonitorShot,
-			alt: 'ORCA monitor timeline showing recent pricing, max-output, and endpoint changes across providers over time',
-		},
-		{
-			src: orcaApiShot,
-			alt: 'ORCA API documentation page with a sample JSON response of OpenRouter models and endpoints',
-		},
-	],
-};
+	{
+		src: orcaMonitorShot,
+		alt: 'ORCA monitor timeline showing recent pricing changes and new endpoints across providers',
+	},
+];
 
 const featuredProjects = await Promise.all(['tetra', 'ig', 'e-suite'].map(loadProject));
 const featuredScreenshots: Record<string, ProjectScreenshot[]> = {
@@ -76,27 +69,27 @@ const featuredScreenshots: Record<string, ProjectScreenshot[]> = {
 		},
 		{
 			src: tetraImageShot,
-			alt: 'tetra chat session with an inline AI-generated image from a PSX-style prompt',
+			alt: 'tetra chat session with an AI-generated pixel-art planet beside a settings panel of model, tool, and provider options',
 		},
 	],
 	ig: [
 		{
-			src: igFeedShot,
-			alt: 'ig artifact feed: a dense grid of AI-generated images',
+			src: igArtifactShot,
+			alt: 'ig artifact detail view showing a generated PSX-style kaiju image beside its prompt, model, seed, cost, and duration',
 		},
 		{
-			src: igBatchShot,
-			alt: 'ig artifact detail view showing a generated image beside its prompt, model, seed, cost, and duration',
+			src: igFeedShot,
+			alt: 'ig artifact feed: a dense grid of AI-generated images',
 		},
 	],
 	'e-suite': [
 		{
 			src: esuiteArtifactShot,
-			alt: 'e-suite conversation with a live-rendered HTML artifact, an intercepted-transmission interface, beside the chat',
+			alt: 'e-suite conversation with a live-rendered HTML artifact, a retro terminal interface, beside the chat',
 		},
 		{
-			src: esuiteGenShot,
-			alt: 'e-suite image generation view showing a batch of four portrait renders from a single prompt',
+			src: esuiteModelsShot,
+			alt: 'e-suite model picker filtered to "flash", listing available models with per-token pricing',
 		},
 	],
 };
@@ -121,7 +114,7 @@ const supportingDiagrams: Record<string, (props: Record<string, never>) => unkno
 ---
 
 <Layout>
-	<div class="mx-auto w-full max-w-[87.5rem] px-5 md:px-6 lg:px-8">
+	<div class="mx-auto w-full max-w-6xl px-5 md:px-6 lg:px-8">
 		<SiteHeader contact={contact} />
 		<main>
 			<Hero />
@@ -133,11 +126,7 @@ const supportingDiagrams: Record<string, (props: Record<string, never>) => unkno
 			<section aria-label="Selected work">
 				{
 					featuredProjects.map(({ project, Content }) => (
-						<ProjectFeature
-							project={project}
-							screenshots={featuredScreenshots[project.id] ?? []}
-							reverse={project.id === 'ig'}
-						>
+						<ProjectFeature project={project} screenshots={featuredScreenshots[project.id] ?? []}>
 							<Content />
 						</ProjectFeature>
 					))

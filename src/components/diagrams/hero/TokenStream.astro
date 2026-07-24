@@ -27,7 +27,15 @@ const layout = lines.map(({ y, widths }) => {
 		layout.map((tokens, line) =>
 			tokens.map(({ x, y, width, opacity }, index) => (
 				<g class={`token tk-${line + 1}-${index + 1}`}>
-					<rect x={x} y={y} width={width} height="10" rx="2" fill="currentColor" opacity={opacity} />
+					<rect
+						x={x}
+						y={y}
+						width={width}
+						height="10"
+						rx="2"
+						fill="currentColor"
+						opacity={opacity}
+					/>
 				</g>
 			)),
 		)

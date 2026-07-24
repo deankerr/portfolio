@@ -77,6 +77,12 @@
 	--font-mono: var(--font-jetbrains), ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
+/* Feature layouts (ORCA + project rows) at lg+: the text column is one fixed-width
+   track and the screenshots take the rest. This is the only knob for that ratio. */
+:root {
+	--feature-text-col: 30rem;
+}
+
 @layer base {
 	html {
 		scroll-behavior: smooth;

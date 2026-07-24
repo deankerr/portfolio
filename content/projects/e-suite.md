@@ -16,9 +16,9 @@ stack:
     note: "the artifact renderer's isolation and error channel"
 ---
 
-The origin point. A multi-modal AI content platform from late 2024: threaded conversations where any message can trigger a generation run. Text and speech flow through LLM and TTS providers, images through fal.ai; outputs are tracked, organised into collections, and produced through reusable patterns that parameterise a run. The concerns the later projects are built on first took shape here: inference orchestration, artifact tracking, reusable run configuration.
+A multi-modal AI content platform from late 2024: threaded conversations where any message can trigger a generation run. Text and speech flow through LLM and TTS providers, images through fal.ai; outputs are tracked, organised into collections, and produced through reusable patterns that parameterise a run. The concerns the later projects are built on first took shape here: inference orchestration, artifact tracking, reusable run configuration.
 
-The part that holds up best is an early, self-hosted take on LLM artifacts, begun November 2024, roughly five months after Anthropic popularised the concept: the renderer itself, not a consumer of someone else's API. When a model returns a fenced HTML, SVG, or Mermaid block, the UI can open it as a live artifact instead of printing the source.
+My early, self-hosted take on LLM artifacts, begun November 2024, roughly five months after Anthropic popularised the concept: the renderer itself, not a consumer of someone else's API. When a model returns a fenced HTML, SVG, or Mermaid block, the UI can open it as a live artifact instead of printing the source.
 
 HTML renders in a sandboxed iframe (`allow-scripts` only, a CSP, no referrer), and errors thrown inside the frame are caught there and surfaced back to the host over postMessage. Extraction is automatic: any code block gets a save-as-artifact affordance, with the HTML `<title>` pulled out for naming.
 

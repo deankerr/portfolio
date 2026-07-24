@@ -11,6 +11,7 @@ color: #D4D4D4
 <!-- _color: #569CD6 -->
 
 # Example with SVG Diagram
+
 Demonstrating diagram integration
 
 Tech Talk · 2026-01-09
@@ -22,11 +23,12 @@ Tech Talk · 2026-01-09
 ![bg right fit](../diagrams/example-architecture.svg)
 
 **Key components**:
+
 - Frontend: React + TypeScript
 - Backend: Node.js + Express
 - Database: PostgreSQL
 
-*Diagram on right, text on left*
+_Diagram on right, text on left_
 
 ---
 

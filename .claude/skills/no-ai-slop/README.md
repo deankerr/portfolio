@@ -6,19 +6,19 @@ This skill removes 20+ patterns of AI slop from your writing and it can also hel
 
 The patterns it detects include:
 
-| Pattern | Smells like |
-|---------|-------------|
-| Binary contrasts | "It's not X. It's Y." |
-| Throat-clearing openers | "Here's the thing..." |
-| Faux-insight setups | "What nobody tells you..." |
-| Colon reveals | "The best part: it learns." |
-| Superficial analysis | "...highlighting the team's commitment" |
-| Importance puffery | "marks a pivotal moment" |
-| Weasel attribution | "experts agree," "studies show" |
-| Fake-strong verbs | "serves as a centralized hub" |
-| Synonym cycling | the agent, then the assistant, then the tool |
-| Negative listing | "Not a X. Not a Y. A Z." |
-| Dramatic fragmentation | "That's it. That's the whole thing." |
+| Pattern                 | Smells like                                  |
+| ----------------------- | -------------------------------------------- |
+| Binary contrasts        | "It's not X. It's Y."                        |
+| Throat-clearing openers | "Here's the thing..."                        |
+| Faux-insight setups     | "What nobody tells you..."                   |
+| Colon reveals           | "The best part: it learns."                  |
+| Superficial analysis    | "...highlighting the team's commitment"      |
+| Importance puffery      | "marks a pivotal moment"                     |
+| Weasel attribution      | "experts agree," "studies show"              |
+| Fake-strong verbs       | "serves as a centralized hub"                |
+| Synonym cycling         | the agent, then the assistant, then the tool |
+| Negative listing        | "Not a X. Not a Y. A Z."                     |
+| Dramatic fragmentation  | "That's it. That's the whole thing."         |
 
 It also enforces the fundamentals that make writing good: Lead with the point when it helps, use active voice, untangle hard-to-follow sentences, and prefer concrete numbers over abstractions.
 

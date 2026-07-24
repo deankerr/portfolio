@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import BreakpointIndicator from '../components/BreakpointIndicator.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -53,5 +54,6 @@ const ogImage = new URL('/og.png', Astro.site);
 		class="bg-surface font-sans text-base leading-relaxed text-ink antialiased transition-colors duration-200"
 	>
 		<slot />
+		{import.meta.env.DEV && <BreakpointIndicator />}
 	</body>
 </html>

@@ -6,6 +6,7 @@
 Created `examples/slides/assets/system-map.svg`.
 
 Checks:
+
 - viewBox matches content bounds: `0 0 1200 675`
 - palette matches deck colors
 - validated with `svglint examples/slides/assets/system-map.svg`
