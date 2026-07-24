@@ -1,0 +1,172 @@
+---
+// attention — a row of tokens, and the arcs between them. Focus advances
+// token by token; each focus lights weighted arcs back to the tokens it
+// attends to (always causal, always backward). The mechanism itself, drawn
+// like a dependency diagram: quiet structure, one moving spotlight.
+
+const tokens = [
+	{ x: 24, width: 16 },
+	{ x: 48, width: 10 },
+	{ x: 66, width: 20 },
+	{ x: 94, width: 12 },
+	{ x: 114, width: 16 },
+	{ x: 138, width: 10 },
+	{ x: 156, width: 14 },
+	{ x: 178, width: 18 },
+	{ x: 204, width: 12 },
+];
+const center = (index: number) => tokens[index].x + tokens[index].width / 2;
+
+// Arc height grows with span, capped so long arcs stay inside the canvas.
+const arc = (from: number, to: number) => {
+	const a = center(from);
+	const b = center(to);
+	const height = Math.min(12 + (b - a) * 0.3, 60);
+	return `M ${a} 101 Q ${(a + b) / 2} ${101 - height} ${b} 101`;
+};
+
+// The always-visible field of connections, kept faint.
+const baseArcs = [
+	[0, 2],
+	[1, 4],
+	[2, 5],
+	[3, 6],
+	[4, 7],
+	[6, 8],
+] as const;
+
+// Focus steps: the focused token plus its attention arcs, strongest first.
+const steps = [
+	{ focus: 3, attends: [2, 0] },
+	{ focus: 5, attends: [3, 1, 4] },
+	{ focus: 7, attends: [5, 2, 6] },
+	{ focus: 8, attends: [7, 3, 0] },
+];
+const weight = [
+	{ width: 1.75, opacity: 0.9 },
+	{ width: 1.25, opacity: 0.55 },
+	{ width: 0.75, opacity: 0.35 },
+];
+---
+
+<svg
+	viewBox="0 0 240 144"
+	fill="none"
+	stroke-linecap="round"
+	aria-hidden="true"
+	class="w-full"
+>
+	<!-- The sequence. -->
+	<g fill="currentColor">
+		{
+			tokens.map(({ x, width }, index) => (
+				<rect x={x} y="104" width={width} height="10" rx="2" opacity={0.24 + (index % 3) * 0.05} />
+			))
+		}
+	</g>
+
+	<!-- The quiet field of possible connections. -->
+	<g stroke="currentColor" stroke-width="1" opacity="0.14">
+		{baseArcs.map(([from, to]) => <path d={arc(from, to)} />)}
+	</g>
+
+	<!-- Focus steps. The last one stays visible as the static fallback. -->
+	{
+		steps.map(({ focus, attends }, index) => (
+			<g class={`step step-${index + 1}`} opacity={index === steps.length - 1 ? 1 : 0}>
+				<rect
+					x={tokens[focus].x}
+					y="104"
+					width={tokens[focus].width}
+					height="10"
+					rx="2"
+					fill="var(--accent)"
+				/>
+				{attends.map((from, rank) => (
+					<path
+						d={arc(from, focus)}
+						stroke="var(--accent)"
+						stroke-width={weight[rank].width}
+						opacity={weight[rank].opacity}
+					/>
+				))}
+			</g>
+		))
+	}
+</svg>
+
+<style>
+	/* 9s cycle: four focus steps crossfade in sequence, then the field rests.
+	   Static fallback: the final focus with its arcs over the quiet field. */
+	@media (prefers-reduced-motion: no-preference) {
+		.step-1 {
+			animation: hat-step-1 9s linear infinite;
+		}
+		.step-2 {
+			animation: hat-step-2 9s linear infinite;
+		}
+		.step-3 {
+			animation: hat-step-3 9s linear infinite;
+		}
+		.step-4 {
+			animation: hat-step-4 9s linear infinite;
+		}
+
+		@keyframes hat-step-1 {
+			0%,
+			6% {
+				opacity: 0;
+			}
+			9%,
+			27% {
+				opacity: 1;
+			}
+			30%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hat-step-2 {
+			0%,
+			27% {
+				opacity: 0;
+			}
+			30%,
+			48% {
+				opacity: 1;
+			}
+			51%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hat-step-3 {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			51%,
+			69% {
+				opacity: 1;
+			}
+			72%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hat-step-4 {
+			0%,
+			69% {
+				opacity: 0;
+			}
+			72%,
+			90% {
+				opacity: 1;
+			}
+			93%,
+			100% {
+				opacity: 0;
+			}
+		}
+	}
+</style>

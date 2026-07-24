@@ -1,0 +1,392 @@
+---
+// token stream — the output. Four lines of text-shaped bars type themselves
+// in behind a gliding caret; the last line stops mid-thought and the caret
+// blinks at idle. Streaming inference as everyone who has watched a model
+// answer knows it.
+
+const lines = [
+	{ y: 36, widths: [30, 22, 38, 18, 26] },
+	{ y: 60, widths: [26, 34, 18, 30] },
+	{ y: 84, widths: [20, 30, 24, 16, 34] },
+	{ y: 108, widths: [28, 16] },
+];
+
+// Lay tokens out with an 8-unit gap from a shared left margin.
+const layout = lines.map(({ y, widths }) => {
+	let x = 24;
+	return widths.map((width, index) => {
+		const token = { x, y, width, opacity: 0.26 + ((index * 5 + y) % 3) * 0.05 };
+		x += width + 8;
+		return token;
+	});
+});
+---
+
+<svg viewBox="0 0 240 144" fill="none" aria-hidden="true" class="w-full">
+	{
+		layout.map((tokens, line) =>
+			tokens.map(({ x, y, width, opacity }, index) => (
+				<g class={`token tk-${line + 1}-${index + 1}`}>
+					<rect x={x} y={y} width={width} height="10" rx="2" fill="currentColor" opacity={opacity} />
+				</g>
+			)),
+		)
+	}
+
+	<!-- The caret glides each line, rests mid-line, and blinks. -->
+	<rect class="caret" x="24" y="34" width="2" height="14" rx="1" fill="var(--accent)"></rect>
+</svg>
+
+<style>
+	/* 9s cycle: the caret sweeps four lines; tokens pop in as it passes their
+	   right edge. The final line stays partial, the caret blinks three times,
+	   everything fades. Static fallback: the full text with a resting caret. */
+	@media (prefers-reduced-motion: no-preference) {
+		.tk-1-1 {
+			animation: hts-1-1 9s linear infinite;
+		}
+		.tk-1-2 {
+			animation: hts-1-2 9s linear infinite;
+		}
+		.tk-1-3 {
+			animation: hts-1-3 9s linear infinite;
+		}
+		.tk-1-4 {
+			animation: hts-1-4 9s linear infinite;
+		}
+		.tk-1-5 {
+			animation: hts-1-5 9s linear infinite;
+		}
+		.tk-2-1 {
+			animation: hts-2-1 9s linear infinite;
+		}
+		.tk-2-2 {
+			animation: hts-2-2 9s linear infinite;
+		}
+		.tk-2-3 {
+			animation: hts-2-3 9s linear infinite;
+		}
+		.tk-2-4 {
+			animation: hts-2-4 9s linear infinite;
+		}
+		.tk-3-1 {
+			animation: hts-3-1 9s linear infinite;
+		}
+		.tk-3-2 {
+			animation: hts-3-2 9s linear infinite;
+		}
+		.tk-3-3 {
+			animation: hts-3-3 9s linear infinite;
+		}
+		.tk-3-4 {
+			animation: hts-3-4 9s linear infinite;
+		}
+		.tk-3-5 {
+			animation: hts-3-5 9s linear infinite;
+		}
+		.tk-4-1 {
+			animation: hts-4-1 9s linear infinite;
+		}
+		.tk-4-2 {
+			animation: hts-4-2 9s linear infinite;
+		}
+		.caret {
+			animation: hts-caret 9s linear infinite;
+		}
+
+		@keyframes hts-1-1 {
+			0%,
+			6% {
+				opacity: 0;
+			}
+			7%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-1-2 {
+			0%,
+			9% {
+				opacity: 0;
+			}
+			10%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-1-3 {
+			0%,
+			13% {
+				opacity: 0;
+			}
+			14%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-1-4 {
+			0%,
+			15% {
+				opacity: 0;
+			}
+			16%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-1-5 {
+			0%,
+			18% {
+				opacity: 0;
+			}
+			19%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-2-1 {
+			0%,
+			24% {
+				opacity: 0;
+			}
+			25%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-2-2 {
+			0%,
+			28% {
+				opacity: 0;
+			}
+			29%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-2-3 {
+			0%,
+			31% {
+				opacity: 0;
+			}
+			32%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-2-4 {
+			0%,
+			34% {
+				opacity: 0;
+			}
+			35%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-3-1 {
+			0%,
+			39% {
+				opacity: 0;
+			}
+			40%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-3-2 {
+			0%,
+			43% {
+				opacity: 0;
+			}
+			44%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-3-3 {
+			0%,
+			46% {
+				opacity: 0;
+			}
+			47%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-3-4 {
+			0%,
+			48% {
+				opacity: 0;
+			}
+			49%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-3-5 {
+			0%,
+			52% {
+				opacity: 0;
+			}
+			53%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-4-1 {
+			0%,
+			59% {
+				opacity: 0;
+			}
+			60%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes hts-4-2 {
+			0%,
+			62% {
+				opacity: 0;
+			}
+			63%,
+			88% {
+				opacity: 1;
+			}
+			96%,
+			100% {
+				opacity: 0;
+			}
+		}
+
+		/* Sweep each line, jump discretely to the next, rest at 82 on line 4,
+		   blink, fade. Hold stops 0.1% before each jump keep the glide linear. */
+		@keyframes hts-caret {
+			0%,
+			4% {
+				transform: translate(0px, 0px);
+				opacity: 0;
+			}
+			5% {
+				opacity: 1;
+			}
+			20% {
+				transform: translate(172px, 0px);
+			}
+			21.9% {
+				transform: translate(172px, 0px);
+			}
+			22% {
+				transform: translate(0px, 24px);
+			}
+			36% {
+				transform: translate(138px, 24px);
+			}
+			37.9% {
+				transform: translate(138px, 24px);
+			}
+			38% {
+				transform: translate(0px, 48px);
+			}
+			54% {
+				transform: translate(162px, 48px);
+			}
+			55.9% {
+				transform: translate(162px, 48px);
+			}
+			56% {
+				transform: translate(0px, 72px);
+			}
+			64%,
+			68% {
+				transform: translate(58px, 72px);
+				opacity: 1;
+			}
+			69%,
+			73% {
+				transform: translate(58px, 72px);
+				opacity: 0;
+			}
+			74%,
+			78% {
+				transform: translate(58px, 72px);
+				opacity: 1;
+			}
+			79%,
+			83% {
+				transform: translate(58px, 72px);
+				opacity: 0;
+			}
+			84%,
+			92% {
+				transform: translate(58px, 72px);
+				opacity: 1;
+			}
+			96%,
+			100% {
+				transform: translate(58px, 72px);
+				opacity: 0;
+			}
+		}
+	}
+</style>

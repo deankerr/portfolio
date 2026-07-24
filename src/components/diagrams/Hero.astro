@@ -1,10 +1,12 @@
 ---
-// Homepage hero reel — the three isolated studies stay independently usable
-// in /dev/hero, while this wrapper synchronizes their nine-second loops into
+// Homepage hero reel — how a model works, in three vocabularies: attention
+// (arcs over a token row — the mechanism), diffusion (a cell field — the
+// generation), token stream (typed lines — the output). Each 9s loop stays
+// independently usable in /dev/hero; this wrapper synchronizes them into
 // one 27-second sequence.
-import OrcaHistory from './hero/OrcaHistory.astro';
-import TetraState from './hero/TetraState.astro';
+import Attention from './hero/Attention.astro';
 import Diffusion from './hero/Diffusion.astro';
+import TokenStream from './hero/TokenStream.astro';
 ---
 
 <div
@@ -12,14 +14,14 @@ import Diffusion from './hero/Diffusion.astro';
 	style="aspect-ratio: 5 / 3"
 	aria-hidden="true"
 >
-	<div class="hero-scene scene-orca absolute inset-0">
-		<OrcaHistory />
-	</div>
-	<div class="hero-scene scene-tetra absolute inset-0">
-		<TetraState />
+	<div class="hero-scene scene-attention absolute inset-0">
+		<Attention />
 	</div>
 	<div class="hero-scene scene-diffusion absolute inset-0">
 		<Diffusion />
+	</div>
+	<div class="hero-scene scene-stream absolute inset-0">
+		<TokenStream />
 	</div>
 </div>
 
@@ -27,22 +29,22 @@ import Diffusion from './hero/Diffusion.astro';
 	.hero-scene {
 		opacity: 0;
 	}
-	.scene-orca {
+	.scene-attention {
 		opacity: 1;
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
-		.scene-orca {
-			animation: hero-reel-orca 27s linear infinite;
-		}
-		.scene-tetra {
-			animation: hero-reel-tetra 27s linear infinite;
+		.scene-attention {
+			animation: hero-reel-attention 27s linear infinite;
 		}
 		.scene-diffusion {
 			animation: hero-reel-diffusion 27s linear infinite;
 		}
+		.scene-stream {
+			animation: hero-reel-stream 27s linear infinite;
+		}
 
-		@keyframes hero-reel-orca {
+		@keyframes hero-reel-attention {
 			0%,
 			30% {
 				opacity: 1;
@@ -55,7 +57,7 @@ import Diffusion from './hero/Diffusion.astro';
 				opacity: 1;
 			}
 		}
-		@keyframes hero-reel-tetra {
+		@keyframes hero-reel-diffusion {
 			0%,
 			30% {
 				opacity: 0;
@@ -69,7 +71,7 @@ import Diffusion from './hero/Diffusion.astro';
 				opacity: 0;
 			}
 		}
-		@keyframes hero-reel-diffusion {
+		@keyframes hero-reel-stream {
 			0%,
 			63% {
 				opacity: 0;
