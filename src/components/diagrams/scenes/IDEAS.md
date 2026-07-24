@@ -1,7 +1,7 @@
 # diagram spree — brainstorm
 
 The method: don't illustrate the project literally — find the classic CS concept
-underneath its copy and diagram *that*, in the house style (currentColor grays,
+underneath its copy and diagram _that_, in the house style (currentColor grays,
 one accent, surface fills, dashed strokes, small geometry, quiet loops).
 
 Canvas: 234×143 user units (the hero scene frame). Shared vocabulary:

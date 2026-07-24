@@ -12,7 +12,7 @@ touched.
   columns, and key nodes on multiples of 12; half-steps (6) for fine detail.
 - Useful rhythms: 4 rows at y = 14/50/86/122 (step 36); 3 rows at
   y = 24/72/120 (step 48); 10-column matrix at x = 30 + 20c.
-- The hero reel adds its progress ticks *inside* the same canvas (bottom
+- The hero reel adds its progress ticks _inside_ the same canvas (bottom
   margin band), not by growing the viewBox.
 
 ## ink
